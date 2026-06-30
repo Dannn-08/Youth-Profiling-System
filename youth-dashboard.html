@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bukal Youth Data | Youth Dashboard</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body data-page="youth-dashboard" class="dashboard-body">
+  <header class="dash-header">
+    <div class="container dash-top">
+      <div>
+        <h1>Youth Dashboard</h1>
+        <p id="youthWelcome">Welcome</p>
+      </div>
+
+      <button class="logout-btn" data-logout>↪ Logout</button>
+    </div>
+  </header>
+
+  <main class="container dashboard-main">
+    <section class="panel profile-panel">
+      <div class="panel-heading profile-heading">
+        <span class="profile-avatar"></span>
+
+        <div>
+          <h2>Your Profile</h2>
+          <p>Manage your personal information</p>
+        </div>
+
+        <button class="btn btn-primary btn-sm right" id="editProfileBtn">✎ Edit Profile</button>
+      </div>
+
+      <div id="youthProfileView" class="profile-view"></div>
+    </section>
+  </main>
+
+  <dialog id="profileDialog" class="modal-card">
+    <form method="dialog" class="modal-inner" id="profileEditForm">
+      <div class="modal-heading">
+        <h2>Edit Youth Profile</h2>
+        <button class="icon-btn" value="cancel" type="submit">×</button>
+      </div>
+
+      <div class="form-grid" id="profileEditFields"></div>
+
+      <div class="modal-actions">
+        <button class="btn btn-muted" value="cancel" type="submit">Cancel</button>
+        <button class="btn btn-primary" id="saveProfileBtn" value="default" type="button">Save Changes</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

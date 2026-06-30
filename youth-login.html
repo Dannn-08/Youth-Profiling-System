@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bukal Youth Data | Youth Login</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body data-page="youth-login" class="auth-body">
+  <main class="auth-shell">
+    <a class="back-link" href="index.html">← Back to Home</a>
+
+    <section class="auth-card">
+      <div class="auth-title">
+        <span class="auth-icon people"></span>
+        <div>
+          <h1>Youth Login</h1>
+          <p>Access your youth profile dashboard</p>
+        </div>
+      </div>
+
+      <form id="youthLoginForm" class="form-grid single">
+        <label class="field full">
+          <span>Email</span>
+          <input type="email" name="email" placeholder="your.email@example.com" required />
+        </label>
+
+        <label class="field full">
+          <span>Password</span>
+          <input type="password" name="password" placeholder="••••••••" required />
+        </label>
+
+        <button class="btn btn-primary full-btn" type="submit">Login</button>
+
+        <p class="center small-text">No account yet? <a href="youth-register.html">Register here</a></p>
+        <p class="center small-text"><a href="#" data-forgot>Forgot password?</a></p>
+      </form>
+    </section>
+  </main>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>
