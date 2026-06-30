@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bukal Youth Data | Admin Login</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body data-page="admin-login" class="auth-body">
+  <main class="auth-shell">
+    <a class="back-link" href="index.html">← Back to Home</a>
+
+    <section class="auth-card">
+      <div class="auth-title">
+        <span class="auth-icon shield"></span>
+        <div>
+          <h1>Admin Login</h1>
+          <p>Sign in to manage youth records and analytics</p>
+        </div>
+      </div>
+
+      <form id="adminLoginForm" class="form-grid single">
+        <label class="field full">
+          <span>Email</span>
+          <input type="email" name="email" placeholder="admin@bukal.gov.ph" required />
+        </label>
+
+        <label class="field full">
+          <span>Password</span>
+          <input type="password" name="password" placeholder="••••••••" required />
+        </label>
+
+        <button class="btn btn-primary full-btn" type="submit">Login</button>
+
+        <p class="center small-text">Need an admin account? <a href="admin-register.html">Register as Admin</a></p>
+        <p class="center small-text"><a href="#" data-forgot>Forgot password?</a></p>
+      </form>
+    </section>
+  </main>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>
