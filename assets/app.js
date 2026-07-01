@@ -67,13 +67,6 @@
     return {
       users: [
         { id: "admin_default", fullName: "SK Administrator", email: "admin@bukal.gov.ph", password: "admin12345", role: "admin", active: true, createdAt },
-        { id: "youth_sample_1", fullName: "Test Youth", email: "youth_2160@example.com", password: "password123", role: "youth", active: true, createdAt },
-        { id: "youth_sample_2", fullName: "Mama", email: "mama@gmail.com", password: "password123", role: "youth", active: true, createdAt },
-        { id: "youth_sample_3", fullName: "John", email: "john@gmail.com", password: "password123", role: "youth", active: true, createdAt },
-        { id: "youth_sample_4", fullName: "Mar", email: "mar@gmail.com", password: "password123", role: "youth", active: true, createdAt },
-        { id: "youth_sample_5", fullName: "Mar John Ayala", email: "marjohnyala0707@gmail.com", password: "password123", role: "youth", active: true, createdAt },
-        { id: "youth_sample_6", fullName: "Missy", email: "missy@gmail.com", password: "password123", role: "youth", active: true, createdAt },
-        { id: "youth_sample_7", fullName: "Missy Dequina Ayala", email: "ayala@gmail.com", password: "password123", role: "youth", active: true, createdAt }
       ],
 
       youthProfiles: [
@@ -1334,8 +1327,32 @@ Sports: ${profile.sports}
   }
 
   function downloadBackup() {
-    downloadFile("bukal-youth-data-backup.json", "application/json", JSON.stringify(getDB(), null, 2));
-    logActivity("Backup Downloaded", "System data backup was downloaded as JSON.");
+    const db = getDB();
+
+    if (typeof XLSX === "undefined") {
+      toast("Excel library is missing. Please check your script tags.", "error");
+      return;
+    }
+
+    try {
+      const workbook = XLSX.utils.book_new();
+
+      const wsProfiles = XLSX.utils.json_to_sheet(db.youthProfiles || []);
+      const wsUsers = XLSX.utils.json_to_sheet(db.users || []);
+      const wsAudit = XLSX.utils.json_to_sheet(db.audit || []);
+
+      XLSX.utils.book_append_sheet(workbook, wsProfiles, "Youth Information");
+      XLSX.utils.book_append_sheet(workbook, wsUsers, "System Users");
+      XLSX.utils.book_append_sheet(workbook, wsAudit, "Audit Logs");
+
+      XLSX.writeFile(workbook, "Bukal_Youth_Information_Backup.xlsx");
+
+      logActivity("Backup Downloaded", "System data backup was downloaded as an Excel file.");
+      toast("Excel backup downloaded successfully.");
+    } catch (error) {
+      toast("Failed to generate Excel backup.", "error");
+      console.error(error);
+    }
   }
 
   function downloadFile(filename, mime, content) {
