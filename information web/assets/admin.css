@@ -1,0 +1,108 @@
+/* ===== ADMIN STYLES ===== */
+
+.dashboard-body {
+  background: #f3f5f6;
+}
+
+.dash-header {
+  background: #ffffff;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.dash-header h1 {
+  color: #0a5255;
+}
+
+/* cards / stats */
+.stat-card {
+  border-left: 4px solid #0a5255;
+}
+
+/* buttons */
+.action-btn.edit {
+  color: #0a5255;
+}
+
+.action-btn.delete {
+  color: #d63c3c;
+}
+
+/* auth pages */
+.auth-title h1 {
+  color: #0a5255;
+}
+/* ===== DASHBOARD LAYOUT ===== */
+
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 240px;
+  background: #0a5255;
+  color: white;
+  padding: 20px;
+}
+
+.sidebar .logo {
+  margin-bottom: 20px;
+}
+
+.sidebar nav a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.sidebar nav a:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+/* MAIN */
+.main-content {
+  flex: 1;
+  background: #f4f6f8;
+}
+
+/* TOPBAR */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 15px 25px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* STATS */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.stat-card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 5px solid #0a5255;
+  font-size: 14px;
+}
+
+.stat-card strong {
+  font-size: 22px;
+}
+
+/* PANEL */
+.panel {
+  background: white;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+}

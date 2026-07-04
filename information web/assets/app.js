@@ -1,3 +1,21 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { auth, db } from "./firebase-config.js";import { auth } from "./firebase-config.js";
+import { signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "PASTE_YOUR_KEY",
+  authDomain: "PASTE_YOUR_DOMAIN",
+  projectId: "PASTE_YOUR_PROJECT_ID",
+};
+
+const app = initializeApp(firebaseConfig);
+
+document.querySelector("[data-logout]").addEventListener("click", async () => {
+  await signOut(auth);
+  alert("Logged out!");
+  window.location.href = "login.html";
+});
+
 (function () {
   "use strict";
 
@@ -195,7 +213,7 @@
     if (!user || user.role !== role || !user.active) {
       toast("Please login first.", "warn");
       setTimeout(() => {
-        location.href = role === "admin" ? "admin-login.html" : "youth-login.html";
+        location.href = role === "admin" ? "login.html" : "login.html";
       }, 600);
       return null;
     }
@@ -518,7 +536,7 @@
         toast("Admin account created. Please login.");
 
         setTimeout(() => {
-          location.href = "admin-login.html";
+          location.href = "login.html";
         }, 900);
       } catch (error) {
         toast(error.message, "error");
@@ -698,7 +716,7 @@
       toast("Login again using the default admin account.");
 
       setTimeout(() => {
-        location.href = "admin-login.html";
+        location.href = "login.html";
       }, 1200);
     });
   }
@@ -1333,9 +1351,33 @@ Sports: ${profile.sports}
     logActivity("PDF / Print Report Generated", "Youth report opened for PDF printing.");
   }
 
-  function downloadBackup() {
-    downloadFile("bukal-youth-data-backup.json", "application/json", JSON.stringify(getDB(), null, 2));
-    logActivity("Backup Downloaded", "System data backup was downloaded as JSON.");
+function downloadBackup() {
+    const db = getDB();
+
+    if (typeof XLSX === "undefined") {
+      toast("Excel library is missing. Please check your script tags.", "error");
+      return;
+    }
+
+    try {
+      const workbook = XLSX.utils.book_new();
+
+      const wsProfiles = XLSX.utils.json_to_sheet(db.youthProfiles || []);
+      const wsUsers = XLSX.utils.json_to_sheet(db.users || []);
+      const wsAudit = XLSX.utils.json_to_sheet(db.audit || []);
+
+      XLSX.utils.book_append_sheet(workbook, wsProfiles, "Youth Information");
+      XLSX.utils.book_append_sheet(workbook, wsUsers, "System Users");
+      XLSX.utils.book_append_sheet(workbook, wsAudit, "Audit Logs");
+
+      XLSX.writeFile(workbook, "Bukal_Youth_Information_Backup.xlsx");
+
+      logActivity("Backup Downloaded", "System data backup was downloaded as an Excel file.");
+      toast("Excel backup downloaded successfully.");
+    } catch (error) {
+      toast("Failed to generate Excel backup.", "error");
+      console.error(error);
+    }
   }
 
   function downloadFile(filename, mime, content) {
@@ -1370,11 +1412,11 @@ Sports: ${profile.sports}
         initYouthRegister();
         break;
 
-      case "youth-login":
+      case "login":
         initLogin("youth");
         break;
 
-      case "admin-login":
+      case "login":
         initLogin("admin");
         break;
 

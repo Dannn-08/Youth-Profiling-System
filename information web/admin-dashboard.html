@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bukal Youth Data | Admin Dashboard</title>
+  <link rel="icon" type="image/png" href="assets/logo.jpg">
   <link rel="stylesheet" href="assets/style.css" />
+  <link rel="stylesheet" href="assets/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body data-page="admin-dashboard" class="dashboard-body">
   <header class="dash-header">
@@ -196,7 +199,7 @@
           </p>
 
           <div class="settings-actions">
-            <button class="btn btn-muted" id="backupDataBtn">Download Backup JSON</button>
+            <button class="btn btn-muted" id="backupDataBtn">Download Backup Excel</button>
             <button class="btn btn-danger" id="resetDemoBtn">Reset Data</button>
           </div>
         </article>
@@ -219,9 +222,12 @@
         <button class="btn btn-muted" value="cancel" type="submit">Cancel</button>
         <button class="btn btn-primary" id="saveYouthAdminBtn" value="default" type="button">Save Profile</button>
       </div>
+
     </form>
   </dialog>
-
-  <script src="assets/app.js"></script>
+  
+<script type="module" src="assets/admin-dashboard.js"></script>
+<script type="module" src="assets/admin-check.js"></script>
+<script src="assets/app.js"></script>
 </body>
 </html>
