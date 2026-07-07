@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bukal Youth Data | Admin Registration</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body data-page="admin-register" class="auth-body">
+  <main class="auth-shell">
+    <a class="back-link" href="index.html">← Back to Home</a>
+
+    <section class="auth-card">
+      <div class="auth-title">
+        <span class="auth-icon shield"></span>
+        <div>
+          <h1>Admin Registration</h1>
+          <p>Create an admin account for system management</p>
+        </div>
+      </div>
+
+      <form id="adminRegisterForm" class="form-grid single">
+        <label class="field full">
+          <span>Full Name</span>
+          <input type="text" name="fullName" placeholder="Mar John" required />
+        </label>
+
+        <label class="field full">
+          <span>Email</span>
+          <input type="email" name="email" placeholder="admin@bukal.gov.ph" required />
+        </label>
+
+        <label class="field full">
+          <span>Password</span>
+          <input type="password" name="password" placeholder="Minimum 8 characters" minlength="8" required />
+        </label>
+
+        <label class="field full">
+          <span>Admin Security Code</span>
+          <input type="password" name="securityCode" placeholder="Ask the system administrator" required />
+        </label>
+
+        <button class="btn btn-primary full-btn" type="submit">Register as Admin</button>
+
+        <p class="center small-text">Already have an account? <a href="admin-login.html">Login here</a></p>
+      </form>
+    </section>
+  </main>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>
