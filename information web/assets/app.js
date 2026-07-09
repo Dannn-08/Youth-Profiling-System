@@ -1333,9 +1333,33 @@ Sports: ${profile.sports}
     logActivity("PDF / Print Report Generated", "Youth report opened for PDF printing.");
   }
 
-  function downloadBackup() {
-    downloadFile("bukal-youth-data-backup.json", "application/json", JSON.stringify(getDB(), null, 2));
-    logActivity("Backup Downloaded", "System data backup was downloaded as JSON.");
+function downloadBackup() {
+    const db = getDB();
+
+    if (typeof XLSX === "undefined") {
+      toast("Excel library is missing. Please check your script tags.", "error");
+      return;
+    }
+
+    try {
+      const workbook = XLSX.utils.book_new();
+
+      const wsProfiles = XLSX.utils.json_to_sheet(db.youthProfiles || []);
+      const wsUsers = XLSX.utils.json_to_sheet(db.users || []);
+      const wsAudit = XLSX.utils.json_to_sheet(db.audit || []);
+
+      XLSX.utils.book_append_sheet(workbook, wsProfiles, "Youth Information");
+      XLSX.utils.book_append_sheet(workbook, wsUsers, "System Users");
+      XLSX.utils.book_append_sheet(workbook, wsAudit, "Audit Logs");
+
+      XLSX.writeFile(workbook, "Bukal_Youth_Information_Backup.xlsx");
+
+      logActivity("Backup Downloaded", "System data backup was downloaded as an Excel file.");
+      toast("Excel backup downloaded successfully.");
+    } catch (error) {
+      toast("Failed to generate Excel backup.", "error");
+      console.error(error);
+    }
   }
 
   function downloadFile(filename, mime, content) {
