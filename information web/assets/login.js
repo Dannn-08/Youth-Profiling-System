@@ -1,13 +1,20 @@
 import { auth, db } from "./firebase-config.js";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { getDoc, doc } from "firebase/firestore";
+import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-function login(email, password) {
-  signInWithEmailAndPassword(auth, email, password)
-    .then(async (userCredential) => {
-      const user = userCredential.user;
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-      const docSnap = await getDoc(doc(db, "users", user.uid));
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    const docSnap = await getDoc(doc(db, "users", user.uid));
+
+    if (docSnap.exists()) {
       const data = docSnap.data();
 
       if (data.role === "admin") {
@@ -15,8 +22,11 @@ function login(email, password) {
       } else {
         window.location.href = "youth-dashboard.html";
       }
-    })
-    .catch((error) => {
-      alert(error.message);
-    });
-}
+    } else {
+      alert("No user data found!");
+    }
+
+  } catch (error) {
+    alert(error.message);
+  }
+});
