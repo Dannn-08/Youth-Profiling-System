@@ -87,14 +87,13 @@ form {
   text-decoration: underline;
 }
 
-/* WRAPPER PARA CENTER LAHAT */
 .wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* BACK BUTTON (IAALIGN SA CARD) */
+
 .back {
   align-self: flex-start;
   margin-bottom: 10px;
@@ -108,7 +107,7 @@ form {
   text-decoration: underline;
 }
 
-/* LINKS SA BABA */
+
 .links {
   margin-top: 15px;
   text-align: center;
@@ -128,10 +127,9 @@ input, button {
   padding: 12px;
   margin-top: 10px;
   border-radius: 6px;
-  box-sizing: border-box; /* 🔥 IMPORTANTE */
+  box-sizing: border-box; 
 }
 
-/* OPTIONAL: same border style */
 input {
   border: 1px solid #ccc;
 }
