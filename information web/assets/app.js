@@ -213,7 +213,7 @@ document.querySelector("[data-logout]").addEventListener("click", async () => {
     if (!user || user.role !== role || !user.active) {
       toast("Please login first.", "warn");
       setTimeout(() => {
-        location.href = role === "admin" ? "admin-login.html" : "youth-login.html";
+        location.href = role === "admin" ? "login.html" : "login.html";
       }, 600);
       return null;
     }
@@ -536,7 +536,7 @@ document.querySelector("[data-logout]").addEventListener("click", async () => {
         toast("Admin account created. Please login.");
 
         setTimeout(() => {
-          location.href = "admin-login.html";
+          location.href = "login.html";
         }, 900);
       } catch (error) {
         toast(error.message, "error");
@@ -716,7 +716,7 @@ document.querySelector("[data-logout]").addEventListener("click", async () => {
       toast("Login again using the default admin account.");
 
       setTimeout(() => {
-        location.href = "admin-login.html";
+        location.href = "login.html";
       }, 1200);
     });
   }
@@ -1412,11 +1412,11 @@ function downloadBackup() {
         initYouthRegister();
         break;
 
-      case "youth-login":
+      case "login":
         initLogin("youth");
         break;
 
-      case "admin-login":
+      case "login":
         initLogin("admin");
         break;
 

@@ -188,7 +188,7 @@
     if (!user || user.role !== role || !user.active) {
       toast("Please login first.", "warn");
       setTimeout(() => {
-        location.href = role === "admin" ? "admin-login.html" : "youth-login.html";
+        location.href = role === "admin" ? "login.html" : "login.html";
       }, 600);
       return null;
     }
@@ -476,27 +476,44 @@
     });
   }
 
-  function initLogin(role) {
-    getDB();
+function initLogin() {
+  getDB();
 
-    document.querySelector("[data-forgot]")?.addEventListener("click", event => {
-      event.preventDefault();
-      toast("Ask the SK administrator to update your account password.", "warn");
-    });
+  const form = document.getElementById("loginForm");
 
-    const form = document.getElementById(role === "admin" ? "adminLoginForm" : "youthLoginForm");
+  if (!form) return;
 
-    form?.addEventListener("submit", event => {
-      event.preventDefault();
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
 
-      try {
-        const data = formToObject(form);
-        login(data.email, data.password, role);
-      } catch (error) {
-        toast(error.message, "error");
+    try {
+      const data = formToObject(form);
+      const db = getDB();
+
+      const user = db.users.find(u =>
+        normalizeEmail(u.email) === normalizeEmail(data.email) &&
+        u.password === data.password
+      );
+
+      if (!user) {
+        throw new Error("Invalid email or password");
       }
-    });
-  }
+
+      setSession(user);
+      logActivity("Login", `${user.fullName} logged in`);
+
+      
+      if (user.role === "admin") {
+        window.location.href = "admin-dashboard.html";
+      } else {
+        window.location.href = "youth-dashboard.html";
+      }
+
+    } catch (err) {
+      toast(err.message, "error");
+    }
+  });
+}
 
   function initAdminRegister() {
     getDB();
@@ -511,7 +528,7 @@
         toast("Admin account created. Please login.");
 
         setTimeout(() => {
-          location.href = "admin-login.html";
+          location.href = "login.html";
         }, 900);
       } catch (error) {
         toast(error.message, "error");
@@ -691,7 +708,7 @@
       toast("Login again using the default admin account.");
 
       setTimeout(() => {
-        location.href = "admin-login.html";
+        location.href = "login.html";
       }, 1200);
     });
   }
@@ -1387,12 +1404,8 @@ Sports: ${profile.sports}
         initYouthRegister();
         break;
 
-      case "youth-login":
-        initLogin("youth");
-        break;
-
-      case "admin-login":
-        initLogin("admin");
+      case "login":
+        initLogin();
         break;
 
       case "admin-register":
