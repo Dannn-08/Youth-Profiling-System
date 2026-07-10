@@ -2,7 +2,6 @@ import { auth, db } from "./firebase-config.js";
 import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { setDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// form submit
 document.getElementById("adminRegisterForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -13,15 +12,19 @@ document.getElementById("adminRegisterForm").addEventListener("submit", async (e
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
+    // 🔥 SAVE SA FIRESTORE
     await setDoc(doc(db, "users", user.uid), {
       email: user.email,
-      role: "admin"
+      role: "admin",
+      createdAt: new Date()
     });
 
-    alert("Admin registered!");
-    window.location.href = "admin-dashboard.html";
+    alert("Admin registered successfully!");
+
+    // 🔥 mas recommended: sa login muna
+    window.location.href = "login.html";
 
   } catch (error) {
-    alert(error.message);
+    alert("Error: " + error.message);
   }
 });

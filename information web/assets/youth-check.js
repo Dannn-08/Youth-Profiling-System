@@ -1,0 +1,29 @@
+import { auth, db } from "./firebase-config.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    const docRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+
+      if (data.role === "youth") {
+        console.log("Youth verified ✅");
+      } else {
+        alert("Access denied! Youth only.");
+        window.location.href = "login.html";
+      }
+
+    } else {
+      alert("User data not found!");
+      window.location.href = "login.html";
+    }
+
+  } else {
+    alert("Please login first!");
+    window.location.href = "login.html";
+  }
+});

@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { auth, db } from "./firebase-config.js";
+import { auth, db } from "./firebase-config.js";import { auth } from "./firebase-config.js";
+import { signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "PASTE_YOUR_KEY",
@@ -8,6 +9,12 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
+document.querySelector("[data-logout]").addEventListener("click", async () => {
+  await signOut(auth);
+  alert("Logged out!");
+  window.location.href = "login.html";
+});
 
 (function () {
   "use strict";

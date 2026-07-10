@@ -1,32 +1,47 @@
+// IMPORT FIREBASE
 import { auth, db } from "./firebase-config.js";
 import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-document.getElementById("loginForm").addEventListener("submit", async (e) => {
+// FORM
+const form = document.getElementById("loginForm");
+
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
   try {
+    // LOGIN SA FIREBASE AUTH
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    const docSnap = await getDoc(doc(db, "users", user.uid));
+    // KUHANIN ROLE SA FIRESTORE
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
 
-    if (docSnap.exists()) {
-      const data = docSnap.data();
+    if (userSnap.exists()) {
+      const userData = userSnap.data();
 
-      if (data.role === "admin") {
+      // 🔥 CHECK ROLE
+      if (userData.role === "admin") {
+        alert("Login successful (Admin)");
         window.location.href = "admin-dashboard.html";
-      } else {
+      } 
+      else if (userData.role === "youth") {
+        alert("Login successful (Youth)");
         window.location.href = "youth-dashboard.html";
+      } 
+      else {
+        alert("Unknown role!");
       }
+
     } else {
       alert("No user data found!");
     }
 
   } catch (error) {
-    alert(error.message);
+    alert("Error: " + error.message);
   }
 });
