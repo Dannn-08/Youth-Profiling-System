@@ -1,10 +1,10 @@
 import { auth, db } from "./firebase-config.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
-    // may login
     const docRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(docRef);
 
@@ -24,8 +24,19 @@ onAuthStateChanged(auth, async (user) => {
     }
 
   } else {
-    // walang login
-    alert("Please login first!");
     window.location.href = "login.html";
+  }
+});
+
+// LOGOUT
+const logoutBtn = document.querySelector("[data-logout]");
+
+logoutBtn.addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+    alert("Logged out successfully!");
+    window.location.href = "login.html";
+  } catch (error) {
+    alert(error.message);
   }
 });

@@ -6,6 +6,8 @@
   <title>Bukal Youth Data | Youth Registration</title>
   <link rel="icon" type="image/png" href="assets/logo.jpg">
   <link rel="stylesheet" href="assets/style.css" />
+  <link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/youth.css">
 </head>
 <body data-page="youth-register" class="auth-body">
   <main class="auth-shell wide-auth">
@@ -30,12 +32,22 @@
 
         <label class="field">
           <span>Email</span>
-          <input type="email" name="email" placeholder="your.email@example.com" required />
+          <input 
+          type="email"
+           id="email" 
+           name="email" 
+           placeholder="your.email@example.com" 
+           required />
         </label>
 
         <label class="field">
           <span>Password</span>
-          <input type="password" name="password" placeholder="Minimum 8 characters" minlength="8" required />
+          <input 
+          type="password" 
+          id="password"
+           placeholder="Minimum 8 characters"
+            minlength="8" 
+            required />
         </label>
 
         <label class="field">
@@ -176,5 +188,6 @@
   </main>
 
   <script src="assets/app.js"></script>
+  <script type="module" src="assets/youth-register.js"></script>
 </body>
 </html>

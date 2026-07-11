@@ -14,32 +14,34 @@ form.addEventListener("submit", async (e) => {
 
   try {
     // LOGIN SA FIREBASE AUTH
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+  const userCredential = await signInWithEmailAndPassword(auth, email, password);
+const user = userCredential.user;
 
-    // KUHANIN ROLE SA FIRESTORE
-    const userRef = doc(db, "users", user.uid);
-    const userSnap = await getDoc(userRef);
+console.log("Logged in UID:", user.uid);
 
-    if (userSnap.exists()) {
-      const userData = userSnap.data();
+const userRef = doc(db, "users", user.uid);
+const userSnap = await getDoc(userRef);
 
-      // 🔥 CHECK ROLE
-      if (userData.role === "admin") {
-        alert("Login successful (Admin)");
+console.log("Document exists:", userSnap.exists());
+
+if (userSnap.exists()) {
+    const userData = userSnap.data();
+
+    console.log("User Data:", userData);
+    console.log("Role:", userData.role);
+
+    if (userData.role === "admin") {
+        console.log("Redirecting to admin...");
         window.location.href = "admin-dashboard.html";
-      } 
-      else if (userData.role === "youth") {
-        alert("Login successful (Youth)");
+    } else if (userData.role === "youth") {
+        console.log("Redirecting to youth...");
         window.location.href = "youth-dashboard.html";
-      } 
-      else {
-        alert("Unknown role!");
-      }
-
     } else {
-      alert("No user data found!");
+        alert("Unknown role");
     }
+} else {
+    alert("No user data found!");
+}
 
   } catch (error) {
     alert("Error: " + error.message);

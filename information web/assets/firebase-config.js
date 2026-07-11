@@ -3,9 +3,12 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-aut
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
+  apiKey: "AIzaSyCFkzBqpTuol1y_xkBucPBZ1R0qqXuQxEE",
+  authDomain: "bukal-youth-data.firebaseapp.com",
+  projectId: "bukal-youth-data",
+  storageBucket: "bukal-youth-data.firebasestorage.app",
+  messagingSenderId: "319242252308",
+  appId: "1:319242252308:web:9885a77fe5d79f1ddb7701"
 };
 
 const app = initializeApp(firebaseConfig);
