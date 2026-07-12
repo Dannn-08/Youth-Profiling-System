@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bukal Youth Data | Admin Dashboard</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+</head>
+<body data-page="admin-dashboard" class="dashboard-body">
+  <header class="dash-header">
+    <div class="container dash-top">
+      <div>
+        <h1>Admin Dashboard</h1>
+        <p>Bukal Youth Data Management</p>
+      </div>
+
+      <button class="logout-btn" data-logout>↪ Logout</button>
+    </div>
+
+    <nav class="tab-nav container">
+      <button class="active" data-tab="overview">Overview</button>
+      <button data-tab="youth">Youth Management</button>
+      <button data-tab="reports">Reports</button>
+      <button data-tab="audit">Audit Trail</button>
+      <button data-tab="settings">Settings</button>
+    </nav>
+  </header>
+
+  <main class="container dashboard-main">
+    <section class="tab-panel active" id="tab-overview">
+      <div class="stat-grid" id="statCards"></div>
+
+      <div class="analytics-grid">
+        <article class="panel chart-panel">
+          <h2>Gender Distribution</h2>
+          <canvas id="genderChart" width="420" height="300"></canvas>
+        </article>
+
+        <article class="panel chart-panel">
+          <h2>Age Group Distribution</h2>
+          <canvas id="ageChart" width="420" height="300"></canvas>
+        </article>
+
+        <article class="panel chart-panel">
+          <h2>Education Level Distribution</h2>
+          <canvas id="educationChart" width="420" height="300"></canvas>
+        </article>
+
+        <article class="panel chart-panel">
+          <h2>Employment Status Distribution</h2>
+          <canvas id="employmentChart" width="420" height="300"></canvas>
+        </article>
+
+        <article class="panel chart-panel">
+          <h2>Voter Registration Status</h2>
+          <canvas id="voterChart" width="420" height="300"></canvas>
+        </article>
+
+        <article class="panel chart-panel">
+          <h2>Common Sports Interests</h2>
+          <canvas id="sportsChart" width="420" height="300"></canvas>
+        </article>
+      </div>
+    </section>
+
+    <section class="tab-panel" id="tab-youth">
+      <article class="panel table-panel">
+        <div class="table-heading">
+          <h2>Youth Management</h2>
+
+          <div class="table-tools">
+            <label class="search-field">
+              <span>⌕</span>
+              <input type="search" id="youthSearch" placeholder="Search by name, email, or address..." />
+            </label>
+
+            <button class="btn btn-primary btn-sm" id="openAddYouth">+ Add Youth</button>
+          </div>
+        </div>
+
+        <div class="filter-row">
+          <select id="filterGender">
+            <option value="">All Gender</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Prefer not to say</option>
+          </select>
+
+          <select id="filterEducation">
+            <option value="">All Education</option>
+          </select>
+
+          <select id="filterEmployment">
+            <option value="">All Employment</option>
+          </select>
+
+          <button class="btn btn-muted btn-sm" id="clearFilters">Clear Filters</button>
+        </div>
+
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Education</th>
+                <th>Employment</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="youthTableBody"></tbody>
+          </table>
+        </div>
+
+        <p class="table-count" id="youthCountText"></p>
+      </article>
+    </section>
+
+    <section class="tab-panel" id="tab-reports">
+      <article class="panel report-panel">
+        <div class="table-heading">
+          <div>
+            <h2>Reports & Analytics Summary</h2>
+            <p>Generate report files for Barangay Bukal youth planning and documentation.</p>
+          </div>
+
+          <div class="table-tools">
+            <button class="btn btn-muted btn-sm" id="printReportBtn">Export PDF / Print</button>
+            <button class="btn btn-primary btn-sm" id="downloadCsvBtn">Export Excel CSV</button>
+          </div>
+        </div>
+
+        <div id="reportSummary" class="report-summary"></div>
+      </article>
+    </section>
+
+    <section class="tab-panel" id="tab-audit">
+      <article class="panel table-panel">
+        <div class="table-heading">
+          <h2>Audit Trail</h2>
+          <button class="btn btn-muted btn-sm" id="clearAuditBtn">Clear Logs</button>
+        </div>
+
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date & Time</th>
+                <th>User</th>
+                <th>Role</th>
+                <th>Activity</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody id="auditTableBody"></tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section class="tab-panel" id="tab-settings">
+      <div class="settings-grid">
+        <article class="panel table-panel">
+          <div class="table-heading">
+            <h2>User Accounts</h2>
+            <button class="btn btn-primary btn-sm" onclick="location.href='admin-register.html'">+ New Admin</button>
+          </div>
+
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="accountsTableBody"></tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="panel settings-card">
+          <h2>System Settings</h2>
+          <p><strong>Default Admin:</strong> admin@bukal.gov.ph</p>
+          <p><strong>Default Password:</strong> admin12345</p>
+          <p><strong>Admin Security Code:</strong> BUKAL-SK-2026</p>
+          <p class="muted-text">
+            For capstone use only. Replace localStorage with Firebase configuration
+            before real deployment.
+          </p>
+
+          <div class="settings-actions">
+            <button class="btn btn-muted" id="backupDataBtn">Download Backup E</button>
+            <button class="btn btn-danger" id="resetDemoBtn">Reset Data</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="youthDialog" class="modal-card wide-modal">
+    <form method="dialog" class="modal-inner" id="adminYouthForm">
+      <div class="modal-heading">
+        <h2 id="youthDialogTitle">Add Youth Profile</h2>
+        <button class="icon-btn" value="cancel" type="submit">×</button>
+      </div>
+
+      <input type="hidden" name="id" />
+
+      <div class="form-grid" id="adminYouthFields"></div>
+
+      <div class="modal-actions">
+        <button class="btn btn-muted" value="cancel" type="submit">Cancel</button>
+        <button class="btn btn-primary" id="saveYouthAdminBtn" value="default" type="button">Save Profile</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>
