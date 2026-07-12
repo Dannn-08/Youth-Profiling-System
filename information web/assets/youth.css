@@ -105,3 +105,32 @@
   padding: 20px;
   border-radius: 10px;
 }
+/* FIX PROFILE HEADER */
+.profile-heading {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+}
+
+.profile-heading .right,
+#editProfileBtn {
+  margin-left: auto;
+  position: relative;
+  z-index: 10;
+  cursor: pointer;
+}
+.profile-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+#editProfileBtn:hover {
+  background: red;
+}
+
+#editProfileBtn {
+  position: relative;
+  z-index: 9999;
+}
