@@ -31,6 +31,8 @@ const dialog = document.getElementById("profileDialog");
 const editFieldsEl = document.getElementById("profileEditFields");
 const saveBtn = document.getElementById("saveProfileBtn");
 
+profileViewEl.innerHTML = `<p class="empty-state">Loading your profile...</p>`;
+
 let currentUser = null;
 let currentData = null;
 

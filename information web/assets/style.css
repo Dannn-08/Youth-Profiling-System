@@ -771,8 +771,11 @@ img {
 
 .dash-top h1 {
   margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
   color: var(--primary-dark);
-  font-size: 23px;
+  font-size: 25px;
+  letter-spacing: 0.01em;
 }
 
 .dash-top p {
@@ -804,6 +807,11 @@ img {
   font-weight: 800;
   cursor: pointer;
   border-bottom: 2px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.tab-nav button:hover {
+  color: var(--primary-dark);
 }
 
 .tab-nav button.active {
@@ -821,6 +829,12 @@ img {
 
 .tab-panel.active {
   display: block;
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .panel {
@@ -828,6 +842,14 @@ img {
   border: 1px solid var(--line);
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+  transition: box-shadow 0.18s ease;
+}
+
+.chart-panel:hover,
+.table-panel:hover,
+.report-panel:hover,
+.settings-card:hover {
+  box-shadow: 0 6px 18px rgba(10, 35, 45, 0.07);
 }
 
 .stat-grid {
@@ -877,8 +899,13 @@ img {
 }
 
 .chart-panel canvas {
+  max-width: 100%;
+}
+
+.chart-wrap {
+  position: relative;
   width: 100%;
-  height: 300px;
+  height: 280px;
   margin-top: 15px;
 }
 
@@ -1344,45 +1371,4 @@ img {
   .tab-panel:not(#tab-reports) {
     display: none !important;
   }
-}
-
-/* FIX PROFILE HEADER */
-.profile-heading {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  position: relative;
-}
-
-.profile-heading .right,
-#editProfileBtn {
-  margin-left: auto;
-  position: relative;
-  z-index: 10;
-  cursor: pointer;
-}
-.profile-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-
-#editProfileBtn:hover {
-  background: rgb(16, 120, 180);
-}
-
-#editProfileBtn {
-  position: relative;
-  z-index: 9999;
-}
-
-.form-grid {
-  display: grid;
-  gap: 15px;
-}
-
-.form-grid label {
-  display: flex;
-  flex-direction: column;
-  font-size: 14px;
 }

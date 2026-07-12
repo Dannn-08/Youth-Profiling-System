@@ -68,6 +68,9 @@ tabButtons.forEach(btn => {
 
 // ---------- Load data ----------
 async function loadYouth() {
+  document.getElementById("statCards").innerHTML = `<p class="empty-state">Loading dashboard data...</p>`;
+  document.getElementById("youthTableBody").innerHTML = `<tr><td colspan="8" class="empty-state">Loading youth records...</td></tr>`;
+
   const snap = await getDocs(collection(db, "users"));
   youthList = [];
   snap.forEach(d => {

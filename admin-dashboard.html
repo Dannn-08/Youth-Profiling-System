@@ -4,10 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bukal Youth Data | Admin Dashboard</title>
+  <link rel="icon" type="image/png" href="assets/logo.jpg">
   <link rel="stylesheet" href="assets/style.css" />
-  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body data-page="admin-dashboard" class="dashboard-body">
+
+  <div class="container nav-wrap">
+    <a class="brand" href="index.html" aria-label="Bukal Youth Data Home">
+      <img src="assets/logo.png" alt="Bukal Youth Data logo" />
+      <span>
+        <strong>Bukal Youth Data</strong>
+        <small>Pagbilao, Quezon</small>
+      </span>
+    </a>
+    <img src="assets/logo sk 2.png" alt="Second logo" style="height:35px;" />
+  </div>
+
   <header class="dash-header">
     <div class="container dash-top">
       <div>
@@ -34,32 +50,32 @@
       <div class="analytics-grid">
         <article class="panel chart-panel">
           <h2>Gender Distribution</h2>
-          <canvas id="genderChart" width="420" height="300"></canvas>
+          <div class="chart-wrap"><canvas id="genderChart"></canvas></div>
         </article>
 
         <article class="panel chart-panel">
           <h2>Age Group Distribution</h2>
-          <canvas id="ageChart" width="420" height="300"></canvas>
+          <div class="chart-wrap"><canvas id="ageChart"></canvas></div>
         </article>
 
         <article class="panel chart-panel">
           <h2>Education Level Distribution</h2>
-          <canvas id="educationChart" width="420" height="300"></canvas>
+          <div class="chart-wrap"><canvas id="educationChart"></canvas></div>
         </article>
 
         <article class="panel chart-panel">
           <h2>Employment Status Distribution</h2>
-          <canvas id="employmentChart" width="420" height="300"></canvas>
+          <div class="chart-wrap"><canvas id="employmentChart"></canvas></div>
         </article>
 
         <article class="panel chart-panel">
           <h2>Voter Registration Status</h2>
-          <canvas id="voterChart" width="420" height="300"></canvas>
+          <div class="chart-wrap"><canvas id="voterChart"></canvas></div>
         </article>
 
         <article class="panel chart-panel">
           <h2>Common Sports Interests</h2>
-          <canvas id="sportsChart" width="420" height="300"></canvas>
+          <div class="chart-wrap"><canvas id="sportsChart"></canvas></div>
         </article>
       </div>
     </section>
@@ -188,16 +204,13 @@
 
         <article class="panel settings-card">
           <h2>System Settings</h2>
-          <p><strong>Default Admin:</strong> admin@bukal.gov.ph</p>
-          <p><strong>Default Password:</strong> admin12345</p>
-          <p><strong>Admin Security Code:</strong> BUKAL-SK-2026</p>
+          <p>Admin accounts and security codes are managed through Firebase Authentication and are not displayed here for security reasons.</p>
           <p class="muted-text">
-            For capstone use only. Replace localStorage with Firebase configuration
-            before real deployment.
+            To add a new admin, use the "+ New Admin" button in User Accounts. To reset a password or security code, contact the system administrator.
           </p>
 
           <div class="settings-actions">
-            <button class="btn btn-muted" id="backupDataBtn">Download Backup E</button>
+            <button class="btn btn-muted" id="backupDataBtn">Download Backup Excel</button>
             <button class="btn btn-danger" id="resetDemoBtn">Reset Data</button>
           </div>
         </article>
@@ -220,9 +233,12 @@
         <button class="btn btn-muted" value="cancel" type="submit">Cancel</button>
         <button class="btn btn-primary" id="saveYouthAdminBtn" value="default" type="button">Save Profile</button>
       </div>
+
     </form>
   </dialog>
 
-  <script src="assets/app.js"></script>
+<script type="module" src="assets/admin-check.js"></script>
+<script type="module" src="assets/admin-dashboard.js"></script>
+<script src="assets/app.js"></script>
 </body>
 </html>
