@@ -15,3 +15,11 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+
+// Secondary app instance: used ONLY when an already-logged-in admin needs to
+// create another account (e.g. a new admin) without disturbing their own
+// session. createUserWithEmailAndPassword always signs in as the new user
+// on whichever auth instance it's called on, so we run it on this separate
+// instance and leave the primary "auth" above untouched.
+const secondaryApp = initializeApp(firebaseConfig, "Secondary");
+export const secondaryAuth = getAuth(secondaryApp);

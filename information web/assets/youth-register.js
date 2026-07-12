@@ -1,6 +1,7 @@
 import { auth, db } from "./firebase-config.js";
 import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { setDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { logActivity } from "./audit-log.js";
 
 const form = document.getElementById("youthRegisterForm");
 const submitBtn = form.querySelector('button[type="submit"]');
@@ -39,6 +40,8 @@ form.addEventListener("submit", async (e) => {
       role: "youth",
       createdAt: new Date()
     });
+
+    await logActivity({ email: user.email, role: "youth", activity: "Registered" });
 
     alert("Youth registered!");
     window.location.href = "youth-dashboard.html";

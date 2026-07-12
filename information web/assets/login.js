@@ -1,6 +1,7 @@
 import { auth, db } from "./firebase-config.js";
 import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { logActivity } from "./audit-log.js";
 
 const form = document.getElementById("loginForm");
 const submitBtn = form.querySelector('button[type="submit"]');
@@ -31,8 +32,10 @@ form.addEventListener("submit", async (e) => {
     const role = userDoc.data().role;
 
     if (role === "admin") {
+      await logActivity({ email: user.email, role: "admin", activity: "Logged in" });
       window.location.href = "admin-dashboard.html";
     } else if (role === "youth") {
+      await logActivity({ email: user.email, role: "youth", activity: "Logged in" });
       window.location.href = "youth-dashboard.html";
     } else {
       alert("Unknown account role. Please contact the administrator.");
