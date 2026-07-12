@@ -5,12 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bukal Youth Data | Youth Dashboard</title>
   <link rel="icon" type="image/png" href="assets/logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/style.css" />
-  <link rel="stylesheet" href="assets/style.css">
-<link rel="stylesheet" href="assets/youth.css">
 </head>
 <body data-page="youth-dashboard" class="dashboard-body">
+
   <header class="dash-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html" aria-label="Bukal Youth Data Home">
+        <img src="assets/logo.png" alt="Bukal Youth Data logo" />
+        <img src="assets/logo sk 2.png" alt="Second logo" style="height:35px;" />
+        <span>
+          <strong>Bukal Youth Data</strong>
+          <small>Pagbilao, Quezon</small>
+        </span>
+      </a>
+    </div>
     <div class="container dash-top">
       <div>
         <h1>Youth Dashboard</h1>
@@ -51,50 +63,11 @@
         <button class="btn btn-muted" value="cancel" type="submit">Cancel</button>
         <button class="btn btn-primary" id="saveProfileBtn" value="default" type="button">Save Changes</button>
       </div>
-      <body class="dashboard-body">
-  <div class="dashboard-layout">
-
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-      <h2 class="logo">Bukal System</h2>
-      <nav>
-        <a href="#">Dashboard</a>
-        <a href="#">Youth Records</a>
-        <a href="#">Reports</a>
-        <a href="#">Settings</a>
-      </nav>
-    </aside>
-
-    <!-- MAIN -->
-    <div class="main-content">
-
-      <!-- TOP BAR -->
-      <header class="topbar">
-        <h1>Admin Dashboard</h1>
-        <button class="logout-btn">Logout</button>
-      </header>
-
-      <!-- STATS -->
-      <section class="stats-grid">
-        <div class="stat-card">Total Youth<br><strong>120</strong></div>
-        <div class="stat-card">Male<br><strong>65</strong></div>
-        <div class="stat-card">Female<br><strong>55</strong></div>
-        <div class="stat-card">Students<br><strong>80</strong></div>
-      </section>
-
-      <!-- CHART -->
-      <section class="panel">
-        <h2>Youth Distribution</h2>
-        <!-- chart here -->
-      </section>
-
-    </div>
-  </div>
-</body>
     </form>
   </dialog>
 
   <script type="module" src="assets/youth-check.js"></script>
   <script src="assets/app.js"></script>
+  <script type="module" src="assets/youth-dashboard.js"></script>
 </body>
 </html>

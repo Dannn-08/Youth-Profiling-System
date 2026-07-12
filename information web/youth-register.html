@@ -5,13 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bukal Youth Data | Youth Registration</title>
   <link rel="icon" type="image/png" href="assets/logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/style.css" />
-  <link rel="stylesheet" href="assets/style.css">
-<link rel="stylesheet" href="assets/youth.css">
 </head>
-<body data-page="youth-register" class="auth-body">
+<body data-page="youth-register">
+
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html" aria-label="Bukal Youth Data Home">
+        <img src="assets/logo.png" alt="Bukal Youth Data logo" />
+        <span>
+          <strong>Bukal Youth Data</strong>
+          <small>Pagbilao, Quezon</small>
+        </span>
+      </a>
+      <img src="assets/logo sk 2.png" alt="Second logo" style="height:35px;" />
+    </div>
+  </header>
+
+  <div class="auth-body">
   <main class="auth-shell wide-auth">
-    <a class="back-link" href="index.html">← Back to Home</a>
+
 
     <section class="auth-card registration-card">
       <div class="auth-title">
@@ -32,21 +48,22 @@
 
         <label class="field">
           <span>Email</span>
-          <input 
+          <input
           type="email"
-           id="email" 
-           name="email" 
-           placeholder="your.email@example.com" 
+           id="email"
+           name="email"
+           placeholder="your.email@example.com"
            required />
         </label>
 
         <label class="field">
           <span>Password</span>
-          <input 
-          type="password" 
+          <input
+          type="password"
           id="password"
+          name="password"
            placeholder="Minimum 8 characters"
-            minlength="8" 
+            minlength="8"
             required />
         </label>
 
@@ -186,6 +203,7 @@
       </form>
     </section>
   </main>
+  </div>
 
   <script src="assets/app.js"></script>
   <script type="module" src="assets/youth-register.js"></script>

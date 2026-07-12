@@ -1,51 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Login</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bukal Youth Data | Login</title>
   <link rel="icon" type="image/png" href="assets/logo.jpg">
-  <link rel="stylesheet" href="assets/login.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css" />
 </head>
-<body>
+<body data-page="login">
 
-<div class="wrapper">
-
-  <a href="index.html" class="back">← Back to Home</a>
-
-  <div class="container">
-    <h2>Login</h2>
-    <p class="subtitle">Access your account</p>
-
-    <form id="loginForm">
-      <div class="field">
-        <input type="email"
-        id="email"
-         placeholder="Enter your email"
-         required
-         >
-      </div>
-
-      <div class="field">
-      
-        <input type="password" 
-        id="password"
-        placeholder="Enter your password"
-        required
-        >
-      </div>
-
-      <button type="submit">Login</button>
-    </form>
-
-    <div class="links">
-      <p>Don't have an account?</p>
-      <a href="youth-register.html">Register as Youth</a>
-      <a href="admin-register.html">Register as Admin</a>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html" aria-label="Bukal Youth Data Home">
+        <img src="assets/logo.png" alt="Bukal Youth Data logo" />
+        <img src="assets/logo sk 2.png" alt="Second logo" style="height:35px;" />
+        <span>
+          <strong>Bukal Youth Data</strong>
+          <small>Pagbilao, Quezon</small>
+        </span>
+      </a>
     </div>
+  </header>
 
+  <div class="auth-body">
+    <main class="auth-shell">
+
+      <section class="auth-card">
+        <div class="auth-title center">
+          <span class="icon-badge"><span class="icon people"></span></span>
+          <h1>Login</h1>
+          <p>Access your account</p>
+        </div>
+
+        <form id="loginForm" class="form-grid single">
+          <label class="field full">
+            <span>Email</span>
+            <input type="email" id="email" placeholder="Enter your email" required />
+          </label>
+
+          <label class="field full">
+            <span>Password</span>
+            <input type="password" id="password" placeholder="Enter your password" required />
+          </label>
+
+          <button type="submit" class="btn btn-primary full-btn">Login</button>
+        </form>
+
+        <p class="center small-text">Don't have an account?</p>
+        <p class="center small-text">
+          <a href="youth-register.html">Register as Youth</a> ·
+          <a href="admin-register.html">Register as Admin</a>
+        </p>
+      </section>
+    </main>
   </div>
 
-</div>
-
+  <script type="module" src="assets/login.js"></script>
 </body>
-<script type="module" src="assets/login.js"></script>
 </html>

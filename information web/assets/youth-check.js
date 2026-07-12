@@ -1,5 +1,5 @@
 import { auth, db } from "./firebase-config.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 onAuthStateChanged(auth, async (user) => {
@@ -27,3 +27,18 @@ onAuthStateChanged(auth, async (user) => {
     window.location.href = "login.html";
   }
 });
+
+// LOGOUT
+const logoutBtn = document.querySelector("[data-logout]");
+
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      alert("Logged out successfully!");
+      window.location.href = "login.html";
+    } catch (error) {
+      alert(error.message);
+    }
+  });
+}
