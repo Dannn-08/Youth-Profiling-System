@@ -123,7 +123,9 @@ img {
   font-weight: 600;
 }
 
-.btn {
+.btn,
+.btn:visited,
+.btn:link {
   border: 0;
   border-radius: 5px;
   display: inline-flex;
@@ -150,17 +152,23 @@ img {
   font-size: 12px;
 }
 
-.btn-primary {
+.btn-primary,
+.btn-primary:visited,
+.btn-primary:link {
   background: var(--primary);
   color: #fff;
 }
 
-.btn-light {
+.btn-light,
+.btn-light:visited,
+.btn-light:link {
   background: #fff;
   color: var(--primary-dark);
 }
 
-.btn-outline-light {
+.btn-outline-light,
+.btn-outline-light:visited,
+.btn-outline-light:link {
   background: transparent;
   color: #fff;
   border: 1px solid #fff;
@@ -462,6 +470,7 @@ img {
 .hero-bg {
   position: absolute;
   inset: 0;
+  pointer-events: none;
   background:
     linear-gradient(120deg, rgba(7, 54, 58, 0.90), rgba(7, 54, 58, 0.68)),
     url("brgy hall.png");
@@ -478,6 +487,7 @@ img {
   inset: 0;
   background: radial-gradient(circle at 70% 20%, rgba(255, 255, 255, 0.10), transparent 28%);
   z-index: 1;
+  pointer-events: none;
 }
 
 @keyframes heroBreathe {
@@ -492,6 +502,12 @@ img {
   }
 }
 
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 70px 0;
+}
+
 .hero::before {
   content: "";
   position: absolute;
@@ -500,14 +516,9 @@ img {
   bottom: -1px;
   height: 56px;
   z-index: 2;
+  pointer-events: none;
   background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 80' preserveAspectRatio='none'><path fill='%23f7f7f2' d='M0,32 C240,80 480,0 720,26 C960,52 1200,86 1440,38 L1440,80 L0,80 Z'/></svg>") no-repeat bottom center;
   background-size: 100% 100%;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 1;
-  padding: 70px 0;
 }
 
 .hero h1 {
