@@ -110,12 +110,27 @@ function renderStats() {
 
 // ---------- Charts ----------
 function drawChart(canvasId, type, labels, data, colors) {
-  const ctx = document.getElementById(canvasId);
-  if (!ctx) return;
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
 
   if (charts[canvasId]) {
     charts[canvasId].destroy();
   }
+
+  // Manually size the canvas based on its wrapper's current box, instead of
+  // letting Chart.js auto-watch/resize it. This avoids a resize feedback
+  // loop that can make the canvas grow uncontrollably in some browsers.
+  const wrap = canvas.parentElement;
+  const rect = wrap.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+
+  canvas.style.width = rect.width + "px";
+  canvas.style.height = rect.height + "px";
+  canvas.width = Math.round(rect.width * dpr);
+  canvas.height = Math.round(rect.height * dpr);
+
+  const ctx = canvas.getContext("2d");
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
   charts[canvasId] = new Chart(ctx, {
     type,
@@ -127,7 +142,7 @@ function drawChart(canvasId, type, labels, data, colors) {
       }]
     },
     options: {
-      responsive: true,
+      responsive: false,
       maintainAspectRatio: false,
       plugins: { legend: { position: "bottom" } }
     }
@@ -473,3 +488,11 @@ populateFilterOptions();
 loadYouth();
 loadAdminAccounts();
 loadAuditLogs();
+
+// Redraw charts on window resize (debounced), since we handle sizing
+// manually instead of using Chart.js's built-in responsive watcher.
+let resizeTimer;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(renderCharts, 200);
+});
