@@ -75,6 +75,8 @@ img {
 
 .nav-wrap {
   height: 100%;
+  width: 100%;
+  padding-inline: 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
