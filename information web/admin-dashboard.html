@@ -3,99 +3,279 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Bukal Youth Data | Admin Dashboard</title>
-  <link rel="icon" type="image/png" href="assets/logo.jpg">
-  <link rel="stylesheet" href="assets/style.css" />
+
+  <link rel="icon" type="image/png" href="assets/logo.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="assets/style.css" />
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body data-page="admin-dashboard" class="dashboard-body">
 
-  <div class="container nav-wrap">
-    <a class="brand" href="index.html" aria-label="Bukal Youth Data Home">
-      <img src="assets/logo.png" alt="Bukal Youth Data logo" />
-      <img src="assets/logo sk 2.png" alt="Second logo" style="height:35px;" />
-      <span>
-        <strong>Bukal Youth Data</strong>
-        <small>Pagbilao, Quezon</small>
-      </span>
-    </a>
-  </div>
-
   <header class="dash-header">
+
+    <div class="container nav-wrap">
+
+      <a
+        class="brand"
+        href="index.html"
+        aria-label="Bukal Youth Data Home"
+      >
+
+        <img
+          src="assets/logo.png"
+          alt="Bukal Youth Data logo"
+        />
+
+        <img
+          src="assets/logosk.png"
+          alt="Second logo"
+          style="height:35px;"
+        />
+
+        <span>
+          <strong>Bukal Youth Data</strong>
+          <small>Pagbilao, Quezon</small>
+        </span>
+
+      </a>
+
+    </div>
+
+
     <div class="container dash-top">
+
       <div>
         <h1>Admin Dashboard</h1>
         <p>Bukal Youth Data Management</p>
       </div>
 
-      <button class="logout-btn" data-logout>↪ Logout</button>
+      <button class="logout-btn" data-logout>
+        ↪ Logout
+      </button>
+
     </div>
 
+
     <nav class="tab-nav container">
-      <button class="active" data-tab="overview">Overview</button>
-      <button data-tab="youth">Youth Management</button>
-      <button data-tab="reports">Reports</button>
-      <button data-tab="audit">Audit Trail</button>
-      <button data-tab="settings">Settings</button>
+
+      <button
+        class="active"
+        data-tab="overview"
+      >
+        Overview
+      </button>
+
+      <button data-tab="youth">
+        Youth Management
+      </button>
+
+      <button data-tab="announcements">
+        Announcements
+      </button>
+
+      <button data-tab="reports">
+        Reports
+      </button>
+
+      <button data-tab="audit">
+        Audit Trail
+      </button>
+
+      <button data-tab="settings">
+        Settings
+      </button>
+
     </nav>
+
   </header>
 
+
   <main class="container dashboard-main">
-    <section class="tab-panel active" id="tab-overview">
-      <div class="stat-grid" id="statCards"></div>
+
+
+    <!-- =================================================
+         OVERVIEW
+    ================================================== -->
+    <section
+      class="tab-panel active"
+      id="tab-overview"
+    >
+
+      <div
+        class="stat-grid"
+        id="statCards"
+      ></div>
+
 
       <div class="analytics-grid">
+
         <article class="panel chart-panel">
           <h2>Gender Distribution</h2>
-          <canvas id="genderChart" width="420" height="300"></canvas>
+          <div class="chart-container">
+            <canvas id="genderChart"></canvas>
+          </div>
         </article>
+
 
         <article class="panel chart-panel">
           <h2>Age Group Distribution</h2>
-          <canvas id="ageChart" width="420" height="300"></canvas>
+          <div class="chart-container">
+            <canvas id="ageChart"></canvas>
+          </div>
         </article>
+
 
         <article class="panel chart-panel">
           <h2>Education Level Distribution</h2>
-          <canvas id="educationChart" width="420" height="300"></canvas>
+          <div class="chart-container">
+            <canvas id="educationChart"></canvas>
+          </div>
         </article>
+
+
+        <article class="panel chart-panel">
+          <h2>Education Status Distribution</h2>
+          <div class="chart-container">
+            <canvas id="educationStatusChart"></canvas>
+          </div>
+        </article>
+
 
         <article class="panel chart-panel">
           <h2>Employment Status Distribution</h2>
-          <canvas id="employmentChart" width="420" height="300"></canvas>
+          <div class="chart-container">
+            <canvas id="employmentChart"></canvas>
+          </div>
         </article>
+
 
         <article class="panel chart-panel">
           <h2>Voter Registration Status</h2>
-          <canvas id="voterChart" width="420" height="300"></canvas>
+          <div class="chart-container">
+            <canvas id="voterChart"></canvas>
+          </div>
         </article>
+
+
+        <article class="panel chart-panel">
+          <h2>Voter Participation</h2>
+          <div class="chart-container">
+            <canvas id="voterParticipationChart"></canvas>
+          </div>
+        </article>
+
+
+        <article class="panel chart-panel">
+          <h2>New Voter Status</h2>
+          <div class="chart-container">
+            <canvas id="newVoterChart"></canvas>
+          </div>
+        </article>
+
+
+        <article class="panel chart-panel">
+          <h2>Civic Participation Distribution</h2>
+          <div class="chart-container">
+            <canvas id="civicChart"></canvas>
+          </div>
+        </article>
+
+
+        <article class="panel chart-panel">
+          <h2>Special Needs Distribution</h2>
+          <div class="chart-container">
+            <canvas id="specialNeedsChart"></canvas>
+          </div>
+        </article>
+
 
         <article class="panel chart-panel">
           <h2>Common Sports Interests</h2>
-          <canvas id="sportsChart" width="420" height="300"></canvas>
+          <div class="chart-container">
+            <canvas id="sportsChart"></canvas>
+          </div>
         </article>
+
+
+        <article class="panel chart-panel">
+          <h2>Common Hobbies / Skills</h2>
+          <div class="chart-container">
+            <canvas id="hobbiesChart"></canvas>
+          </div>
+        </article>
+
+
+        <article class="panel chart-panel">
+          <h2>Registration Trends</h2>
+          <div class="chart-container">
+            <canvas id="registrationTrendChart"></canvas>
+          </div>
+        </article>
+
       </div>
+
     </section>
 
-    <section class="tab-panel" id="tab-youth">
+
+    <!-- =================================================
+         YOUTH MANAGEMENT
+    ================================================== -->
+    <section
+      class="tab-panel"
+      id="tab-youth"
+    >
+
       <article class="panel table-panel">
+
         <div class="table-heading">
-          <h2>Youth Management</h2>
+
+          <div>
+            <h2>Youth Management</h2>
+            <p>Manage registered youth information and records.</p>
+          </div>
+
 
           <div class="table-tools">
+
             <label class="search-field">
+
               <span>⌕</span>
-              <input type="search" id="youthSearch" placeholder="Search by name, email, or address..." />
+
+              <input
+                type="search"
+                id="youthSearch"
+                placeholder="Search by name, email, or address..."
+              />
+
             </label>
 
-            <button class="btn btn-primary btn-sm" id="openAddYouth">+ Add Youth</button>
+
+            <button
+              class="btn btn-primary btn-sm"
+              id="openAddYouth"
+            >
+              + Add Youth
+            </button>
+
           </div>
+
         </div>
 
+
         <div class="filter-row">
+
           <select id="filterGender">
             <option value="">All Gender</option>
             <option>Male</option>
@@ -103,19 +283,46 @@
             <option>Prefer not to say</option>
           </select>
 
+
           <select id="filterEducation">
             <option value="">All Education</option>
           </select>
+
 
           <select id="filterEmployment">
             <option value="">All Employment</option>
           </select>
 
-          <button class="btn btn-muted btn-sm" id="clearFilters">Clear Filters</button>
+
+          <select id="filterStatus">
+
+            <option value="">All Status</option>
+
+            <option value="active">
+              Active
+            </option>
+
+            <option value="inactive">
+              Inactive / Archived
+            </option>
+
+          </select>
+
+
+          <button
+            class="btn btn-muted btn-sm"
+            id="clearFilters"
+          >
+            Clear Filters
+          </button>
+
         </div>
 
+
         <div class="table-scroll">
+
           <table class="data-table">
+
             <thead>
               <tr>
                 <th>Name</th>
@@ -128,42 +335,261 @@
                 <th>Actions</th>
               </tr>
             </thead>
+
+
             <tbody id="youthTableBody"></tbody>
+
           </table>
+
         </div>
 
-        <p class="table-count" id="youthCountText"></p>
+
+        <p
+          class="table-count"
+          id="youthCountText"
+        ></p>
+
       </article>
+
     </section>
 
-    <section class="tab-panel" id="tab-reports">
-      <article class="panel report-panel">
-        <div class="table-heading">
-          <div>
-            <h2>Reports & Analytics Summary</h2>
-            <p>Generate report files for Barangay Bukal youth planning and documentation.</p>
+
+    <!-- =================================================
+         ANNOUNCEMENTS
+    ================================================== -->
+    <section
+      class="tab-panel"
+      id="tab-announcements"
+    >
+
+      <div class="settings-grid">
+
+
+        <!-- CREATE ANNOUNCEMENT -->
+        <article class="panel settings-card">
+
+          <h2>Create Announcement</h2>
+
+          <p class="muted-text">
+            Publish announcements that will appear on the Youth Dashboard.
+          </p>
+
+
+          <form
+            id="announcementForm"
+            class="form-grid single"
+          >
+
+            <label class="field full">
+
+              <span>Title</span>
+
+              <input
+                type="text"
+                id="announcementTitle"
+                placeholder="Enter announcement title"
+                required
+              />
+
+            </label>
+
+
+            <label class="field full">
+
+              <span>Category</span>
+
+              <select
+                id="announcementCategory"
+                required
+              >
+                <option value="">Select Category</option>
+                <option>General</option>
+                <option>Event</option>
+                <option>Program</option>
+                <option>Meeting</option>
+                <option>Scholarship</option>
+                <option>Sports</option>
+                <option>Reminder</option>
+                <option>Emergency</option>
+              </select>
+
+            </label>
+
+
+            <label class="field full">
+
+              <span>Message</span>
+
+              <textarea
+                id="announcementMessage"
+                rows="7"
+                placeholder="Write announcement message..."
+                required
+                style="height:auto; padding:12px;"
+              ></textarea>
+
+            </label>
+
+
+            <button
+              class="btn btn-primary full-btn"
+              type="submit"
+              id="publishAnnouncementBtn"
+            >
+              Publish Announcement
+            </button>
+
+          </form>
+
+        </article>
+
+
+        <!-- ANNOUNCEMENT LIST -->
+        <article class="panel table-panel">
+
+          <div class="table-heading">
+
+            <div>
+              <h2>Published Announcements</h2>
+              <p>Manage announcements visible to youth users.</p>
+            </div>
+
           </div>
+
+
+          <div class="table-scroll">
+
+            <table class="data-table">
+
+              <thead>
+
+                <tr>
+                  <th>Date</th>
+                  <th>Category</th>
+                  <th>Title</th>
+                  <th>Message</th>
+                  <th>Actions</th>
+                </tr>
+
+              </thead>
+
+
+              <tbody id="announcementTableBody">
+
+                <tr>
+                  <td
+                    colspan="5"
+                    class="empty-state"
+                  >
+                    Loading announcements...
+                  </td>
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         REPORTS
+    ================================================== -->
+    <section
+      class="tab-panel"
+      id="tab-reports"
+    >
+
+      <article class="panel report-panel">
+
+        <div class="table-heading">
+
+          <div>
+
+            <h2>
+              Reports & Analytics Summary
+            </h2>
+
+            <p>
+              Generate report files for Barangay Bukal youth
+              planning and documentation.
+            </p>
+
+          </div>
+
 
           <div class="table-tools">
-            <button class="btn btn-muted btn-sm" id="printReportBtn">Export PDF / Print</button>
-            <button class="btn btn-primary btn-sm" id="downloadCsvBtn">Export Excel CSV</button>
+
+            <button
+              class="btn btn-muted btn-sm"
+              id="printReportBtn"
+            >
+              Export PDF / Print
+            </button>
+
+
+            <button
+              class="btn btn-primary btn-sm"
+              id="downloadCsvBtn"
+            >
+              Export Excel CSV
+            </button>
+
           </div>
+
         </div>
 
-        <div id="reportSummary" class="report-summary"></div>
+
+        <div
+          id="reportSummary"
+          class="report-summary"
+        ></div>
+
       </article>
+
     </section>
 
-    <section class="tab-panel" id="tab-audit">
+
+    <!-- =================================================
+         AUDIT
+    ================================================== -->
+    <section
+      class="tab-panel"
+      id="tab-audit"
+    >
+
       <article class="panel table-panel">
+
         <div class="table-heading">
-          <h2>Audit Trail</h2>
-          <button class="btn btn-muted btn-sm" id="clearAuditBtn">Clear Logs</button>
+
+          <div>
+            <h2>Audit Trail</h2>
+            <p>Monitor recorded activities inside the system.</p>
+          </div>
+
+
+          <button
+            class="btn btn-muted btn-sm"
+            id="clearAuditBtn"
+          >
+            Clear Logs
+          </button>
+
         </div>
 
+
         <div class="table-scroll">
+
           <table class="data-table">
+
             <thead>
+
               <tr>
                 <th>Date & Time</th>
                 <th>User</th>
@@ -171,24 +597,58 @@
                 <th>Activity</th>
                 <th>Details</th>
               </tr>
+
             </thead>
+
+
             <tbody id="auditTableBody"></tbody>
+
           </table>
+
         </div>
+
       </article>
+
     </section>
 
-    <section class="tab-panel" id="tab-settings">
+
+    <!-- =================================================
+         SETTINGS
+    ================================================== -->
+    <section
+      class="tab-panel"
+      id="tab-settings"
+    >
+
       <div class="settings-grid">
+
+
         <article class="panel table-panel">
+
           <div class="table-heading">
-            <h2>User Accounts</h2>
-            <button class="btn btn-primary btn-sm" onclick="location.href='admin-register.html'">+ New Admin</button>
+
+            <div>
+              <h2>User Accounts</h2>
+              <p>Manage administrator accounts.</p>
+            </div>
+
+
+            <button
+              class="btn btn-primary btn-sm"
+              onclick="location.href='admin-register.html'"
+            >
+              + New Admin
+            </button>
+
           </div>
 
+
           <div class="table-scroll">
+
             <table class="data-table">
+
               <thead>
+
                 <tr>
                   <th>Name</th>
                   <th>Email</th>
@@ -196,49 +656,148 @@
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
+
               </thead>
+
+
               <tbody id="accountsTableBody"></tbody>
+
             </table>
+
           </div>
+
         </article>
+
 
         <article class="panel settings-card">
+
           <h2>System Settings</h2>
-          <p>Admin accounts and security codes are managed through Firebase Authentication and are not displayed here for security reasons.</p>
-          <p class="muted-text">
-            To add a new admin, use the "+ New Admin" button in User Accounts. To reset a password or security code, contact the system administrator.
+
+          <p>
+            Admin accounts and security codes are managed through
+            Firebase Authentication and are not displayed here for
+            security reasons.
           </p>
 
+
+          <p class="muted-text">
+            To add a new admin, use the "+ New Admin" button in
+            User Accounts. To reset a password or security code,
+            contact the system administrator.
+          </p>
+
+
           <div class="settings-actions">
-            <button class="btn btn-muted" id="backupDataBtn">Download Backup Excel</button>
-            <button class="btn btn-danger" id="resetDemoBtn">Reset Data</button>
+
+            <button
+              class="btn btn-muted"
+              id="backupDataBtn"
+            >
+              Download Backup Excel
+            </button>
+
+
+            <button
+              class="btn btn-danger"
+              id="resetDemoBtn"
+            >
+              Reset Data
+            </button>
+
           </div>
+
         </article>
+
       </div>
+
     </section>
+
   </main>
 
-  <dialog id="youthDialog" class="modal-card wide-modal">
-    <form method="dialog" class="modal-inner" id="adminYouthForm">
+
+  <!-- ADD / EDIT YOUTH -->
+  <dialog
+    id="youthDialog"
+    class="modal-card wide-modal"
+  >
+
+    <form
+      method="dialog"
+      class="modal-inner"
+      id="adminYouthForm"
+    >
+
       <div class="modal-heading">
-        <h2 id="youthDialogTitle">Add Youth Profile</h2>
-        <button class="icon-btn" value="cancel" type="submit">×</button>
+
+        <h2 id="youthDialogTitle">
+          Add Youth Profile
+        </h2>
+
+
+        <button
+          class="icon-btn"
+          value="cancel"
+          type="submit"
+        >
+          ×
+        </button>
+
       </div>
 
-      <input type="hidden" name="id" />
 
-      <div class="form-grid" id="adminYouthFields"></div>
+      <input
+        type="hidden"
+        name="id"
+      />
+
+
+      <div
+        class="form-grid"
+        id="adminYouthFields"
+      ></div>
+
 
       <div class="modal-actions">
-        <button class="btn btn-muted" value="cancel" type="submit">Cancel</button>
-        <button class="btn btn-primary" id="saveYouthAdminBtn" value="default" type="button">Save Profile</button>
+
+        <button
+          class="btn btn-muted"
+          value="cancel"
+          type="submit"
+        >
+          Cancel
+        </button>
+
+
+        <button
+          class="btn btn-primary"
+          id="saveYouthAdminBtn"
+          value="default"
+          type="button"
+        >
+          Save Profile
+        </button>
+
       </div>
 
     </form>
+
   </dialog>
 
-<script type="module" src="assets/admin-check.js"></script>
-<script type="module" src="assets/admin-dashboard.js"></script>
-<script src="assets/app.js"></script>
+
+  <script
+    type="module"
+    src="assets/admin-check.js"
+  ></script>
+
+  <script
+    type="module"
+    src="assets/admin-dashboard.js"
+  ></script>
+
+  <script
+    type="module"
+    src="assets/app.js"
+  ></script>
+
 </body>
 </html>

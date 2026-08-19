@@ -1,73 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bukal Youth Data | Admin Registration</title>
-  <link rel="icon" type="image/png" href="assets/logo.jpg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>
+    Bukal Youth Data | Admin Registration
+  </title>
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="assets/logo.png"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="assets/style.css"
+  />
+
 </head>
+
+
 <body data-page="admin-register">
 
+
   <header class="site-header">
+
     <div class="container nav-wrap">
-      <a class="brand" href="index.html" aria-label="Bukal Youth Data Home">
-        <img src="assets/logo.png" alt="Bukal Youth Data logo" />
-        <img src="assets/logo sk 2.png" alt="Second logo" style="height:35px;" />
+
+      <a
+        class="brand"
+        href="index.html"
+        aria-label="Bukal Youth Data Home"
+      >
+
+        <img
+          src="assets/logo.png"
+          alt="Bukal Youth Data logo"
+        />
+
+        <img
+          src="assets/logosk.png"
+          alt="Second logo"
+          style="height:35px;"
+        />
+
         <span>
-          <strong>Bukal Youth Data</strong>
-          <small>Pagbilao, Quezon</small>
+
+          <strong>
+            Bukal Youth Data
+          </strong>
+
+          <small>
+            Pagbilao, Quezon
+          </small>
+
         </span>
+
       </a>
+
     </div>
+
   </header>
 
+
   <div class="auth-body">
-  <main class="auth-shell">
-    <a class="back-link" href="index.html">← Back to Home</a>
 
-    <section class="auth-card">
-      <div class="auth-title center">
-        <span class="icon-badge"><span class="icon shield"></span></span>
-        <h1>Admin Registration</h1>
-        <p>Create an admin account for system management</p>
-      </div>
+    <main class="auth-shell">
 
-      <form id="adminRegisterForm" class="form-grid single">
-        <label class="field full">
-          <span>Full Name</span>
-          <input type="text" name="fullName" placeholder="Mar John" required />
-        </label>
 
-        <label class="field full">
-          <span>Email</span>
-          <input type="email" name="email" placeholder="admin@bukal.gov.ph" required />
-        </label>
+      <section class="auth-card">
 
-        <label class="field full">
-          <span>Password</span>
-          <input type="password" name="password" placeholder="Minimum 8 characters" minlength="8" required />
-        </label>
 
-        <label class="field full">
-          <span>Admin Security Code</span>
-          <input type="password" name="securityCode" placeholder="Ask the system administrator" required />
-        </label>
+        <div class="auth-title center">
 
-        <button class="btn btn-primary full-btn" type="submit">Register as Admin</button>
 
-        <p class="center small-text">Already have an account? <a href="login.html">Login here</a></p>
-      </form>
+          <!-- ADMIN SHIELD ICON -->
 
-    </section>
-  </main>
+          <span class="icon-badge">
+
+            <svg
+              class="auth-svg-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+
+              <path
+                d="M12 3L20 6V11C20 16 16.6 20.2 12 22C7.4 20.2 4 16 4 11V6L12 3Z"
+              ></path>
+
+              <path
+                d="M9 12L11 14L15.5 9.5"
+              ></path>
+
+            </svg>
+
+          </span>
+
+
+          <h1>
+            Admin Registration
+          </h1>
+
+          <p>
+            Create an admin account for system management
+          </p>
+
+        </div>
+
+
+        <form
+          id="adminRegisterForm"
+          class="form-grid single"
+        >
+
+
+          <label class="field full">
+
+            <span>
+              Full Name
+            </span>
+
+            <input
+              type="text"
+              name="fullName"
+              placeholder="Enter full name"
+              required
+            />
+
+          </label>
+
+
+          <label class="field full">
+
+            <span>
+              Email
+            </span>
+
+            <input
+              type="email"
+              name="email"
+              placeholder="admin@bukal.gov.ph"
+              required
+            />
+
+          </label>
+
+
+          <label class="field full">
+
+            <span>
+              Password
+            </span>
+
+            <input
+              type="password"
+              name="password"
+              placeholder="Minimum 8 characters"
+              minlength="8"
+              required
+            />
+
+          </label>
+
+
+          <label class="field full">
+
+            <span>
+              Admin Security Code
+            </span>
+
+            <input
+              type="password"
+              name="securityCode"
+              placeholder="Ask the system administrator"
+              required
+            />
+
+          </label>
+
+
+          <button
+            class="btn btn-primary full-btn"
+            type="submit"
+          >
+            Register as Admin
+          </button>
+
+
+          <p class="center small-text">
+
+            Already have an account?
+
+            <a href="login.html">
+              Login here
+            </a>
+
+          </p>
+
+
+        </form>
+
+      </section>
+
+    </main>
+
   </div>
 
-  <script type="module" src="assets/admin-check.js"></script>
-  <script src="assets/app.js"></script>
-  <script type="module" src="assets/admin-register.js"></script>
+
+  <script
+    type="module"
+    src="assets/admin-check.js"
+  ></script>
+
+  <script
+    type="module"
+    src="assets/app.js"
+  ></script>
+
+  <script
+    type="module"
+    src="assets/admin-register.js"
+  ></script>
+
+
 </body>
 </html>

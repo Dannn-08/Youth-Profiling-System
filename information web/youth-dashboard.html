@@ -3,85 +3,312 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Bukal Youth Data | Youth Dashboard</title>
-  <link rel="icon" type="image/png" href="assets/logo.jpg">
+
+  <link rel="icon" type="image/png" href="assets/logo.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
   <link rel="stylesheet" href="assets/style.css" />
 </head>
+
 <body data-page="youth-dashboard" class="dashboard-body">
 
+  <!-- =========================
+       YOUTH DASHBOARD HEADER
+  ========================== -->
   <header class="dash-header">
+
     <div class="container nav-wrap">
-      <a class="brand" href="index.html" aria-label="Bukal Youth Data Home">
-        <img src="assets/logo.png" alt="Bukal Youth Data logo" />
-        <img src="assets/logo sk 2.png" alt="Second logo" style="height:35px;" />
+
+      <a
+        class="brand"
+        href="index.html"
+        aria-label="Bukal Youth Data Home"
+      >
+
+        <img
+          src="assets/logo.png"
+          alt="Bukal Youth Data logo"
+        />
+
+        <img
+          src="assets/logosk.png"
+          alt="Second logo"
+          style="height:35px;"
+        />
+
         <span>
           <strong>Bukal Youth Data</strong>
           <small>Pagbilao, Quezon</small>
         </span>
+
       </a>
+
     </div>
+
+
     <div class="container dash-top">
+
       <div>
+
         <h1>Youth Dashboard</h1>
-        <p id="youthWelcome">Welcome</p>
+
+        <p id="youthWelcome">
+          Welcome
+        </p>
+
       </div>
 
-      <button class="logout-btn" data-logout>↪ Logout</button>
+
+      <button
+        class="logout-btn"
+        data-logout
+        type="button"
+      >
+        ↪ Logout
+      </button>
+
     </div>
+
   </header>
 
-  <main class="container dashboard-main">
-    <section class="panel profile-panel">
-      <div class="panel-heading profile-heading">
-        <span class="profile-avatar"></span>
 
-        <div>
-          <h2>Your Profile</h2>
-          <p>Manage your personal information</p>
+  <!-- =========================
+       MAIN DASHBOARD
+  ========================== -->
+  <main class="container dashboard-main">
+
+
+    <!-- =========================
+         QUICK OVERVIEW
+    ========================== -->
+    <section>
+
+      <div
+        class="stat-grid"
+        id="youthQuickStats"
+      >
+
+        <div class="panel stat-card">
+          <small>Age</small>
+          <strong>—</strong>
         </div>
 
-        <button class="btn btn-primary btn-sm right" id="editProfileBtn">✎ Edit Profile</button>
+        <div class="panel stat-card">
+          <small>Status</small>
+          <strong>—</strong>
+        </div>
+
+        <div class="panel stat-card">
+          <small>Eligibility</small>
+          <strong>—</strong>
+        </div>
+
+        <div class="panel stat-card">
+          <small>Education</small>
+          <strong>—</strong>
+        </div>
+
+        <div class="panel stat-card">
+          <small>Employment</small>
+          <strong>—</strong>
+        </div>
+
+        <div class="panel stat-card">
+          <small>Voter Status</small>
+          <strong>—</strong>
+        </div>
+
       </div>
 
-      <div id="youthProfileView" class="profile-view"></div>
     </section>
+
+
+    <!-- =========================
+         ANNOUNCEMENTS
+    ========================== -->
+    <section
+      class="panel profile-panel"
+      style="margin-bottom:24px;"
+    >
+
+      <div class="panel-heading profile-heading">
+
+        <div>
+
+          <h2>Announcements</h2>
+
+          <p>
+            Latest updates and information from Barangay Bukal.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="youthAnnouncements"
+        class="report-summary"
+        style="margin-top:24px;"
+      >
+
+        <p class="empty-state">
+          Loading announcements...
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         PROFILE
+    ========================== -->
+    <section class="panel profile-panel">
+
+      <div class="panel-heading profile-heading">
+
+        <span class="profile-avatar">
+
+          <svg
+            class="profile-svg-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="8" r="4"></circle>
+            <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"></path>
+          </svg>
+
+        </span>
+
+
+        <div>
+
+          <h2>Your Profile</h2>
+
+          <p>
+            View and manage your personal information
+          </p>
+
+        </div>
+
+
+        <button
+          class="btn btn-primary btn-sm right"
+          id="editProfileBtn"
+          type="button"
+        >
+          ✎ Edit Profile
+        </button>
+
+      </div>
+
+
+      <div
+        id="youthProfileView"
+        class="profile-view"
+      >
+      </div>
+
+    </section>
+
   </main>
 
-  <dialog id="profileDialog" class="modal-card">
-    <form method="dialog" class="modal-inner" id="profileEditForm">
+
+  <!-- =========================
+       EDIT PROFILE
+  ========================== -->
+  <dialog
+    id="profileDialog"
+    class="modal-card wide-modal"
+  >
+
+    <form
+      method="dialog"
+      class="modal-inner"
+      id="profileEditForm"
+    >
+
       <div class="modal-heading">
-        <h2>Edit Youth Profile</h2>
-        <button class="icon-btn" value="cancel" type="submit">×</button>
+
+        <h2>
+          Edit Youth Profile
+        </h2>
+
+
+        <button
+          class="icon-btn"
+          value="cancel"
+          type="submit"
+          aria-label="Close"
+        >
+          ×
+        </button>
+
       </div>
 
-       <label>
-    Last Name
-    <input type="text" name="lastName">
-  </label>
 
-  <label>
-    Age
-    <input type="number" name="age">
-  </label>
+      <div
+        class="form-grid"
+        id="profileEditFields"
+      >
+      </div>
 
-  <label>
-    Address
-    <input type="text" name="address">
-  </label>
-</div>
 
       <div class="modal-actions">
-        <button class="btn btn-muted" value="cancel" type="submit">Cancel</button>
-        <button class="btn btn-primary" id="saveProfileBtn" value="default" type="button">Save Changes</button>
+
+        <button
+          class="btn btn-muted"
+          value="cancel"
+          type="submit"
+        >
+          Cancel
+        </button>
+
+
+        <button
+          class="btn btn-primary"
+          id="saveProfileBtn"
+          value="default"
+          type="button"
+        >
+          Save Changes
+        </button>
+
       </div>
+
     </form>
+
   </dialog>
 
-  <script type="module" src="assets/youth-check.js"></script>
-  <script src="assets/app.js"></script>
-  <script type="module" src="assets/youth-dashboard.js"></script>
+
+  <!-- =========================
+       JAVASCRIPT
+  ========================== -->
+
+  <script
+    type="module"
+    src="assets/youth-check.js"
+  ></script>
+
+  <script
+    type="module"
+    src="assets/app.js"
+  ></script>
+
+  <script
+    type="module"
+    src="assets/youth-dashboard.js"
+  ></script>
+
 </body>
 </html>
