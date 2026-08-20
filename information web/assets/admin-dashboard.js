@@ -17,31 +17,10 @@ import { logActivity } from "./audit-log.js";
 // =====================================================
 
 const FIELDS = [
-  {
-    key: "fullName",
-    label: "Full Name",
-    type: "text",
-    full: true
-  },
-
-  {
-    key: "email",
-    label: "Email",
-    type: "email",
-    full: true
-  },
-
-  {
-    key: "birthDate",
-    label: "Birth Date",
-    type: "date"
-  },
-
-  {
-    key: "age",
-    label: "Age",
-    type: "number"
-  },
+  { key: "fullName", label: "Full Name", type: "text", full: true },
+  { key: "email", label: "Email", type: "email", full: true },
+  { key: "birthDate", label: "Birth Date", type: "date" },
+  { key: "age", label: "Age", type: "number" },
 
   {
     key: "gender",
@@ -186,7 +165,11 @@ const FIELDS = [
 // GLOBAL DATA
 // =====================================================
 
+let allUsers = [];
+
 let youthList = [];
+
+let adminList = [];
 
 let charts = {};
 
@@ -208,11 +191,9 @@ function escapeHtml(value) {
 }
 
 
-// =====================================================
-// CALCULATE AGE
-// =====================================================
-
-function calculateAge(birthDateValue) {
+function calculateAge(
+  birthDateValue
+) {
 
   if (!birthDateValue) {
     return null;
@@ -220,7 +201,9 @@ function calculateAge(birthDateValue) {
 
 
   const birthDate =
-    new Date(birthDateValue);
+    new Date(
+      birthDateValue
+    );
 
 
   if (
@@ -267,11 +250,9 @@ function calculateAge(birthDateValue) {
 }
 
 
-// =====================================================
-// YOUTH STATUS
-// =====================================================
-
-function getYouthStatus(age) {
+function getYouthStatus(
+  age
+) {
 
   const numericAge =
     Number(age);
@@ -283,30 +264,40 @@ function getYouthStatus(age) {
   ) {
 
     return {
-      status: "Active",
-      eligibility: "Eligible"
+
+      status:
+        "Active",
+
+      eligibility:
+        "Eligible"
+
     };
 
   }
 
 
   return {
-    status: "Inactive",
-    eligibility: "Archived"
+
+    status:
+      "Inactive",
+
+    eligibility:
+      "Archived"
+
   };
 
 }
 
 
-// =====================================================
-// ACTIVE YOUTH CHECK
-// =====================================================
-
-function isActiveYouth(youth) {
+function isActiveYouth(
+  youth
+) {
 
   if (
-    youth.status === "Inactive" ||
-    youth.eligibility === "Archived"
+    youth.status ===
+      "Inactive" ||
+    youth.eligibility ===
+      "Archived"
   ) {
 
     return false;
@@ -315,7 +306,9 @@ function isActiveYouth(youth) {
 
 
   const age =
-    Number(youth.age);
+    Number(
+      youth.age
+    );
 
 
   return (
@@ -326,11 +319,9 @@ function isActiveYouth(youth) {
 }
 
 
-// =====================================================
-// AGE GROUP
-// =====================================================
-
-function ageGroup(age) {
+function ageGroup(
+  age
+) {
 
   const n =
     Number(age);
@@ -371,10 +362,6 @@ function ageGroup(age) {
 }
 
 
-// =====================================================
-// COUNT BY CATEGORY
-// =====================================================
-
 function countBy(
   list,
   keyFn
@@ -392,7 +379,8 @@ function countBy(
 
 
       counts[key] =
-        (counts[key] || 0) + 1;
+        (counts[key] || 0) +
+        1;
 
     }
   );
@@ -402,10 +390,6 @@ function countBy(
 
 }
 
-
-// =====================================================
-// MULTI VALUE COUNTER
-// =====================================================
 
 function countMultiValueField(
   list,
@@ -420,7 +404,8 @@ function countMultiValueField(
 
       const values =
         String(
-          item[fieldName] || ""
+          item[fieldName] ||
+          ""
         )
           .split(",")
           .map(
@@ -434,7 +419,8 @@ function countMultiValueField(
         value => {
 
           counts[value] =
-            (counts[value] || 0) + 1;
+            (counts[value] || 0) +
+            1;
 
         }
       );
@@ -448,11 +434,9 @@ function countMultiValueField(
 }
 
 
-// =====================================================
-// DATE CONVERTER
-// =====================================================
-
-function getCreatedDate(value) {
+function getCreatedDate(
+  value
+) {
 
   if (!value) {
     return null;
@@ -460,7 +444,8 @@ function getCreatedDate(value) {
 
 
   if (
-    typeof value.toDate === "function"
+    typeof value.toDate ===
+    "function"
   ) {
 
     return value.toDate();
@@ -493,6 +478,29 @@ function getCreatedDate(value) {
 
 
   return date;
+
+}
+
+
+// =====================================================
+// BACKGROUND AUDIT LOG
+// =====================================================
+
+function safeLogActivity(
+  data
+) {
+
+  logActivity(data)
+    .catch(
+      error => {
+
+        console.error(
+          "Audit log error:",
+          error
+        );
+
+      }
+    );
 
 }
 
@@ -564,10 +572,10 @@ tabButtons.forEach(
 
 
 // =====================================================
-// LOAD YOUTH DATA
+// LOAD USERS ONCE
 // =====================================================
 
-async function loadYouth() {
+async function loadUsersData() {
 
   const statCards =
     document.getElementById(
@@ -614,6 +622,8 @@ async function loadYouth() {
 
   try {
 
+    // ONE USERS COLLECTION READ ONLY
+
     const snap =
       await getDocs(
         collection(
@@ -623,105 +633,124 @@ async function loadYouth() {
       );
 
 
-    youthList = [];
+    allUsers =
+      snap.docs.map(
+        documentSnapshot => ({
+
+          id:
+            documentSnapshot.id,
+
+          ...documentSnapshot.data()
+
+        })
+      );
 
 
-    snap.forEach(
-      d => {
+    // =================================================
+    // YOUTH
+    // =================================================
 
-        const data =
-          d.data();
+    youthList =
+      allUsers
+        .filter(
+          user =>
+            user.role ===
+            "youth"
+        )
+        .map(
+          user => {
 
+            const youthData = {
 
-        if (
-          data.role === "youth"
-        ) {
+              ...user
 
-          let youthData = {
-
-            id:
-              d.id,
-
-            ...data
-
-          };
-
-
-          if (
-            youthData.birthDate
-          ) {
-
-            const calculatedAge =
-              calculateAge(
-                youthData.birthDate
-              );
+            };
 
 
             if (
-              calculatedAge !== null
+              youthData.birthDate
             ) {
 
-              const youthStatus =
-                getYouthStatus(
-                  calculatedAge
+              const calculatedAge =
+                calculateAge(
+                  youthData.birthDate
                 );
 
 
-              youthData.age =
-                calculatedAge;
+              if (
+                calculatedAge !== null
+              ) {
+
+                const youthStatus =
+                  getYouthStatus(
+                    calculatedAge
+                  );
 
 
-              youthData.status =
-                youthStatus.status;
+                youthData.age =
+                  calculatedAge;
 
 
-              youthData.eligibility =
-                youthStatus.eligibility;
+                youthData.status =
+                  youthStatus.status;
+
+
+                youthData.eligibility =
+                  youthStatus.eligibility;
+
+              }
 
             }
 
-          } else {
 
-            const youthStatus =
-              getYouthStatus(
-                youthData.age
-              );
-
-
-            youthData.status =
-              youthData.status ||
-              youthStatus.status;
-
-
-            youthData.eligibility =
-              youthData.eligibility ||
-              youthStatus.eligibility;
+            return youthData;
 
           }
+        );
 
 
-          youthList.push(
-            youthData
-          );
+    // =================================================
+    // ADMINS
+    // =================================================
 
-        }
+    adminList =
+      allUsers.filter(
+        user =>
+          user.role ===
+          "admin"
+      );
 
-      }
-    );
 
+    // =================================================
+    // RENDER LIGHT CONTENT FIRST
+    // =================================================
 
     renderStats();
-
-    renderCharts();
 
     renderTable();
 
     renderReports();
 
+    renderAdminAccounts();
+
+
+    // =================================================
+    // CHARTS AFTER UI APPEARS
+    // =================================================
+
+    requestAnimationFrame(
+      () => {
+
+        renderCharts();
+
+      }
+    );
+
+
   } catch (error) {
 
     console.error(
-      "Error loading youth:",
+      "Users load error:",
       error
     );
 
@@ -762,7 +791,7 @@ async function loadYouth() {
 
 
 // =====================================================
-// STAT CARDS
+// STATS
 // =====================================================
 
 function renderStats() {
@@ -773,63 +802,58 @@ function renderStats() {
     );
 
 
-  const total =
-    activeYouth.length;
-
-
-  const male =
-    activeYouth.filter(
-      youth =>
-        youth.gender === "Male"
-    ).length;
-
-
-  const female =
-    activeYouth.filter(
-      youth =>
-        youth.gender === "Female"
-    ).length;
-
-
-  const students =
-    activeYouth.filter(
-      youth =>
-        youth.employment === "Student"
-    ).length;
-
-
   const cards = [
 
     {
+
       label:
         "Total Active Youth",
 
       value:
-        total
+        activeYouth.length
+
     },
 
     {
+
       label:
         "Male",
 
       value:
-        male
+        activeYouth.filter(
+          youth =>
+            youth.gender ===
+            "Male"
+        ).length
+
     },
 
     {
+
       label:
         "Female",
 
       value:
-        female
+        activeYouth.filter(
+          youth =>
+            youth.gender ===
+            "Female"
+        ).length
+
     },
 
     {
+
       label:
         "Students",
 
       value:
-        students
+        activeYouth.filter(
+          youth =>
+            youth.employment ===
+            "Student"
+        ).length
+
     }
 
   ];
@@ -841,7 +865,9 @@ function renderStats() {
     );
 
 
-  if (!container) return;
+  if (!container) {
+    return;
+  }
 
 
   container.innerHTML =
@@ -852,7 +878,9 @@ function renderStats() {
           <div class="panel stat-card">
 
             <small>
-              ${escapeHtml(card.label)}
+              ${escapeHtml(
+                card.label
+              )}
             </small>
 
             <strong>
@@ -869,7 +897,7 @@ function renderStats() {
 
 
 // =====================================================
-// GENERIC CHART
+// CHART
 // =====================================================
 
 function drawChart(
@@ -895,18 +923,21 @@ function drawChart(
     charts[canvasId]
   ) {
 
-    charts[canvasId]
-      .destroy();
+    charts[
+      canvasId
+    ].destroy();
 
   }
 
 
   const isDoughnut =
-    type === "doughnut";
+    type ===
+    "doughnut";
 
 
   const isBar =
-    type === "bar";
+    type ===
+    "bar";
 
 
   charts[canvasId] =
@@ -940,36 +971,20 @@ function drawChart(
 
                 ],
 
-
               borderColor:
                 isDoughnut
                   ? "#ffffff"
                   : "transparent",
-
 
               borderWidth:
                 isDoughnut
                   ? 2
                   : 0,
 
-
               maxBarThickness:
                 isBar
                   ? 60
                   : undefined,
-
-
-              barPercentage:
-                isBar
-                  ? 0.60
-                  : undefined,
-
-
-              categoryPercentage:
-                isBar
-                  ? 0.68
-                  : undefined,
-
 
               borderRadius:
                 isBar
@@ -982,30 +997,25 @@ function drawChart(
 
         },
 
-
         options: {
 
           responsive:
             true,
 
-
           maintainAspectRatio:
             false,
-
 
           animation: {
 
             duration:
-              450
+              100
 
           },
-
 
           cutout:
             isDoughnut
               ? "64%"
               : undefined,
-
 
           plugins: {
 
@@ -1014,122 +1024,29 @@ function drawChart(
               display:
                 isDoughnut,
 
-
               position:
-                "bottom",
-
-
-              labels: {
-
-                boxWidth:
-                  12,
-
-                boxHeight:
-                  12,
-
-                padding:
-                  12,
-
-                font: {
-
-                  size:
-                    11
-
-                }
-
-              }
-
-            },
-
-
-            tooltip: {
-
-              enabled:
-                true
+                "bottom"
 
             }
 
           },
 
-
           scales:
             isBar
               ? {
-
-                  x: {
-
-                    offset:
-                      true,
-
-
-                    grid: {
-
-                      display:
-                        false
-
-                    },
-
-
-                    ticks: {
-
-                      font: {
-
-                        size:
-                          11
-
-                      },
-
-
-                      autoSkip:
-                        false,
-
-
-                      maxRotation:
-                        30,
-
-
-                      minRotation:
-                        0
-
-                    }
-
-                  },
-
 
                   y: {
 
                     beginAtZero:
                       true,
 
-
-                    grace:
-                      "10%",
-
-
                     ticks: {
 
                       precision:
                         0,
 
-
                       stepSize:
-                        1,
-
-
-                      font: {
-
-                        size:
-                          11
-
-                      }
-
-                    },
-
-
-                    grid: {
-
-                      color:
-                        "rgba(0,0,0,0.07)"
+                        1
 
                     }
 
@@ -1147,7 +1064,7 @@ function drawChart(
 
 
 // =====================================================
-// REGISTRATION TRENDS
+// REGISTRATION TREND
 // =====================================================
 
 function renderRegistrationTrendChart() {
@@ -1158,7 +1075,9 @@ function renderRegistrationTrendChart() {
     );
 
 
-  if (!canvas) return;
+  if (!canvas) {
+    return;
+  }
 
 
   if (
@@ -1195,7 +1114,7 @@ function renderRegistrationTrendChart() {
   ];
 
 
-  const monthlyRegistrations =
+  const monthly =
     new Array(12)
       .fill(0);
 
@@ -1203,24 +1122,24 @@ function renderRegistrationTrendChart() {
   youthList.forEach(
     youth => {
 
-      const createdDate =
+      const date =
         getCreatedDate(
           youth.createdAt
         );
 
 
-      if (!createdDate) {
+      if (!date) {
         return;
       }
 
 
       if (
-        createdDate.getFullYear() ===
+        date.getFullYear() ===
         currentYear
       ) {
 
-        monthlyRegistrations[
-          createdDate.getMonth()
+        monthly[
+          date.getMonth()
         ]++;
 
       }
@@ -1237,12 +1156,10 @@ function renderRegistrationTrendChart() {
         type:
           "line",
 
-
         data: {
 
           labels:
             months,
-
 
           datasets: [
 
@@ -1251,46 +1168,20 @@ function renderRegistrationTrendChart() {
               label:
                 `Youth Registrations ${currentYear}`,
 
-
               data:
-                monthlyRegistrations,
-
+                monthly,
 
               borderColor:
                 "#0a5255",
 
-
               backgroundColor:
-                "rgba(10, 82, 85, 0.12)",
-
+                "rgba(10,82,85,.12)",
 
               borderWidth:
                 3,
 
-
-              pointRadius:
-                4,
-
-
-              pointHoverRadius:
-                6,
-
-
-              pointBackgroundColor:
-                "#0a5255",
-
-
-              pointBorderColor:
-                "#ffffff",
-
-
-              pointBorderWidth:
-                2,
-
-
               tension:
                 0.35,
-
 
               fill:
                 true
@@ -1301,99 +1192,32 @@ function renderRegistrationTrendChart() {
 
         },
 
-
         options: {
 
           responsive:
             true,
 
-
           maintainAspectRatio:
             false,
 
+          animation: {
 
-          interaction: {
-
-            intersect:
-              false,
-
-
-            mode:
-              "index"
+            duration:
+              100
 
           },
-
-
-          plugins: {
-
-            legend: {
-
-              display:
-                true,
-
-
-              position:
-                "bottom"
-
-            },
-
-
-            tooltip: {
-
-              callbacks: {
-
-                label(
-                  context
-                ) {
-
-                  const value =
-                    context.parsed.y ||
-                    0;
-
-
-                  return (
-                    value +
-                    (
-                      value === 1
-                        ? " registration"
-                        : " registrations"
-                    )
-                  );
-
-                }
-
-              }
-
-            }
-
-          },
-
 
           scales: {
-
-            x: {
-
-              grid: {
-
-                display:
-                  false
-
-              }
-
-            },
-
 
             y: {
 
               beginAtZero:
                 true,
 
-
               ticks: {
 
                 precision:
                   0,
-
 
                 stepSize:
                   1
@@ -1413,7 +1237,7 @@ function renderRegistrationTrendChart() {
 
 
 // =====================================================
-// RENDER ALL CHARTS
+// ALL CHARTS
 // =====================================================
 
 function renderCharts() {
@@ -1435,8 +1259,12 @@ function renderCharts() {
   drawChart(
     "genderChart",
     "doughnut",
-    Object.keys(gender),
-    Object.values(gender)
+    Object.keys(
+      gender
+    ),
+    Object.values(
+      gender
+    )
   );
 
 
@@ -1453,8 +1281,12 @@ function renderCharts() {
   drawChart(
     "ageChart",
     "bar",
-    Object.keys(ages),
-    Object.values(ages)
+    Object.keys(
+      ages
+    ),
+    Object.values(
+      ages
+    )
   );
 
 
@@ -1469,8 +1301,12 @@ function renderCharts() {
   drawChart(
     "educationChart",
     "bar",
-    Object.keys(education),
-    Object.values(education)
+    Object.keys(
+      education
+    ),
+    Object.values(
+      education
+    )
   );
 
 
@@ -1505,8 +1341,12 @@ function renderCharts() {
   drawChart(
     "employmentChart",
     "doughnut",
-    Object.keys(employment),
-    Object.values(employment)
+    Object.keys(
+      employment
+    ),
+    Object.values(
+      employment
+    )
   );
 
 
@@ -1521,8 +1361,12 @@ function renderCharts() {
   drawChart(
     "voterChart",
     "doughnut",
-    Object.keys(voter),
-    Object.values(voter)
+    Object.keys(
+      voter
+    ),
+    Object.values(
+      voter
+    )
   );
 
 
@@ -1557,8 +1401,12 @@ function renderCharts() {
   drawChart(
     "newVoterChart",
     "doughnut",
-    Object.keys(newVoter),
-    Object.values(newVoter)
+    Object.keys(
+      newVoter
+    ),
+    Object.values(
+      newVoter
+    )
   );
 
 
@@ -1573,8 +1421,12 @@ function renderCharts() {
   drawChart(
     "civicChart",
     "doughnut",
-    Object.keys(civic),
-    Object.values(civic)
+    Object.keys(
+      civic
+    ),
+    Object.values(
+      civic
+    )
   );
 
 
@@ -1598,7 +1450,7 @@ function renderCharts() {
   );
 
 
-  const sportsCounts =
+  const sports =
     countMultiValueField(
       activeYouth,
       "sports"
@@ -1608,7 +1460,7 @@ function renderCharts() {
   const topSports =
     Object
       .entries(
-        sportsCounts
+        sports
       )
       .sort(
         (a, b) =>
@@ -1635,7 +1487,7 @@ function renderCharts() {
   );
 
 
-  const hobbiesCounts =
+  const hobbies =
     countMultiValueField(
       activeYouth,
       "hobbies"
@@ -1645,7 +1497,7 @@ function renderCharts() {
   const topHobbies =
     Object
       .entries(
-        hobbiesCounts
+        hobbies
       )
       .sort(
         (a, b) =>
@@ -1678,7 +1530,7 @@ function renderCharts() {
 
 
 // =====================================================
-// YOUTH MANAGEMENT FILTERS
+// FILTERS
 // =====================================================
 
 const searchInput =
@@ -1716,10 +1568,6 @@ const clearFiltersBtn =
     "clearFilters"
   );
 
-
-// =====================================================
-// POPULATE FILTERS
-// =====================================================
 
 function populateFilterOptions() {
 
@@ -1791,10 +1639,6 @@ function populateFilterOptions() {
 
 }
 
-
-// =====================================================
-// FILTER YOUTH
-// =====================================================
 
 function getFilteredYouth() {
 
@@ -1888,7 +1732,7 @@ function getFilteredYouth() {
 
 
 // =====================================================
-// RENDER TABLE
+// TABLE
 // =====================================================
 
 function renderTable() {
@@ -2005,16 +1849,13 @@ function renderTable() {
                     <button
                       class="action-btn edit"
                       data-edit="${youth.id}"
-                      title="Edit"
                     >
                       ✎
                     </button>
 
-
                     <button
                       class="action-btn delete"
                       data-delete="${youth.id}"
-                      title="Delete"
                     >
                       🗑
                     </button>
@@ -2128,10 +1969,6 @@ function renderTable() {
   );
 
 
-// =====================================================
-// CLEAR FILTERS
-// =====================================================
-
 if (clearFiltersBtn) {
 
   clearFiltersBtn.addEventListener(
@@ -2142,21 +1979,17 @@ if (clearFiltersBtn) {
         searchInput.value = "";
       }
 
-
       if (filterGender) {
         filterGender.value = "";
       }
-
 
       if (filterEducation) {
         filterEducation.value = "";
       }
 
-
       if (filterEmployment) {
         filterEmployment.value = "";
       }
-
 
       if (filterStatus) {
         filterStatus.value = "";
@@ -2224,10 +2057,6 @@ if (openAddYouthBtn) {
 }
 
 
-// =====================================================
-// BUILD YOUTH FIELDS
-// =====================================================
-
 function buildYouthFields(
   data = {}
 ) {
@@ -2285,9 +2114,7 @@ function buildYouthFields(
                   ${escapeHtml(field.label)}
                 </span>
 
-                <select
-                  name="${field.key}"
-                >
+                <select name="${field.key}">
 
                   <option value="">
                     Select
@@ -2389,10 +2216,6 @@ function buildYouthFields(
 }
 
 
-// =====================================================
-// OPEN DIALOG
-// =====================================================
-
 function openYouthDialog(
   youthId
 ) {
@@ -2412,7 +2235,8 @@ function openYouthDialog(
     const existing =
       youthList.find(
         youth =>
-          youth.id === youthId
+          youth.id ===
+          youthId
       );
 
 
@@ -2429,7 +2253,8 @@ function openYouthDialog(
 
 
     buildYouthFields(
-      existing || {}
+      existing ||
+      {}
     );
 
   } else {
@@ -2580,7 +2405,7 @@ if (saveYouthBtn) {
           );
 
 
-          await logActivity({
+          safeLogActivity({
 
             email:
               auth.currentUser
@@ -2612,7 +2437,7 @@ if (saveYouthBtn) {
           );
 
 
-          await logActivity({
+          safeLogActivity({
 
             email:
               auth.currentUser
@@ -2635,12 +2460,13 @@ if (saveYouthBtn) {
         youthDialog.close();
 
 
-        await loadYouth();
+        await loadUsersData();
 
 
         alert(
           "Youth profile saved!"
         );
+
 
       } catch (error) {
 
@@ -2653,6 +2479,7 @@ if (saveYouthBtn) {
         alert(
           "Something went wrong while saving. Please try again."
         );
+
 
       } finally {
 
@@ -2693,7 +2520,8 @@ async function deleteYouth(
   const target =
     youthList.find(
       youth =>
-        youth.id === youthId
+        youth.id ===
+        youthId
     );
 
 
@@ -2708,7 +2536,7 @@ async function deleteYouth(
     );
 
 
-    await logActivity({
+    safeLogActivity({
 
       email:
         auth.currentUser
@@ -2727,7 +2555,8 @@ async function deleteYouth(
     });
 
 
-    await loadYouth();
+    await loadUsersData();
+
 
   } catch (error) {
 
@@ -2769,190 +2598,148 @@ function renderReports() {
     );
 
 
-  const status = {
+  const categories = [
 
-    Active:
-      activeYouth.length,
+    [
+      "Youth Status",
+      {
+        Active:
+          activeYouth.length,
 
-    Archived:
-      youthList.length -
-      activeYouth.length
+        Archived:
+          youthList.length -
+          activeYouth.length
+      }
+    ],
 
-  };
+    [
+      "Gender Breakdown",
+      countBy(
+        activeYouth,
+        youth =>
+          youth.gender
+      )
+    ],
 
+    [
+      "Education Level",
+      countBy(
+        activeYouth,
+        youth =>
+          youth.education
+      )
+    ],
 
-  const gender =
-    countBy(
-      activeYouth,
-      youth =>
-        youth.gender
-    );
+    [
+      "Education Status",
+      countBy(
+        activeYouth,
+        youth =>
+          youth.educationStatus
+      )
+    ],
 
+    [
+      "Employment Status",
+      countBy(
+        activeYouth,
+        youth =>
+          youth.employment
+      )
+    ],
 
-  const education =
-    countBy(
-      activeYouth,
-      youth =>
-        youth.education
-    );
+    [
+      "Voter Registration",
+      countBy(
+        activeYouth,
+        youth =>
+          youth.voterStatus
+      )
+    ],
 
+    [
+      "Voter Participation",
+      countBy(
+        activeYouth,
+        youth =>
+          youth.voterParticipation
+      )
+    ],
 
-  const educationStatus =
-    countBy(
-      activeYouth,
-      youth =>
-        youth.educationStatus
-    );
+    [
+      "New Voter Status",
+      countBy(
+        activeYouth,
+        youth =>
+          youth.newVoter
+      )
+    ],
 
+    [
+      "Civic Participation",
+      countBy(
+        activeYouth,
+        youth =>
+          youth.civic
+      )
+    ],
 
-  const employment =
-    countBy(
-      activeYouth,
-      youth =>
-        youth.employment
-    );
+    [
+      "Special Needs",
+      countBy(
+        activeYouth,
+        youth =>
+          youth.specialNeeds
+      )
+    ]
 
-
-  const voter =
-    countBy(
-      activeYouth,
-      youth =>
-        youth.voterStatus
-    );
-
-
-  const voterParticipation =
-    countBy(
-      activeYouth,
-      youth =>
-        youth.voterParticipation
-    );
-
-
-  const newVoter =
-    countBy(
-      activeYouth,
-      youth =>
-        youth.newVoter
-    );
-
-
-  const civic =
-    countBy(
-      activeYouth,
-      youth =>
-        youth.civic
-    );
-
-
-  const specialNeeds =
-    countBy(
-      activeYouth,
-      youth =>
-        youth.specialNeeds
-    );
-
-
-  function summaryBox(
-    title,
-    counts
-  ) {
-
-    const items =
-      Object
-        .entries(
-          counts
-        )
-        .map(
-          ([key, value]) =>
-            `
-              <li>
-
-                ${escapeHtml(key)}:
-
-                <strong>
-                  ${value}
-                </strong>
-
-              </li>
-            `
-        )
-        .join("");
-
-
-    return `
-      <div class="summary-box">
-
-        <h3>
-          ${escapeHtml(title)}
-        </h3>
-
-        <ul>
-
-          ${
-            items ||
-            "<li>No data yet</li>"
-          }
-
-        </ul>
-
-      </div>
-    `;
-
-  }
+  ];
 
 
   reportSummary.innerHTML =
+    categories
+      .map(
+        ([title, counts]) => {
 
-    summaryBox(
-      "Youth Status",
-      status
-    ) +
+          const items =
+            Object
+              .entries(
+                counts
+              )
+              .map(
+                ([key, value]) =>
+                  `
+                    <li>
+                      ${escapeHtml(key)}:
+                      <strong>
+                        ${value}
+                      </strong>
+                    </li>
+                  `
+              )
+              .join("");
 
-    summaryBox(
-      "Gender Breakdown",
-      gender
-    ) +
 
-    summaryBox(
-      "Education Level",
-      education
-    ) +
+          return `
+            <div class="summary-box">
 
-    summaryBox(
-      "Education Status",
-      educationStatus
-    ) +
+              <h3>
+                ${escapeHtml(title)}
+              </h3>
 
-    summaryBox(
-      "Employment Status",
-      employment
-    ) +
+              <ul>
+                ${
+                  items ||
+                  "<li>No data yet</li>"
+                }
+              </ul>
 
-    summaryBox(
-      "Voter Registration",
-      voter
-    ) +
+            </div>
+          `;
 
-    summaryBox(
-      "Voter Participation",
-      voterParticipation
-    ) +
-
-    summaryBox(
-      "New Voter Status",
-      newVoter
-    ) +
-
-    summaryBox(
-      "Civic Participation",
-      civic
-    ) +
-
-    summaryBox(
-      "Special Needs",
-      specialNeeds
-    );
+        }
+      )
+      .join("");
 
 }
 
@@ -2971,9 +2758,9 @@ if (printReportBtn) {
 
   printReportBtn.addEventListener(
     "click",
-    async () => {
+    () => {
 
-      await logActivity({
+      safeLogActivity({
 
         email:
           auth.currentUser
@@ -3000,7 +2787,7 @@ if (printReportBtn) {
 
 
 // =====================================================
-// CSV EXPORT
+// CSV
 // =====================================================
 
 const downloadCsvBtn =
@@ -3013,7 +2800,7 @@ if (downloadCsvBtn) {
 
   downloadCsvBtn.addEventListener(
     "click",
-    async () => {
+    () => {
 
       const headers = [
 
@@ -3111,7 +2898,7 @@ if (downloadCsvBtn) {
       );
 
 
-      await logActivity({
+      safeLogActivity({
 
         email:
           auth.currentUser
@@ -3135,7 +2922,92 @@ if (downloadCsvBtn) {
 
 
 // =====================================================
-// AUDIT TRAIL
+// ADMIN ACCOUNTS
+// =====================================================
+
+function renderAdminAccounts() {
+
+  const body =
+    document.getElementById(
+      "accountsTableBody"
+    );
+
+
+  if (!body) {
+    return;
+  }
+
+
+  if (
+    adminList.length === 0
+  ) {
+
+    body.innerHTML =
+      `
+        <tr>
+
+          <td
+            colspan="5"
+            class="empty-state"
+          >
+            No admin accounts found.
+          </td>
+
+        </tr>
+      `;
+
+
+    return;
+
+  }
+
+
+  body.innerHTML =
+    adminList
+      .map(
+        admin => `
+
+          <tr>
+
+            <td>
+              ${escapeHtml(
+                admin.fullName
+              )}
+            </td>
+
+            <td>
+              ${escapeHtml(
+                admin.email
+              )}
+            </td>
+
+            <td>
+              Admin
+            </td>
+
+            <td>
+              <span class="status-pill">
+                Active
+              </span>
+            </td>
+
+            <td>
+              <span class="muted-text">
+                Managed via Firebase Auth
+              </span>
+            </td>
+
+          </tr>
+
+        `
+      )
+      .join("");
+
+}
+
+
+// =====================================================
+// AUDIT LOG
 // =====================================================
 
 async function loadAuditLogs() {
@@ -3162,43 +3034,33 @@ async function loadAuditLogs() {
       );
 
 
-    const logs = [];
-
-
-    snap.forEach(
-      documentSnapshot => {
-
-        logs.push({
+    const logs =
+      snap.docs.map(
+        documentSnapshot => ({
 
           id:
             documentSnapshot.id,
 
           ...documentSnapshot.data()
 
-        });
-
-      }
-    );
+        })
+      );
 
 
     logs.sort(
       (a, b) => {
 
         const aTime =
-          a.timestamp
-            ?.toDate
-            ? a.timestamp
-                .toDate()
+          a.timestamp?.toDate
+            ? a.timestamp.toDate()
             : new Date(
                 a.timestamp
               );
 
 
         const bTime =
-          b.timestamp
-            ?.toDate
-            ? b.timestamp
-                .toDate()
+          b.timestamp?.toDate
+            ? b.timestamp.toDate()
             : new Date(
                 b.timestamp
               );
@@ -3243,10 +3105,8 @@ async function loadAuditLogs() {
           log => {
 
             const time =
-              log.timestamp
-                ?.toDate
-                ? log.timestamp
-                    .toDate()
+              log.timestamp?.toDate
+                ? log.timestamp.toDate()
                 : new Date(
                     log.timestamp
                   );
@@ -3292,6 +3152,7 @@ async function loadAuditLogs() {
         )
         .join("");
 
+
   } catch (error) {
 
     console.error(
@@ -3299,28 +3160,13 @@ async function loadAuditLogs() {
       error
     );
 
-
-    tbody.innerHTML =
-      `
-        <tr>
-
-          <td
-            colspan="5"
-            class="empty-state"
-          >
-            Unable to load audit logs.
-          </td>
-
-        </tr>
-      `;
-
   }
 
 }
 
 
 // =====================================================
-// CLEAR AUDIT LOG
+// CLEAR AUDIT
 // =====================================================
 
 const clearAuditBtn =
@@ -3360,13 +3206,13 @@ if (clearAuditBtn) {
         await Promise.all(
 
           snap.docs.map(
-            documentSnapshot =>
+            item =>
 
               deleteDoc(
                 doc(
                   db,
                   "auditLogs",
-                  documentSnapshot.id
+                  item.id
                 )
               )
 
@@ -3377,176 +3223,17 @@ if (clearAuditBtn) {
 
         await loadAuditLogs();
 
+
       } catch (error) {
 
         console.error(
-          "Clear audit error:",
           error
-        );
-
-
-        alert(
-          "Something went wrong while clearing logs."
         );
 
       }
 
     }
   );
-
-}
-
-
-// =====================================================
-// ADMIN ACCOUNTS
-// =====================================================
-
-async function loadAdminAccounts() {
-
-  const body =
-    document.getElementById(
-      "accountsTableBody"
-    );
-
-
-  if (!body) {
-    return;
-  }
-
-
-  try {
-
-    const snap =
-      await getDocs(
-        collection(
-          db,
-          "users"
-        )
-      );
-
-
-    const admins = [];
-
-
-    snap.forEach(
-      documentSnapshot => {
-
-        const data =
-          documentSnapshot.data();
-
-
-        if (
-          data.role ===
-          "admin"
-        ) {
-
-          admins.push({
-
-            id:
-              documentSnapshot.id,
-
-            ...data
-
-          });
-
-        }
-
-      }
-    );
-
-
-    if (
-      admins.length === 0
-    ) {
-
-      body.innerHTML =
-        `
-          <tr>
-
-            <td
-              colspan="5"
-              class="empty-state"
-            >
-              No admin accounts found.
-            </td>
-
-          </tr>
-        `;
-
-
-      return;
-
-    }
-
-
-    body.innerHTML =
-      admins
-        .map(
-          admin => `
-
-            <tr>
-
-              <td>
-                ${escapeHtml(
-                  admin.fullName
-                )}
-              </td>
-
-              <td>
-                ${escapeHtml(
-                  admin.email
-                )}
-              </td>
-
-              <td>
-                Admin
-              </td>
-
-              <td>
-
-                <span class="status-pill">
-                  Active
-                </span>
-
-              </td>
-
-              <td>
-
-                <span class="muted-text">
-                  Managed via Firebase Auth
-                </span>
-
-              </td>
-
-            </tr>
-
-          `
-        )
-        .join("");
-
-  } catch (error) {
-
-    console.error(
-      "Admin account load error:",
-      error
-    );
-
-
-    body.innerHTML =
-      `
-        <tr>
-
-          <td
-            colspan="5"
-            class="empty-state"
-          >
-            Unable to load admin accounts.
-          </td>
-
-        </tr>
-      `;
-
-  }
 
 }
 
@@ -3591,11 +3278,9 @@ const announcementTableBody =
   );
 
 
-// =====================================================
-// ANNOUNCEMENT DATE
-// =====================================================
-
-function getAnnouncementDate(value) {
+function getAnnouncementDate(
+  value
+) {
 
   if (!value) {
 
@@ -3605,7 +3290,8 @@ function getAnnouncementDate(value) {
 
 
   if (
-    typeof value.toDate === "function"
+    typeof value.toDate ===
+    "function"
   ) {
 
     return value.toDate();
@@ -3633,32 +3319,11 @@ function getAnnouncementDate(value) {
 }
 
 
-// =====================================================
-// LOAD ANNOUNCEMENTS
-// =====================================================
-
 async function loadAnnouncements() {
 
   if (!announcementTableBody) {
-
     return;
-
   }
-
-
-  announcementTableBody.innerHTML =
-    `
-      <tr>
-
-        <td
-          colspan="5"
-          class="empty-state"
-        >
-          Loading announcements...
-        </td>
-
-      </tr>
-    `;
 
 
   try {
@@ -3672,23 +3337,17 @@ async function loadAnnouncements() {
       );
 
 
-    const announcements = [];
-
-
-    snap.forEach(
-      documentSnapshot => {
-
-        announcements.push({
+    const announcements =
+      snap.docs.map(
+        item => ({
 
           id:
-            documentSnapshot.id,
+            item.id,
 
-          ...documentSnapshot.data()
+          ...item.data()
 
-        });
-
-      }
-    );
+        })
+      );
 
 
     announcements.sort(
@@ -3756,13 +3415,11 @@ async function loadAnnouncements() {
                 </td>
 
                 <td>
-
                   <strong>
                     ${escapeHtml(
                       announcement.title
                     )}
                   </strong>
-
                 </td>
 
                 <td>
@@ -3776,7 +3433,6 @@ async function loadAnnouncements() {
                   <button
                     class="action-btn delete"
                     data-delete-announcement="${announcement.id}"
-                    title="Delete Announcement"
                   >
                     🗑
                   </button>
@@ -3801,47 +3457,26 @@ async function loadAnnouncements() {
           button.addEventListener(
             "click",
             () =>
-
               deleteAnnouncement(
                 button.dataset
                   .deleteAnnouncement
               )
-
           );
 
         }
       );
 
+
   } catch (error) {
 
     console.error(
-      "Announcement load error:",
       error
     );
-
-
-    announcementTableBody.innerHTML =
-      `
-        <tr>
-
-          <td
-            colspan="5"
-            class="empty-state"
-          >
-            Unable to load announcements.
-          </td>
-
-        </tr>
-      `;
 
   }
 
 }
 
-
-// =====================================================
-// PUBLISH ANNOUNCEMENT
-// =====================================================
 
 if (announcementForm) {
 
@@ -3924,7 +3559,7 @@ if (announcementForm) {
         );
 
 
-        await logActivity({
+        safeLogActivity({
 
           email:
             auth.currentUser
@@ -3952,17 +3587,13 @@ if (announcementForm) {
           "Announcement published successfully!"
         );
 
+
       } catch (error) {
 
         console.error(
-          "Publish announcement error:",
           error
         );
 
-
-        alert(
-          "Unable to publish announcement. Please try again."
-        );
 
       } finally {
 
@@ -3985,10 +3616,6 @@ if (announcementForm) {
 }
 
 
-// =====================================================
-// DELETE ANNOUNCEMENT
-// =====================================================
-
 async function deleteAnnouncement(
   announcementId
 ) {
@@ -4000,9 +3627,7 @@ async function deleteAnnouncement(
 
 
   if (!confirmed) {
-
     return;
-
   }
 
 
@@ -4017,7 +3642,7 @@ async function deleteAnnouncement(
     );
 
 
-    await logActivity({
+    safeLogActivity({
 
       email:
         auth.currentUser
@@ -4037,16 +3662,11 @@ async function deleteAnnouncement(
 
     await loadAnnouncements();
 
+
   } catch (error) {
 
     console.error(
-      "Delete announcement error:",
       error
-    );
-
-
-    alert(
-      "Unable to delete announcement."
     );
 
   }
@@ -4055,15 +3675,20 @@ async function deleteAnnouncement(
 
 
 // =====================================================
-// INIT
+// INITIALIZE
 // =====================================================
 
 populateFilterOptions();
 
-loadYouth();
 
-loadAdminAccounts();
+// Start independent Firebase reads together.
 
-loadAuditLogs();
+Promise.allSettled([
 
-loadAnnouncements();
+  loadUsersData(),
+
+  loadAuditLogs(),
+
+  loadAnnouncements()
+
+]);

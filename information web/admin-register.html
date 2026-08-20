@@ -46,14 +46,17 @@
 <body data-page="admin-register">
 
 
+  <!-- =========================
+       HEADER
+  ========================== -->
   <header class="site-header">
 
     <div class="container nav-wrap">
 
       <a
         class="brand"
-        href="index.html"
-        aria-label="Bukal Youth Data Home"
+        href="admin-dashboard.html"
+        aria-label="Back to Admin Dashboard"
       >
 
         <img
@@ -86,9 +89,21 @@
   </header>
 
 
+  <!-- =========================
+       ADMIN REGISTRATION
+  ========================== -->
   <div class="auth-body">
 
     <main class="auth-shell">
+
+
+      <!-- BACK TO ADMIN -->
+      <a
+        class="back-link"
+        href="admin-dashboard.html"
+      >
+        ← Back to Admin Dashboard
+      </a>
 
 
       <section class="auth-card">
@@ -98,7 +113,6 @@
 
 
           <!-- ADMIN SHIELD ICON -->
-
           <span class="icon-badge">
 
             <svg
@@ -124,19 +138,47 @@
             Admin Registration
           </h1>
 
+
           <p>
-            Create an admin account for system management
+            Create a new administrator account
           </p>
 
         </div>
 
 
+        <!-- =========================
+             INFORMATION MESSAGE
+        ========================== -->
+        <div
+          class="summary-box"
+          style="margin-bottom:20px;"
+        >
+
+          <strong>
+            Administrator Access
+          </strong>
+
+          <p
+            class="muted-text"
+            style="margin-top:6px;"
+          >
+            Only an authenticated administrator can create
+            another administrator account.
+          </p>
+
+        </div>
+
+
+        <!-- =========================
+             REGISTRATION FORM
+        ========================== -->
         <form
           id="adminRegisterForm"
           class="form-grid single"
         >
 
 
+          <!-- FULL NAME -->
           <label class="field full">
 
             <span>
@@ -147,12 +189,14 @@
               type="text"
               name="fullName"
               placeholder="Enter full name"
+              autocomplete="name"
               required
             />
 
           </label>
 
 
+          <!-- EMAIL -->
           <label class="field full">
 
             <span>
@@ -163,12 +207,14 @@
               type="email"
               name="email"
               placeholder="admin@bukal.gov.ph"
+              autocomplete="off"
               required
             />
 
           </label>
 
 
+          <!-- PASSWORD -->
           <label class="field full">
 
             <span>
@@ -180,28 +226,14 @@
               name="password"
               placeholder="Minimum 8 characters"
               minlength="8"
+              autocomplete="new-password"
               required
             />
 
           </label>
 
 
-          <label class="field full">
-
-            <span>
-              Admin Security Code
-            </span>
-
-            <input
-              type="password"
-              name="securityCode"
-              placeholder="Ask the system administrator"
-              required
-            />
-
-          </label>
-
-
+          <!-- REGISTER BUTTON -->
           <button
             class="btn btn-primary full-btn"
             type="submit"
@@ -212,11 +244,8 @@
 
           <p class="center small-text">
 
-            Already have an account?
-
-            <a href="login.html">
-              Login here
-            </a>
+            This page is restricted to
+            authenticated administrators.
 
           </p>
 
@@ -230,16 +259,30 @@
   </div>
 
 
+  <!-- =========================
+       JAVASCRIPT
+  ========================== -->
+
+  <!--
+    Verifies that the current logged-in user
+    is an administrator.
+  -->
   <script
     type="module"
     src="assets/admin-check.js"
   ></script>
+
 
   <script
     type="module"
     src="assets/app.js"
   ></script>
 
+
+  <!--
+    Creates the NEW admin using secondaryAuth
+    while preserving the current admin session.
+  -->
   <script
     type="module"
     src="assets/admin-register.js"

@@ -1,105 +1,1017 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bukal Youth Data | Home</title>
-  <link rel="icon" type="image/png" href="assets/logo.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>
+    Bukal Youth Data | Home
+  </title>
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="assets/logo.png"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="assets/style.css"
+  />
+
+
+  <!-- =================================================
+       HOME PAGE ONLY STYLES
+  ================================================== -->
+  <style>
+
+    /* ===============================================
+       HERO
+    =============================================== */
+
+    body[data-page="home"] {
+      margin: 0;
+    }
+
+
+    body[data-page="home"] .hero {
+
+      min-height: 100vh;
+
+      position: relative;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      overflow: hidden;
+
+    }
+
+
+    body[data-page="home"] .hero-bg {
+
+      position: absolute;
+
+      inset: 0;
+
+      width: 100%;
+
+      height: 100%;
+
+      z-index: 0;
+
+    }
+
+
+    body[data-page="home"] .hero-slide {
+
+      position: absolute;
+
+      inset: 0;
+
+      width: 100%;
+
+      height: 100%;
+
+      background-position: center;
+
+      background-repeat: no-repeat;
+
+      background-size: cover;
+
+      opacity: 0;
+
+      transition:
+        opacity 1.2s ease-in-out;
+
+    }
+
+
+    body[data-page="home"] .hero-slide.active {
+
+      opacity: 1;
+
+    }
+
+
+    /* DARK GREEN OVERLAY */
+
+    body[data-page="home"] .hero-overlay {
+
+      position: absolute;
+
+      inset: 0;
+
+      z-index: 1;
+
+      background:
+
+        linear-gradient(
+          rgba(0, 45, 48, 0.70),
+          rgba(0, 35, 37, 0.76)
+        );
+
+    }
+
+
+    /* ===============================================
+       HERO CONTENT
+    =============================================== */
+
+    body[data-page="home"] .hero-content {
+
+      position: relative;
+
+      z-index: 2;
+
+      width: 100%;
+
+      max-width: 1100px;
+
+      margin: 0 auto;
+
+      padding:
+        50px
+        24px;
+
+      text-align: center;
+
+      color: white;
+
+    }
+
+
+    /* ===============================================
+       HERO BRANDING
+    =============================================== */
+
+    body[data-page="home"] .hero-brand {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 18px;
+
+      margin-bottom: 24px;
+
+    }
+
+
+    body[data-page="home"] .hero-brand-logo {
+
+      width: 88px;
+
+      height: 88px;
+
+      object-fit: contain;
+
+      flex-shrink: 0;
+
+      filter:
+        drop-shadow(
+          0 4px 10px
+          rgba(0,0,0,0.28)
+        );
+
+    }
+
+
+    body[data-page="home"] .hero-brand-text {
+
+      min-width: 0;
+
+    }
+
+
+    body[data-page="home"] .hero-brand-text strong {
+
+      display: block;
+
+      font-family:
+        "Fraunces",
+        serif;
+
+      font-size:
+        clamp(
+          2rem,
+          4vw,
+          3rem
+        );
+
+      font-weight: 700;
+
+      line-height: 1;
+
+      color: white;
+
+      text-shadow:
+        0 3px 10px
+        rgba(0,0,0,0.35);
+
+    }
+
+
+    body[data-page="home"] .hero-brand-text small {
+
+      display: block;
+
+      margin-top: 8px;
+
+      font-family:
+        "Inter",
+        sans-serif;
+
+      font-size:
+        0.95rem;
+
+      font-weight: 700;
+
+      letter-spacing:
+        0.08em;
+
+      text-transform:
+        uppercase;
+
+      color:
+        rgba(
+          255,
+          255,
+          255,
+          0.92
+        );
+
+    }
+
+
+    /* ===============================================
+       MAIN HERO TITLE
+    =============================================== */
+
+    body[data-page="home"] .hero-content h1 {
+
+      margin:
+        6px
+        auto
+        18px;
+
+      max-width:
+        1000px;
+
+      font-family:
+        "Fraunces",
+        serif;
+
+      font-size:
+        clamp(
+          3rem,
+          6vw,
+          5.4rem
+        );
+
+      line-height:
+        1.02;
+
+      font-weight:
+        700;
+
+      color:
+        #ffffff;
+
+      text-shadow:
+        0 4px 16px
+        rgba(0,0,0,0.35);
+
+    }
+
+
+    body[data-page="home"] .hero-content > p {
+
+      max-width:
+        920px;
+
+      margin:
+        0 auto
+        30px;
+
+      font-family:
+        "Inter",
+        sans-serif;
+
+      font-size:
+        clamp(
+          1rem,
+          1.8vw,
+          1.25rem
+        );
+
+      line-height:
+        1.55;
+
+      font-weight:
+        600;
+
+      color:
+        rgba(
+          255,
+          255,
+          255,
+          0.95
+        );
+
+      text-shadow:
+        0 2px 8px
+        rgba(0,0,0,0.32);
+
+    }
+
+
+    /* ===============================================
+       HERO BUTTONS
+    =============================================== */
+
+    body[data-page="home"] .hero-actions {
+
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+      flex-wrap: wrap;
+
+      gap: 16px;
+
+    }
+
+
+    body[data-page="home"] .hero-actions .btn {
+
+      min-width: 235px;
+
+      min-height: 52px;
+
+      display: inline-flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+      font-size: 0.98rem;
+
+      font-weight: 700;
+
+      border-radius: 8px;
+
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+
+    }
+
+
+    body[data-page="home"] .hero-actions .btn:hover {
+
+      transform:
+        translateY(-2px);
+
+    }
+
+
+    body[data-page="home"] .hero-actions .btn-light {
+
+      background:
+        #ffffff;
+
+      color:
+        #063f42;
+
+      border:
+        1px solid
+        #ffffff;
+
+    }
+
+
+    body[data-page="home"] .hero-actions .btn-outline-light {
+
+      background:
+        rgba(
+          255,
+          255,
+          255,
+          0.06
+        );
+
+      color:
+        #ffffff;
+
+      border:
+        1px solid
+        rgba(
+          255,
+          255,
+          255,
+          0.82
+        );
+
+      backdrop-filter:
+        blur(4px);
+
+    }
+
+
+    body[data-page="home"] .hero-actions .btn-outline-light:hover {
+
+      background:
+        rgba(
+          255,
+          255,
+          255,
+          0.14
+        );
+
+    }
+
+
+    /* ===============================================
+       MOBILE RESPONSIVE
+    =============================================== */
+
+    @media (
+      max-width: 768px
+    ) {
+
+      body[data-page="home"] .hero {
+
+        min-height:
+          100svh;
+
+      }
+
+
+      body[data-page="home"] .hero-content {
+
+        padding:
+          42px
+          18px;
+
+      }
+
+
+      body[data-page="home"] .hero-brand {
+
+        gap:
+          10px;
+
+        margin-bottom:
+          20px;
+
+      }
+
+
+      body[data-page="home"] .hero-brand-logo {
+
+        width:
+          60px;
+
+        height:
+          60px;
+
+      }
+
+
+      body[data-page="home"] .hero-brand-text strong {
+
+        font-size:
+          clamp(
+            1.45rem,
+            7vw,
+            2rem
+          );
+
+      }
+
+
+      body[data-page="home"] .hero-brand-text small {
+
+        font-size:
+          0.72rem;
+
+      }
+
+
+      body[data-page="home"] .hero-content h1 {
+
+        font-size:
+          clamp(
+            2.35rem,
+            10vw,
+            3.4rem
+          );
+
+      }
+
+
+      body[data-page="home"] .hero-actions {
+
+        flex-direction:
+          column;
+
+        width:
+          100%;
+
+      }
+
+
+      body[data-page="home"] .hero-actions .btn {
+
+        width:
+          min(
+            100%,
+            360px
+          );
+
+      }
+
+    }
+
+
+    @media (
+      max-width: 480px
+    ) {
+
+      body[data-page="home"] .hero-brand {
+
+        gap:
+          7px;
+
+      }
+
+
+      body[data-page="home"] .hero-brand-logo {
+
+        width:
+          48px;
+
+        height:
+          48px;
+
+      }
+
+
+      body[data-page="home"] .hero-brand-text strong {
+
+        font-size:
+          1.35rem;
+
+      }
+
+
+      body[data-page="home"] .hero-brand-text small {
+
+        margin-top:
+          5px;
+
+        font-size:
+          0.64rem;
+
+      }
+
+
+      body[data-page="home"] .hero-content h1 {
+
+        margin-top:
+          8px;
+
+      }
+
+    }
+
+  </style>
+
 </head>
+
+
 <body data-page="home">
-  <header class="site-header">
-    <div class="container nav-wrap">
-      <a class="brand" href="index.html" aria-label="Bukal Youth Data Home">
-      <img src="assets/logo.png" alt="Bukal Youth Data logo" />
-      <img src="assets/logosk.png" alt="Second logo" style="height:35px;" />
-      <span>
-      <strong>Bukal Youth Data</strong>
-      <small>Pagbilao, Quezon</small>
-      </span>
-      </a>
-      <nav class="nav-links" aria-label="Main navigation">
-        <a class="btn btn-primary btn-sm" href="login.html">Login Here</a>
-      </nav>
-    </div>
-  </header>
+
 
   <main>
+
+
+    <!-- =================================================
+         HERO
+    ================================================== -->
     <section class="hero">
+
+
+      <!-- BACKGROUND SLIDESHOW -->
       <div class="hero-bg">
-        <div class="hero-slide active" style="background-image: url('assets/brgy hall.png');"></div>
-        <div class="hero-slide" style="background-image: url('assets/hero2.png');"></div>
-        <div class="hero-slide" style="background-image: url('assets/hero3.png');"></div>
-        <div class="hero-slide" style="background-image: url('assets/hero4.png');"></div>
-      </div>
-      <div class="hero-overlay"></div>
 
+        <div
+          class="hero-slide active"
+          style="background-image: url('assets/brgy hall.png');"
+        >
+        </div>
+
+
+        <div
+          class="hero-slide"
+          style="background-image: url('assets/hero2.png');"
+        >
+        </div>
+
+
+        <div
+          class="hero-slide"
+          style="background-image: url('assets/hero3.png');"
+        >
+        </div>
+
+
+        <div
+          class="hero-slide"
+          style="background-image: url('assets/hero4.png');"
+        >
+        </div>
+
+      </div>
+
+
+      <!-- DARK OVERLAY -->
+      <div class="hero-overlay">
+      </div>
+
+
+      <!-- HERO CONTENT -->
       <div class="container hero-content">
-        <h1>Youth Information &amp; Data<br />Analytics System</h1>
-        <p>Empowering Barangay Bukal through comprehensive youth data management and analytics for better community planning and development.</p>
+
+
+        <!-- ============================================
+             BRANDING
+        ============================================= -->
+        <div class="hero-brand">
+
+
+          <!-- BARANGAY LOGO -->
+          <img
+            class="hero-brand-logo"
+            src="assets/logo.png"
+            alt="Barangay Bukal logo"
+          />
+
+
+          <!-- BRAND NAME -->
+          <div class="hero-brand-text">
+
+            <strong>
+              Bukal Youth Data
+            </strong>
+
+            <small>
+              Pagbilao, Quezon
+            </small>
+
+          </div>
+
+
+          <!-- SK LOGO -->
+          <img
+            class="hero-brand-logo"
+            src="assets/logosk.png"
+            alt="Sangguniang Kabataan logo"
+          />
+
+
+        </div>
+
+
+        <!-- ============================================
+             TITLE
+        ============================================= -->
+        <h1>
+
+          Youth Information &amp; Data
+
+          <br />
+
+          Analytics System
+
+        </h1>
+
+
+        <!-- ============================================
+             DESCRIPTION
+        ============================================= -->
+        <p>
+
+          Empowering Barangay Bukal through comprehensive
+          youth data management and analytics for better
+          community planning and development.
+
+        </p>
+
+
+        <!-- ============================================
+             ACTIONS
+        ============================================= -->
         <div class="hero-actions">
-          <a class="btn btn-light" href="youth-register.html">Register as Youth ›</a>
-          <a class="btn btn-outline-light" href="admin-register.html">Admin Access</a>
+
+
+          <a
+            class="btn btn-light"
+            href="youth-register.html"
+          >
+            Register as Youth ›
+          </a>
+
+
+          <a
+            class="btn btn-outline-light"
+            href="login.html"
+          >
+            Login Here
+          </a>
+
+
         </div>
+
+
       </div>
+
     </section>
 
-    <section class="features section-pad" id="features">
+
+
+    <!-- =================================================
+         SYSTEM FEATURES
+    ================================================== -->
+    <section
+      class="features section-pad"
+      id="features"
+    >
+
+
       <div class="container narrow center">
-        <h2>System Features</h2>
-        <p>A comprehensive solution for managing youth data and generating actionable insights for community development.</p>
+
+        <h2>
+          System Features
+        </h2>
+
+        <p>
+          A comprehensive solution for managing youth data
+          and generating actionable insights for community
+          development.
+        </p>
+
       </div>
+
+
       <div class="container feature-grid">
+
+
+        <!-- YOUTH REGISTRATION -->
         <article class="feature-card">
-          <span class="icon-badge"><span class="icon people"></span></span>
-          <h3>Youth Registration</h3>
-          <p>Easy registration system for youth residents to create and manage their profiles.</p>
+
+          <span class="icon-badge">
+
+            <span class="icon people">
+            </span>
+
+          </span>
+
+          <h3>
+            Youth Registration
+          </h3>
+
+          <p>
+            Easy registration system for youth residents
+            to create and manage their profiles.
+          </p>
+
         </article>
+
+
+        <!-- DATA ANALYTICS -->
         <article class="feature-card">
-          <span class="icon-badge"><span class="icon chart"></span></span>
-          <h3>Data Analytics</h3>
-          <p>Comprehensive analytics and visualizations for demographic insights and trends.</p>
+
+          <span class="icon-badge">
+
+            <span class="icon chart">
+            </span>
+
+          </span>
+
+          <h3>
+            Data Analytics
+          </h3>
+
+          <p>
+            Comprehensive analytics and visualizations
+            for demographic insights and trends.
+          </p>
+
         </article>
+
+
+        <!-- SECURE ACCESS -->
         <article class="feature-card">
-          <span class="icon-badge"><span class="icon shield"></span></span>
-          <h3>Secure Access</h3>
-          <p>Role-based access control ensuring data privacy and security for all users.</p>
+
+          <span class="icon-badge">
+
+            <span class="icon shield">
+            </span>
+
+          </span>
+
+          <h3>
+            Secure Access
+          </h3>
+
+          <p>
+            Role-based access control ensuring data
+            privacy and security for all users.
+          </p>
+
         </article>
+
+
+        <!-- REPORT GENERATION -->
         <article class="feature-card">
-          <span class="icon-badge"><span class="icon report"></span></span>
-          <h3>Report Generation</h3>
-          <p>Generate detailed reports and statistics for barangay planning and development.</p>
+
+          <span class="icon-badge">
+
+            <span class="icon report">
+            </span>
+
+          </span>
+
+          <h3>
+            Report Generation
+          </h3>
+
+          <p>
+            Generate detailed reports and statistics
+            for barangay planning and development.
+          </p>
+
         </article>
+
+
       </div>
+
     </section>
 
-    <section class="about-section section-pad slim-top" id="about">
+
+
+    <!-- =================================================
+         ABOUT
+    ================================================== -->
+    <section
+      class="about-section section-pad slim-top"
+      id="about"
+    >
+
+
       <div class="container about-grid">
+
+
         <div class="about-image">
-          <img src="assets/sk.png" alt="Youth community placeholder" />
+
+          <img
+            src="assets/sk.png"
+            alt="Barangay Bukal youth community"
+          />
+
         </div>
+
+
         <div class="about-copy">
-          <h2>About Bukal Youth System</h2>
-          <p>The Youth Information and Data Analytics System is designed to help Barangay Bukal better understand and serve its youth population. Through comprehensive data collection and analysis, we aim to support informed decision-making for youth programs and community development initiatives.</p>
-          <p>Our system provides secure, efficient tools for youth registration, profile management, and administrative oversight, ensuring that every young person in our community is recognized and supported.</p>
-          <a class="btn btn-primary btn-sm" href="youth-register.html">Get Started ›</a>
+
+          <h2>
+            About Bukal Youth System
+          </h2>
+
+
+          <p>
+
+            The Youth Information and Data Analytics System
+            is designed to help Barangay Bukal better
+            understand and serve its youth population.
+
+            Through comprehensive data collection and
+            analysis, the system supports informed
+            decision-making for youth programs and
+            community development initiatives.
+
+          </p>
+
+
+          <p>
+
+            The system provides secure and efficient tools
+            for youth registration, profile management,
+            data analytics, reporting, and administrative
+            oversight to support youth development planning.
+
+          </p>
+
+
+          <a
+            class="btn btn-primary btn-sm"
+            href="youth-register.html"
+          >
+            Get Started ›
+          </a>
+
+
         </div>
+
       </div>
+
     </section>
+
+
   </main>
 
+
+
+  <!-- =================================================
+       FOOTER
+  ================================================== -->
   <footer class="site-footer">
+
     <div class="container center">
-      <div class="footer-title"><span class="pin-icon"></span> Barangay Bukal</div>
-      <p>Pagbilao, Quezon</p>
-      <p>Youth Information &amp; Data Analytics System</p>
-      <small>© 2026 Barangay Bukal. All rights reserved.</small>
+
+
+      <div class="footer-title">
+
+        <span class="pin-icon">
+        </span>
+
+        Barangay Bukal
+
+      </div>
+
+
+      <p>
+        Pagbilao, Quezon
+      </p>
+
+
+      <p>
+        Youth Information &amp; Data Analytics System
+      </p>
+
+
+      <small>
+        © 2026 Barangay Bukal. All rights reserved.
+      </small>
+
+
     </div>
+
   </footer>
 
-  <script type="module" src="assets/app.js"></script>
+
+
+  <!-- =================================================
+       JAVASCRIPT
+  ================================================== -->
+  <script
+    type="module"
+    src="assets/app.js"
+  ></script>
+
+
 </body>
+
 </html>
