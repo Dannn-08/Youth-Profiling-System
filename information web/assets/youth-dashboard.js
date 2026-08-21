@@ -23,145 +23,21 @@ const FIELDS = [
   { key: "fullName", label: "Full Name", type: "text", full: true },
   { key: "birthDate", label: "Birth Date", type: "date" },
   { key: "age", label: "Age", type: "number" },
-
-  {
-    key: "gender",
-    label: "Gender",
-    type: "select",
-    options: [
-      "Male",
-      "Female",
-      "Prefer not to say"
-    ]
-  },
-
-  {
-    key: "address",
-    label: "Address / Purok",
-    type: "text",
-    full: true
-  },
-
-  {
-    key: "contact",
-    label: "Contact Number",
-    type: "tel",
-    full: true
-  },
-
-  {
-    key: "education",
-    label: "Educational Attainment",
-    type: "select",
-    options: [
-      "Elementary",
-      "High School",
-      "Senior High School",
-      "College",
-      "Vocational",
-      "Graduate",
-      "Out of School Youth"
-    ]
-  },
-
-  {
-    key: "educationStatus",
-    label: "Current Education Status",
-    type: "select",
-    options: [
-      "Currently Studying",
-      "Not Studying",
-      "Graduated"
-    ]
-  },
-
-  {
-    key: "employment",
-    label: "Employment Status",
-    type: "select",
-    options: [
-      "Student",
-      "Employed",
-      "Unemployed",
-      "Self-employed"
-    ]
-  },
-
-  {
-    key: "civic",
-    label: "Civic Participation",
-    type: "select",
-    options: [
-      "Active",
-      "Occasional",
-      "Not Active"
-    ]
-  },
-
-  {
-    key: "voterStatus",
-    label: "Voter Registration Status",
-    type: "select",
-    options: [
-      "Registered Voter",
-      "Not Registered"
-    ]
-  },
-
-  {
-    key: "newVoter",
-    label: "New Voter Status",
-    type: "select",
-    options: [
-      "New Voter",
-      "Existing Voter",
-      "Not Applicable"
-    ]
-  },
-
-  {
-    key: "voterParticipation",
-    label: "Voter Participation",
-    type: "select",
-    options: [
-      "Participated",
-      "Not Participated",
-      "Not Applicable"
-    ]
-  },
-
-  {
-    key: "specialNeeds",
-    label: "Special Needs",
-    type: "select",
-    options: [
-      "No",
-      "Yes"
-    ]
-  },
-
-  {
-    key: "assistance",
-    label: "Specific Assistance Needed",
-    type: "text",
-    full: true
-  },
-
-  {
-    key: "hobbies",
-    label: "Hobbies / Skills",
-    type: "text",
-    full: true
-  },
-
-  {
-    key: "sports",
-    label: "Sports Interests",
-    type: "text",
-    full: true
-  }
+  { key: "gender", label: "Gender",type: "select", options: ["Male","Female","Prefer not to say"]},
+  { key: "address", label: "Address / Purok", type: "text", full: true},
+  { key: "contact", label: "Contact Number", type: "tel", full: true},
+  { key: "education", label: "Educational Attainment", type: "select", options: ["Elementary","High School", "Senior High School","College","Vocational","Graduate", "Out of School Youth"]},
+  { key: "educationStatus", label: "Current Education Status", type: "select", options: ["Currently Studying", "Not Studying","Graduated"]},
+  { key: "employment", label: "Employment Status", type: "select", options: ["Student","Employed","Unemployed","Self-employed"]},
+  { key: "civic", label: "Civic Participation",type: "select",options: ["Active","Occasional","Not Active"]},
+  { key: "voterStatus", label: "Voter Registration Status",type: "select",options: ["Registered Voter","Not Registered"]},
+  { key: "newVoter", label: "New Voter Status",type: "select",options: ["New Voter","Existing Voter","Not Applicable"]},
+  { key: "voterParticipation", label: "Voter Participation", type: "select", options: ["Participated","Not Participated","Not Applicable"]},
+  { key: "specialNeeds", label: "Special Needs",type: "select", options: ["No","Yes"]},
+  { key: "assistance", label: "Specific Assistance Needed", type: "text", full: true},
+  { key: "hobbies", label: "Hobbies / Skills", type: "text", full: true},
+  { key: "sports", label: "Sports Interests", type: "text", full: true}
 ];
-
 
 // =====================================================
 // ELEMENTS
