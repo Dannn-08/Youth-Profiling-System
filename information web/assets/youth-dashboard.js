@@ -1,6 +1,6 @@
 import { auth, db } from "./firebase-config.js";
 import { onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { doc, getDoc, updateDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { logActivity } from "./audit-log.js";
 
 // =====================================================
@@ -37,7 +37,6 @@ const editBtn = document.getElementById("editProfileBtn");
 const dialog = document.getElementById("profileDialog");
 const editFieldsEl = document.getElementById("profileEditFields");
 const saveBtn = document.getElementById("saveProfileBtn");
-const announcementsEl = document.getElementById("youthAnnouncements");
 const quickStatsEl = document.getElementById("youthQuickStats");
 
 
@@ -116,7 +115,7 @@ const rows =[...extraFields,...FIELDS]
 
   if (profileViewEl) {
     profileViewEl.innerHTML = `
-    <div class="info-grid">${rows}/div>`;
+    <div class="info-grid">${rows}</div>`;
   }
 }
 
@@ -493,191 +492,6 @@ if (saveBtn) {
 
 
 // =====================================================
-// ANNOUNCEMENTS
-// =====================================================
-
-function getAnnouncementDate(
-  value
-) {
-
-  if (!value) {
-
-    return new Date(0);
-
-  }
-
-
-  if (
-    typeof value.toDate ===
-    "function"
-  ) {
-
-    return value.toDate();
-
-  }
-
-
-  const date =
-    new Date(value);
-
-
-  if (
-    Number.isNaN(
-      date.getTime()
-    )
-  ) {
-
-    return new Date(0);
-
-  }
-
-
-  return date;
-
-}
-
-
-async function loadYouthAnnouncements() {
-
-  if (!announcementsEl) {
-    return;
-  }
-
-
-  announcementsEl.innerHTML =
-    `
-      <p class="empty-state">
-        Loading announcements...
-      </p>
-    `;
-
-
-  try {
-
-    const snap =
-      await getDocs(
-        collection(
-          db,
-          "announcements"
-        )
-      );
-
-
-    const announcements =
-      snap.docs.map(
-        documentSnapshot => ({
-
-          id:
-            documentSnapshot.id,
-
-          ...documentSnapshot.data()
-
-        })
-      );
-
-
-    announcements.sort(
-      (a, b) =>
-
-        getAnnouncementDate(
-          b.createdAt
-        ) -
-
-        getAnnouncementDate(
-          a.createdAt
-        )
-
-    );
-
-
-    if (
-      announcements.length === 0
-    ) {
-
-      announcementsEl.innerHTML =
-        `
-          <p class="empty-state">
-            No announcements available.
-          </p>
-        `;
-
-
-      return;
-
-    }
-
-
-    announcementsEl.innerHTML =
-      announcements
-        .map(
-          announcement => {
-
-            const date =
-              getAnnouncementDate(
-                announcement.createdAt
-              );
-
-
-            return `
-              <div class="summary-box">
-
-                <h3>
-                  ${escapeHtml(
-                    announcement.title
-                  )}
-                </h3>
-
-                <p>
-
-                  <strong>
-                    ${escapeHtml(
-                      announcement.category
-                    )}
-                  </strong>
-
-                  ·
-
-                  ${escapeHtml(
-                    date.toLocaleDateString()
-                  )}
-
-                </p>
-
-                <p>
-                  ${escapeHtml(
-                    announcement.message
-                  )}
-                </p>
-
-              </div>
-            `;
-
-          }
-        )
-        .join("");
-
-
-  } catch (error) {
-
-    console.error(
-      "Announcement load error:",
-      error
-    );
-
-
-    announcementsEl.innerHTML =
-      `
-        <p class="empty-state">
-          Unable to load announcements.
-        </p>
-      `;
-
-  }
-
-}
-
-
-// =====================================================
 // AUTH / PROFILE
 // =====================================================
 
@@ -692,12 +506,6 @@ onAuthStateChanged(
 
     currentUser =
       user;
-
-
-    // Start announcements immediately
-    // while profile is loading.
-
-    loadYouthAnnouncements();
 
 
     try {

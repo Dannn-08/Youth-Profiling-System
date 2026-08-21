@@ -166,11 +166,8 @@ const FIELDS = [
 // =====================================================
 
 let allUsers = [];
-
 let youthList = [];
-
 let adminList = [];
-
 let charts = {};
 
 
@@ -179,215 +176,127 @@ let charts = {};
 // =====================================================
 
 function escapeHtml(value) {
+  const div = document.createElement("div");
 
-  const div =
-    document.createElement("div");
-
-  div.textContent =
-    value ?? "";
+  div.textContent = value ?? "";
 
   return div.innerHTML;
-
 }
 
 
-function calculateAge(
-  birthDateValue
-) {
-
+function calculateAge(birthDateValue) {
   if (!birthDateValue) {
     return null;
   }
 
+  const birthDate = new Date(birthDateValue);
 
-  const birthDate =
-    new Date(
-      birthDateValue
-    );
-
-
-  if (
-    Number.isNaN(
-      birthDate.getTime()
-    )
-  ) {
-
+  if (Number.isNaN(birthDate.getTime())) {
     return null;
-
   }
 
-
-  const today =
-    new Date();
-
+  const today = new Date();
 
   let age =
     today.getFullYear() -
     birthDate.getFullYear();
 
-
   const monthDifference =
     today.getMonth() -
     birthDate.getMonth();
-
 
   if (
     monthDifference < 0 ||
     (
       monthDifference === 0 &&
-      today.getDate() <
-      birthDate.getDate()
+      today.getDate() < birthDate.getDate()
     )
   ) {
-
     age--;
-
   }
 
-
   return age;
-
 }
 
 
-function getYouthStatus(
-  age
-) {
-
-  const numericAge =
-    Number(age);
-
+function getYouthStatus(age) {
+  const numericAge = Number(age);
 
   if (
     numericAge >= 15 &&
     numericAge <= 30
   ) {
-
     return {
-
-      status:
-        "Active",
-
-      eligibility:
-        "Eligible"
-
+      status: "Active",
+      eligibility: "Eligible"
     };
-
   }
 
-
   return {
-
-    status:
-      "Inactive",
-
-    eligibility:
-      "Archived"
-
+    status: "Inactive",
+    eligibility: "Archived"
   };
-
 }
 
 
-function isActiveYouth(
-  youth
-) {
-
+function isActiveYouth(youth) {
   if (
-    youth.status ===
-      "Inactive" ||
-    youth.eligibility ===
-      "Archived"
+    youth.status === "Inactive" ||
+    youth.eligibility === "Archived"
   ) {
-
     return false;
-
   }
 
-
-  const age =
-    Number(
-      youth.age
-    );
-
+  const age = Number(youth.age);
 
   return (
     age >= 15 &&
     age <= 30
   );
-
 }
 
 
-function ageGroup(
-  age
-) {
-
-  const n =
-    Number(age);
-
+function ageGroup(age) {
+  const n = Number(age);
 
   if (
     n >= 15 &&
     n <= 19
   ) {
-
     return "15-19";
-
   }
-
 
   if (
     n >= 20 &&
     n <= 24
   ) {
-
     return "20-24";
-
   }
-
 
   if (
     n >= 25 &&
     n <= 30
   ) {
-
     return "25-30";
-
   }
 
-
   return "Unspecified";
-
 }
 
 
-function countBy(
-  list,
-  keyFn
-) {
-
+function countBy(list, keyFn) {
   const counts = {};
 
+  list.forEach(item => {
+    const key =
+      keyFn(item) ||
+      "Unspecified";
 
-  list.forEach(
-    item => {
-
-      const key =
-        keyFn(item) ||
-        "Unspecified";
-
-
-      counts[key] =
-        (counts[key] || 0) +
-        1;
-
-    }
-  );
-
+    counts[key] =
+      (counts[key] || 0) + 1;
+  });
 
   return counts;
-
 }
 
 
@@ -395,90 +304,54 @@ function countMultiValueField(
   list,
   fieldName
 ) {
-
   const counts = {};
 
+  list.forEach(item => {
+    const values =
+      String(item[fieldName] || "")
+        .split(",")
+        .map(value => value.trim())
+        .filter(Boolean);
 
-  list.forEach(
-    item => {
-
-      const values =
-        String(
-          item[fieldName] ||
-          ""
-        )
-          .split(",")
-          .map(
-            value =>
-              value.trim()
-          )
-          .filter(Boolean);
-
-
-      values.forEach(
-        value => {
-
-          counts[value] =
-            (counts[value] || 0) +
-            1;
-
-        }
-      );
-
-    }
-  );
-
+    values.forEach(value => {
+      counts[value] =
+        (counts[value] || 0) + 1;
+    });
+  });
 
   return counts;
-
 }
 
 
-function getCreatedDate(
-  value
-) {
-
+function getCreatedDate(value) {
   if (!value) {
     return null;
   }
-
 
   if (
     typeof value.toDate ===
     "function"
   ) {
-
     return value.toDate();
-
   }
-
 
   if (
     value instanceof Date
   ) {
-
     return value;
-
   }
 
-
-  const date =
-    new Date(value);
-
+  const date = new Date(value);
 
   if (
     Number.isNaN(
       date.getTime()
     )
   ) {
-
     return null;
-
   }
 
-
   return date;
-
 }
 
 
@@ -486,22 +359,14 @@ function getCreatedDate(
 // BACKGROUND AUDIT LOG
 // =====================================================
 
-function safeLogActivity(
-  data
-) {
-
+function safeLogActivity(data) {
   logActivity(data)
-    .catch(
-      error => {
-
-        console.error(
-          "Audit log error:",
-          error
-        );
-
-      }
-    );
-
+    .catch(error => {
+      console.error(
+        "Audit log error:",
+        error
+      );
+    });
 }
 
 
@@ -514,116 +379,87 @@ const tabButtons =
     ".tab-nav button[data-tab]"
   );
 
-
 const tabPanels =
   document.querySelectorAll(
     ".tab-panel"
   );
 
 
-tabButtons.forEach(
-  btn => {
+tabButtons.forEach(btn => {
+  btn.addEventListener(
+    "click",
+    () => {
+      tabButtons.forEach(
+        button =>
+          button.classList.remove(
+            "active"
+          )
+      );
 
-    btn.addEventListener(
-      "click",
-      () => {
+      tabPanels.forEach(
+        panel =>
+          panel.classList.remove(
+            "active"
+          )
+      );
 
-        tabButtons.forEach(
-          button =>
-            button.classList.remove(
-              "active"
-            )
+      btn.classList.add(
+        "active"
+      );
+
+      const panel =
+        document.getElementById(
+          "tab-" +
+          btn.dataset.tab
         );
 
-
-        tabPanels.forEach(
-          panel =>
-            panel.classList.remove(
-              "active"
-            )
-        );
-
-
-        btn.classList.add(
+      if (panel) {
+        panel.classList.add(
           "active"
         );
-
-
-        const panel =
-          document.getElementById(
-            "tab-" +
-            btn.dataset.tab
-          );
-
-
-        if (panel) {
-
-          panel.classList.add(
-            "active"
-          );
-
-        }
-
       }
-    );
-
-  }
-);
+    }
+  );
+});
 
 
 // =====================================================
-// LOAD USERS ONCE
+// LOAD USERS
 // =====================================================
 
 async function loadUsersData() {
-
   const statCards =
     document.getElementById(
       "statCards"
     );
-
 
   const tableBody =
     document.getElementById(
       "youthTableBody"
     );
 
-
   if (statCards) {
-
-    statCards.innerHTML =
-      `
-        <p class="empty-state">
-          Loading dashboard data...
-        </p>
-      `;
-
+    statCards.innerHTML = `
+      <p class="empty-state">
+        Loading dashboard data...
+      </p>
+    `;
   }
-
 
   if (tableBody) {
-
-    tableBody.innerHTML =
-      `
-        <tr>
-
-          <td
-            colspan="8"
-            class="empty-state"
-          >
-            Loading youth records...
-          </td>
-
-        </tr>
-      `;
-
+    tableBody.innerHTML = `
+      <tr>
+        <td
+          colspan="8"
+          class="empty-state"
+        >
+          Loading youth records...
+        </td>
+      </tr>
+    `;
   }
 
-
   try {
-
-    // ONE USERS COLLECTION READ ONLY
-
     const snap =
       await getDocs(
         collection(
@@ -632,16 +468,13 @@ async function loadUsersData() {
         )
       );
 
-
     allUsers =
       snap.docs.map(
         documentSnapshot => ({
-
           id:
             documentSnapshot.id,
 
           ...documentSnapshot.data()
-
         })
       );
 
@@ -654,59 +487,42 @@ async function loadUsersData() {
       allUsers
         .filter(
           user =>
-            user.role ===
-            "youth"
+            user.role === "youth"
         )
-        .map(
-          user => {
+        .map(user => {
+          const youthData = {
+            ...user
+          };
 
-            const youthData = {
-
-              ...user
-
-            };
-
+          if (
+            youthData.birthDate
+          ) {
+            const calculatedAge =
+              calculateAge(
+                youthData.birthDate
+              );
 
             if (
-              youthData.birthDate
+              calculatedAge !== null
             ) {
-
-              const calculatedAge =
-                calculateAge(
-                  youthData.birthDate
+              const youthStatus =
+                getYouthStatus(
+                  calculatedAge
                 );
 
+              youthData.age =
+                calculatedAge;
 
-              if (
-                calculatedAge !== null
-              ) {
+              youthData.status =
+                youthStatus.status;
 
-                const youthStatus =
-                  getYouthStatus(
-                    calculatedAge
-                  );
-
-
-                youthData.age =
-                  calculatedAge;
-
-
-                youthData.status =
-                  youthStatus.status;
-
-
-                youthData.eligibility =
-                  youthStatus.eligibility;
-
-              }
-
+              youthData.eligibility =
+                youthStatus.eligibility;
             }
-
-
-            return youthData;
-
           }
-        );
+
+          return youthData;
+        });
 
 
     // =================================================
@@ -716,13 +532,12 @@ async function loadUsersData() {
     adminList =
       allUsers.filter(
         user =>
-          user.role ===
-          "admin"
+          user.role === "admin"
       );
 
 
     // =================================================
-    // RENDER LIGHT CONTENT FIRST
+    // RENDER CONTENT
     // =================================================
 
     renderStats();
@@ -734,59 +549,39 @@ async function loadUsersData() {
     renderAdminAccounts();
 
 
-    // =================================================
-    // CHARTS AFTER UI APPEARS
-    // =================================================
-
     requestAnimationFrame(
       () => {
-
         renderCharts();
-
       }
     );
 
-
   } catch (error) {
-
     console.error(
       "Users load error:",
       error
     );
 
-
     if (statCards) {
-
-      statCards.innerHTML =
-        `
-          <p class="empty-state">
-            Unable to load dashboard data.
-          </p>
-        `;
-
+      statCards.innerHTML = `
+        <p class="empty-state">
+          Unable to load dashboard data.
+        </p>
+      `;
     }
-
 
     if (tableBody) {
-
-      tableBody.innerHTML =
-        `
-          <tr>
-
-            <td
-              colspan="8"
-              class="empty-state"
-            >
-              Unable to load youth records.
-            </td>
-
-          </tr>
-        `;
-
+      tableBody.innerHTML = `
+        <tr>
+          <td
+            colspan="8"
+            class="empty-state"
+          >
+            Unable to load youth records.
+          </td>
+        </tr>
+      `;
     }
-
   }
-
 }
 
 
@@ -795,86 +590,67 @@ async function loadUsersData() {
 // =====================================================
 
 function renderStats() {
-
   const activeYouth =
     youthList.filter(
       isActiveYouth
     );
 
-
   const cards = [
-
     {
-
       label:
         "Total Active Youth",
 
       value:
         activeYouth.length
-
     },
 
     {
-
       label:
         "Male",
 
       value:
         activeYouth.filter(
           youth =>
-            youth.gender ===
-            "Male"
+            youth.gender === "Male"
         ).length
-
     },
 
     {
-
       label:
         "Female",
 
       value:
         activeYouth.filter(
           youth =>
-            youth.gender ===
-            "Female"
+            youth.gender === "Female"
         ).length
-
     },
 
     {
-
       label:
         "Students",
 
       value:
         activeYouth.filter(
           youth =>
-            youth.employment ===
-            "Student"
+            youth.employment === "Student"
         ).length
-
     }
-
   ];
-
 
   const container =
     document.getElementById(
       "statCards"
     );
 
-
   if (!container) {
     return;
   }
-
 
   container.innerHTML =
     cards
       .map(
         card => `
-
           <div class="panel stat-card">
 
             <small>
@@ -888,11 +664,9 @@ function renderStats() {
             </strong>
 
           </div>
-
         `
       )
       .join("");
-
 }
 
 
@@ -907,59 +681,42 @@ function drawChart(
   data,
   colors
 ) {
-
   const canvas =
     document.getElementById(
       canvasId
     );
 
-
   if (!canvas) {
     return;
   }
 
-
-  if (
-    charts[canvasId]
-  ) {
-
+  if (charts[canvasId]) {
     charts[
       canvasId
     ].destroy();
-
   }
 
-
   const isDoughnut =
-    type ===
-    "doughnut";
-
+    type === "doughnut";
 
   const isBar =
-    type ===
-    "bar";
-
+    type === "bar";
 
   charts[canvasId] =
     new Chart(
       canvas,
       {
-
         type,
 
         data: {
-
           labels,
 
           datasets: [
-
             {
-
               data,
 
               backgroundColor:
                 colors || [
-
                   "#0a5255",
                   "#d8ad76",
                   "#5f8c8d",
@@ -968,7 +725,6 @@ function drawChart(
                   "#bfcfd0",
                   "#8d6f47",
                   "#c8a77c"
-
                 ],
 
               borderColor:
@@ -990,26 +746,18 @@ function drawChart(
                 isBar
                   ? 5
                   : 0
-
             }
-
           ]
-
         },
 
         options: {
-
-          responsive:
-            true,
+          responsive: true,
 
           maintainAspectRatio:
             false,
 
           animation: {
-
-            duration:
-              100
-
+            duration: 100
           },
 
           cutout:
@@ -1018,48 +766,32 @@ function drawChart(
               : undefined,
 
           plugins: {
-
             legend: {
-
               display:
                 isDoughnut,
 
               position:
                 "bottom"
-
             }
-
           },
 
           scales:
             isBar
               ? {
-
                   y: {
-
                     beginAtZero:
                       true,
 
                     ticks: {
-
-                      precision:
-                        0,
-
-                      stepSize:
-                        1
-
+                      precision: 0,
+                      stepSize: 1
                     }
-
                   }
-
                 }
               : undefined
-
         }
-
       }
     );
-
 }
 
 
@@ -1068,36 +800,28 @@ function drawChart(
 // =====================================================
 
 function renderRegistrationTrendChart() {
-
   const canvas =
     document.getElementById(
       "registrationTrendChart"
     );
 
-
   if (!canvas) {
     return;
   }
 
-
   if (
     charts.registrationTrendChart
   ) {
-
     charts
       .registrationTrendChart
       .destroy();
-
   }
-
 
   const currentYear =
     new Date()
       .getFullYear();
 
-
   const months = [
-
     "Jan",
     "Feb",
     "Mar",
@@ -1110,61 +834,45 @@ function renderRegistrationTrendChart() {
     "Oct",
     "Nov",
     "Dec"
-
   ];
-
 
   const monthly =
     new Array(12)
       .fill(0);
 
-
   youthList.forEach(
     youth => {
-
       const date =
         getCreatedDate(
           youth.createdAt
         );
 
-
       if (!date) {
         return;
       }
-
 
       if (
         date.getFullYear() ===
         currentYear
       ) {
-
         monthly[
           date.getMonth()
         ]++;
-
       }
-
     }
   );
-
 
   charts.registrationTrendChart =
     new Chart(
       canvas,
       {
-
-        type:
-          "line",
+        type: "line",
 
         data: {
-
-          labels:
-            months,
+          labels: months,
 
           datasets: [
-
             {
-
               label:
                 `Youth Registrations ${currentYear}`,
 
@@ -1185,54 +893,34 @@ function renderRegistrationTrendChart() {
 
               fill:
                 true
-
             }
-
           ]
-
         },
 
         options: {
-
-          responsive:
-            true,
+          responsive: true,
 
           maintainAspectRatio:
             false,
 
           animation: {
-
-            duration:
-              100
-
+            duration: 100
           },
 
           scales: {
-
             y: {
-
               beginAtZero:
                 true,
 
               ticks: {
-
-                precision:
-                  0,
-
-                stepSize:
-                  1
-
+                precision: 0,
+                stepSize: 1
               }
-
             }
-
           }
-
         }
-
       }
     );
-
 }
 
 
@@ -1241,7 +929,6 @@ function renderRegistrationTrendChart() {
 // =====================================================
 
 function renderCharts() {
-
   const activeYouth =
     youthList.filter(
       isActiveYouth
@@ -1255,16 +942,11 @@ function renderCharts() {
         youth.gender
     );
 
-
   drawChart(
     "genderChart",
     "doughnut",
-    Object.keys(
-      gender
-    ),
-    Object.values(
-      gender
-    )
+    Object.keys(gender),
+    Object.values(gender)
   );
 
 
@@ -1277,16 +959,11 @@ function renderCharts() {
         )
     );
 
-
   drawChart(
     "ageChart",
     "bar",
-    Object.keys(
-      ages
-    ),
-    Object.values(
-      ages
-    )
+    Object.keys(ages),
+    Object.values(ages)
   );
 
 
@@ -1297,16 +974,11 @@ function renderCharts() {
         youth.education
     );
 
-
   drawChart(
     "educationChart",
     "bar",
-    Object.keys(
-      education
-    ),
-    Object.values(
-      education
-    )
+    Object.keys(education),
+    Object.values(education)
   );
 
 
@@ -1316,7 +988,6 @@ function renderCharts() {
       youth =>
         youth.educationStatus
     );
-
 
   drawChart(
     "educationStatusChart",
@@ -1337,16 +1008,11 @@ function renderCharts() {
         youth.employment
     );
 
-
   drawChart(
     "employmentChart",
     "doughnut",
-    Object.keys(
-      employment
-    ),
-    Object.values(
-      employment
-    )
+    Object.keys(employment),
+    Object.values(employment)
   );
 
 
@@ -1357,16 +1023,11 @@ function renderCharts() {
         youth.voterStatus
     );
 
-
   drawChart(
     "voterChart",
     "doughnut",
-    Object.keys(
-      voter
-    ),
-    Object.values(
-      voter
-    )
+    Object.keys(voter),
+    Object.values(voter)
   );
 
 
@@ -1376,7 +1037,6 @@ function renderCharts() {
       youth =>
         youth.voterParticipation
     );
-
 
   drawChart(
     "voterParticipationChart",
@@ -1397,16 +1057,11 @@ function renderCharts() {
         youth.newVoter
     );
 
-
   drawChart(
     "newVoterChart",
     "doughnut",
-    Object.keys(
-      newVoter
-    ),
-    Object.values(
-      newVoter
-    )
+    Object.keys(newVoter),
+    Object.values(newVoter)
   );
 
 
@@ -1417,16 +1072,11 @@ function renderCharts() {
         youth.civic
     );
 
-
   drawChart(
     "civicChart",
     "doughnut",
-    Object.keys(
-      civic
-    ),
-    Object.values(
-      civic
-    )
+    Object.keys(civic),
+    Object.values(civic)
   );
 
 
@@ -1436,7 +1086,6 @@ function renderCharts() {
       youth =>
         youth.specialNeeds
     );
-
 
   drawChart(
     "specialNeedsChart",
@@ -1456,33 +1105,23 @@ function renderCharts() {
       "sports"
     );
 
-
   const topSports =
     Object
-      .entries(
-        sports
-      )
+      .entries(sports)
       .sort(
         (a, b) =>
-          b[1] -
-          a[1]
+          b[1] - a[1]
       )
-      .slice(
-        0,
-        8
-      );
-
+      .slice(0, 8);
 
   drawChart(
     "sportsChart",
     "bar",
     topSports.map(
-      item =>
-        item[0]
+      item => item[0]
     ),
     topSports.map(
-      item =>
-        item[1]
+      item => item[1]
     )
   );
 
@@ -1493,39 +1132,28 @@ function renderCharts() {
       "hobbies"
     );
 
-
   const topHobbies =
     Object
-      .entries(
-        hobbies
-      )
+      .entries(hobbies)
       .sort(
         (a, b) =>
-          b[1] -
-          a[1]
+          b[1] - a[1]
       )
-      .slice(
-        0,
-        8
-      );
-
+      .slice(0, 8);
 
   drawChart(
     "hobbiesChart",
     "bar",
     topHobbies.map(
-      item =>
-        item[0]
+      item => item[0]
     ),
     topHobbies.map(
-      item =>
-        item[1]
+      item => item[1]
     )
   );
 
 
   renderRegistrationTrendChart();
-
 }
 
 
@@ -1538,30 +1166,25 @@ const searchInput =
     "youthSearch"
   );
 
-
 const filterGender =
   document.getElementById(
     "filterGender"
   );
-
 
 const filterEducation =
   document.getElementById(
     "filterEducation"
   );
 
-
 const filterEmployment =
   document.getElementById(
     "filterEmployment"
   );
 
-
 const filterStatus =
   document.getElementById(
     "filterStatus"
   );
-
 
 const clearFiltersBtn =
   document.getElementById(
@@ -1570,9 +1193,7 @@ const clearFiltersBtn =
 
 
 function populateFilterOptions() {
-
   const eduOptions = [
-
     "Elementary",
     "High School",
     "Senior High School",
@@ -1580,22 +1201,16 @@ function populateFilterOptions() {
     "Vocational",
     "Graduate",
     "Out of School Youth"
-
   ];
 
-
   const empOptions = [
-
     "Student",
     "Employed",
     "Unemployed",
     "Self-employed"
-
   ];
 
-
   if (filterEducation) {
-
     filterEducation.innerHTML =
       `
         <option value="">
@@ -1604,20 +1219,16 @@ function populateFilterOptions() {
       ` +
       eduOptions
         .map(
-          option =>
-            `
-              <option value="${option}">
-                ${option}
-              </option>
-            `
+          option => `
+            <option value="${option}">
+              ${option}
+            </option>
+          `
         )
         .join("");
-
   }
 
-
   if (filterEmployment) {
-
     filterEmployment.innerHTML =
       `
         <option value="">
@@ -1626,22 +1237,18 @@ function populateFilterOptions() {
       ` +
       empOptions
         .map(
-          option =>
-            `
-              <option value="${option}">
-                ${option}
-              </option>
-            `
+          option => `
+            <option value="${option}">
+              ${option}
+            </option>
+          `
         )
         .join("");
-
   }
-
 }
 
 
 function getFilteredYouth() {
-
   const term =
     (
       searchInput?.value ||
@@ -1650,10 +1257,8 @@ function getFilteredYouth() {
       .toLowerCase()
       .trim();
 
-
   return youthList.filter(
     youth => {
-
       const matchesSearch =
         !term ||
 
@@ -1703,17 +1308,13 @@ function getFilteredYouth() {
         (
           filterStatus.value ===
             "active" &&
-          isActiveYouth(
-            youth
-          )
+          isActiveYouth(youth)
         ) ||
 
         (
           filterStatus.value ===
             "inactive" &&
-          !isActiveYouth(
-            youth
-          )
+          !isActiveYouth(youth)
         );
 
 
@@ -1724,10 +1325,8 @@ function getFilteredYouth() {
         matchesEmployment &&
         matchesStatus
       );
-
     }
   );
-
 }
 
 
@@ -1736,58 +1335,45 @@ function getFilteredYouth() {
 // =====================================================
 
 function renderTable() {
-
   const body =
     document.getElementById(
       "youthTableBody"
     );
 
-
   if (!body) {
     return;
   }
 
-
   const filtered =
     getFilteredYouth();
-
 
   if (
     filtered.length === 0
   ) {
-
-    body.innerHTML =
-      `
-        <tr>
-
-          <td
-            colspan="8"
-            class="empty-state"
-          >
-            No youth records found.
-          </td>
-
-        </tr>
-      `;
-
+    body.innerHTML = `
+      <tr>
+        <td
+          colspan="8"
+          class="empty-state"
+        >
+          No youth records found.
+        </td>
+      </tr>
+    `;
   } else {
-
     body.innerHTML =
       filtered
         .map(
           youth => {
-
             const active =
               isActiveYouth(
                 youth
               );
 
-
             const status =
               active
                 ? "Active"
                 : "Inactive / Archived";
-
 
             return `
               <tr>
@@ -1866,11 +1452,9 @@ function renderTable() {
 
               </tr>
             `;
-
           }
         )
         .join("");
-
   }
 
 
@@ -1879,23 +1463,18 @@ function renderTable() {
       "youthCountText"
     );
 
-
   if (countText) {
-
     const activeCount =
       youthList.filter(
         isActiveYouth
       ).length;
 
-
     const archivedCount =
       youthList.length -
       activeCount;
 
-
     countText.textContent =
       `Showing ${filtered.length} of ${youthList.length} youth records • ${activeCount} Active • ${archivedCount} Archived`;
-
   }
 
 
@@ -1903,39 +1482,30 @@ function renderTable() {
     .querySelectorAll(
       "[data-edit]"
     )
-    .forEach(
-      button => {
-
-        button.addEventListener(
-          "click",
-          () =>
-            openYouthDialog(
-              button.dataset.edit
-            )
-        );
-
-      }
-    );
+    .forEach(button => {
+      button.addEventListener(
+        "click",
+        () =>
+          openYouthDialog(
+            button.dataset.edit
+          )
+      );
+    });
 
 
   document
     .querySelectorAll(
       "[data-delete]"
     )
-    .forEach(
-      button => {
-
-        button.addEventListener(
-          "click",
-          () =>
-            deleteYouth(
-              button.dataset.delete
-            )
-        );
-
-      }
-    );
-
+    .forEach(button => {
+      button.addEventListener(
+        "click",
+        () =>
+          deleteYouth(
+            button.dataset.delete
+          )
+      );
+    });
 }
 
 
@@ -1951,30 +1521,23 @@ function renderTable() {
   filterStatus
 ]
   .filter(Boolean)
-  .forEach(
-    element => {
+  .forEach(element => {
+    element.addEventListener(
+      "input",
+      renderTable
+    );
 
-      element.addEventListener(
-        "input",
-        renderTable
-      );
-
-
-      element.addEventListener(
-        "change",
-        renderTable
-      );
-
-    }
-  );
+    element.addEventListener(
+      "change",
+      renderTable
+    );
+  });
 
 
 if (clearFiltersBtn) {
-
   clearFiltersBtn.addEventListener(
     "click",
     () => {
-
       if (searchInput) {
         searchInput.value = "";
       }
@@ -1995,12 +1558,9 @@ if (clearFiltersBtn) {
         filterStatus.value = "";
       }
 
-
       renderTable();
-
     }
   );
-
 }
 
 
@@ -2013,30 +1573,25 @@ const youthDialog =
     "youthDialog"
   );
 
-
 const youthDialogTitle =
   document.getElementById(
     "youthDialogTitle"
   );
-
 
 const youthFieldsEl =
   document.getElementById(
     "adminYouthFields"
   );
 
-
 const saveYouthBtn =
   document.getElementById(
     "saveYouthAdminBtn"
   );
 
-
 const idInput =
   document.querySelector(
     '#adminYouthForm [name="id"]'
   );
-
 
 const openAddYouthBtn =
   document.getElementById(
@@ -2045,134 +1600,120 @@ const openAddYouthBtn =
 
 
 if (openAddYouthBtn) {
-
   openAddYouthBtn.addEventListener(
     "click",
     () =>
-      openYouthDialog(
-        null
-      )
+      openYouthDialog(null)
   );
-
 }
 
 
 function buildYouthFields(
   data = {}
 ) {
-
   if (!youthFieldsEl) {
     return;
   }
 
-
   youthFieldsEl.innerHTML =
     FIELDS
-      .map(
-        field => {
+      .map(field => {
+        const value =
+          data[field.key] ?? "";
 
-          const value =
-            data[field.key] ??
-            "";
-
-
-          const fieldClass =
-            field.full
-              ? "field full"
-              : "field";
+        const fieldClass =
+          field.full
+            ? "field full"
+            : "field";
 
 
-          if (
-            field.type ===
-            "select"
-          ) {
-
-            const options =
-              field.options
-                .map(
-                  option =>
-                    `
-                      <option
-                        value="${escapeHtml(option)}"
-                        ${
-                          option === value
-                            ? "selected"
-                            : ""
-                        }
-                      >
-                        ${escapeHtml(option)}
-                      </option>
-                    `
-                )
-                .join("");
-
-
-            return `
-              <label class="${fieldClass}">
-
-                <span>
-                  ${escapeHtml(field.label)}
-                </span>
-
-                <select name="${field.key}">
-
-                  <option value="">
-                    Select
+        if (
+          field.type === "select"
+        ) {
+          const options =
+            field.options
+              .map(
+                option => `
+                  <option
+                    value="${escapeHtml(option)}"
+                    ${
+                      option === value
+                        ? "selected"
+                        : ""
+                    }
+                  >
+                    ${escapeHtml(option)}
                   </option>
-
-                  ${options}
-
-                </select>
-
-              </label>
-            `;
-
-          }
-
-
-          if (
-            field.key ===
-            "age"
-          ) {
-
-            return `
-              <label class="${fieldClass}">
-
-                <span>
-                  ${escapeHtml(field.label)}
-                </span>
-
-                <input
-                  type="number"
-                  name="${field.key}"
-                  value="${escapeHtml(value)}"
-                  readonly
-                />
-
-              </label>
-            `;
-
-          }
-
+                `
+              )
+              .join("");
 
           return `
             <label class="${fieldClass}">
 
               <span>
-                ${escapeHtml(field.label)}
+                ${escapeHtml(
+                  field.label
+                )}
+              </span>
+
+              <select name="${field.key}">
+
+                <option value="">
+                  Select
+                </option>
+
+                ${options}
+
+              </select>
+
+            </label>
+          `;
+        }
+
+
+        if (
+          field.key === "age"
+        ) {
+          return `
+            <label class="${fieldClass}">
+
+              <span>
+                ${escapeHtml(
+                  field.label
+                )}
               </span>
 
               <input
-                type="${field.type}"
+                type="number"
                 name="${field.key}"
                 value="${escapeHtml(value)}"
+                readonly
               />
 
             </label>
           `;
-
         }
-      )
+
+
+        return `
+          <label class="${fieldClass}">
+
+            <span>
+              ${escapeHtml(
+                field.label
+              )}
+            </span>
+
+            <input
+              type="${field.type}"
+              name="${field.key}"
+              value="${escapeHtml(value)}"
+            />
+
+          </label>
+        `;
+      })
       .join("");
 
 
@@ -2180,7 +1721,6 @@ function buildYouthFields(
     youthFieldsEl.querySelector(
       '[name="birthDate"]'
     );
-
 
   const ageInput =
     youthFieldsEl.querySelector(
@@ -2192,92 +1732,65 @@ function buildYouthFields(
     birthDateInput &&
     ageInput
   ) {
-
     birthDateInput.addEventListener(
       "change",
       () => {
-
         const age =
           calculateAge(
             birthDateInput.value
           );
 
-
         ageInput.value =
           age !== null
             ? age
             : "";
-
       }
     );
-
   }
-
 }
 
 
 function openYouthDialog(
   youthId
 ) {
-
   if (
     !youthDialog ||
     !idInput
   ) {
-
     return;
-
   }
 
-
   if (youthId) {
-
     const existing =
       youthList.find(
         youth =>
-          youth.id ===
-          youthId
+          youth.id === youthId
       );
 
-
     if (youthDialogTitle) {
-
       youthDialogTitle.textContent =
         "Edit Youth Profile";
-
     }
-
 
     idInput.value =
       youthId;
 
-
     buildYouthFields(
-      existing ||
-      {}
+      existing || {}
     );
 
   } else {
-
     if (youthDialogTitle) {
-
       youthDialogTitle.textContent =
         "Add Youth Profile";
-
     }
 
-
-    idInput.value =
-      "";
-
+    idInput.value = "";
 
     buildYouthFields({});
-
   }
 
-
   youthDialog.showModal();
-
 }
 
 
@@ -2286,84 +1799,63 @@ function openYouthDialog(
 // =====================================================
 
 if (saveYouthBtn) {
-
   saveYouthBtn.addEventListener(
     "click",
     async () => {
-
       saveYouthBtn.disabled =
         true;
-
 
       saveYouthBtn.textContent =
         "Saving...";
 
-
       const payload = {};
 
+      FIELDS.forEach(field => {
+        const input =
+          youthFieldsEl
+            ?.querySelector(
+              `[name="${field.key}"]`
+            );
 
-      FIELDS.forEach(
-        field => {
-
-          const input =
-            youthFieldsEl
-              ?.querySelector(
-                `[name="${field.key}"]`
-              );
-
-
-          if (!input) {
-            return;
-          }
-
-
-          payload[field.key] =
-            field.type ===
-            "number"
-              ? Number(
-                  input.value
-                )
-              : input.value.trim();
-
+        if (!input) {
+          return;
         }
-      );
+
+        payload[field.key] =
+          field.type === "number"
+            ? Number(
+                input.value
+              )
+            : input.value.trim();
+      });
 
 
       if (
         payload.birthDate
       ) {
-
         const calculatedAge =
           calculateAge(
             payload.birthDate
           );
 
-
         if (
           calculatedAge === null
         ) {
-
           alert(
             "Please enter a valid birth date."
           );
 
-
           saveYouthBtn.disabled =
             false;
-
 
           saveYouthBtn.textContent =
             "Save Profile";
 
-
           return;
-
         }
-
 
         payload.age =
           calculatedAge;
-
       }
 
 
@@ -2372,29 +1864,23 @@ if (saveYouthBtn) {
           payload.age
         );
 
-
       payload.status =
         youthStatus.status;
-
 
       payload.eligibility =
         youthStatus.eligibility;
 
-
       payload.role =
         "youth";
-
 
       payload.updatedAt =
         new Date();
 
 
       try {
-
         if (
           idInput.value
         ) {
-
           await updateDoc(
             doc(
               db,
@@ -2404,9 +1890,7 @@ if (saveYouthBtn) {
             payload
           );
 
-
           safeLogActivity({
-
             email:
               auth.currentUser
                 ?.email,
@@ -2419,14 +1903,11 @@ if (saveYouthBtn) {
 
             details:
               `${payload.fullName} • Age ${payload.age} • ${payload.status}`
-
           });
 
         } else {
-
           payload.createdAt =
             new Date();
-
 
           await addDoc(
             collection(
@@ -2436,9 +1917,7 @@ if (saveYouthBtn) {
             payload
           );
 
-
           safeLogActivity({
-
             email:
               auth.currentUser
                 ?.email,
@@ -2451,50 +1930,37 @@ if (saveYouthBtn) {
 
             details:
               `${payload.fullName} • Age ${payload.age} • ${payload.status}`
-
           });
-
         }
 
 
         youthDialog.close();
 
-
         await loadUsersData();
-
 
         alert(
           "Youth profile saved!"
         );
 
-
       } catch (error) {
-
         console.error(
           "Save youth error:",
           error
         );
 
-
         alert(
           "Something went wrong while saving. Please try again."
         );
 
-
       } finally {
-
         saveYouthBtn.disabled =
           false;
 
-
         saveYouthBtn.textContent =
           "Save Profile";
-
       }
-
     }
   );
-
 }
 
 
@@ -2505,28 +1971,22 @@ if (saveYouthBtn) {
 async function deleteYouth(
   youthId
 ) {
-
   const confirmed =
     confirm(
       "Are you sure you want to delete this youth profile? This cannot be undone."
     );
 
-
   if (!confirmed) {
     return;
   }
 
-
   const target =
     youthList.find(
       youth =>
-        youth.id ===
-        youthId
+        youth.id === youthId
     );
 
-
   try {
-
     await deleteDoc(
       doc(
         db,
@@ -2535,9 +1995,7 @@ async function deleteYouth(
       )
     );
 
-
     safeLogActivity({
-
       email:
         auth.currentUser
           ?.email,
@@ -2551,27 +2009,20 @@ async function deleteYouth(
       details:
         target?.fullName ||
         youthId
-
     });
-
 
     await loadUsersData();
 
-
   } catch (error) {
-
     console.error(
       "Delete youth error:",
       error
     );
 
-
     alert(
       "Something went wrong while deleting. Please try again."
     );
-
   }
-
 }
 
 
@@ -2580,26 +2031,21 @@ async function deleteYouth(
 // =====================================================
 
 function renderReports() {
-
   const reportSummary =
     document.getElementById(
       "reportSummary"
     );
 
-
   if (!reportSummary) {
     return;
   }
-
 
   const activeYouth =
     youthList.filter(
       isActiveYouth
     );
 
-
   const categories = [
-
     [
       "Youth Status",
       {
@@ -2692,7 +2138,6 @@ function renderReports() {
           youth.specialNeeds
       )
     ]
-
   ];
 
 
@@ -2700,25 +2145,20 @@ function renderReports() {
     categories
       .map(
         ([title, counts]) => {
-
           const items =
             Object
-              .entries(
-                counts
-              )
+              .entries(counts)
               .map(
-                ([key, value]) =>
-                  `
-                    <li>
-                      ${escapeHtml(key)}:
-                      <strong>
-                        ${value}
-                      </strong>
-                    </li>
-                  `
+                ([key, value]) => `
+                  <li>
+                    ${escapeHtml(key)}:
+                    <strong>
+                      ${value}
+                    </strong>
+                  </li>
+                `
               )
               .join("");
-
 
           return `
             <div class="summary-box">
@@ -2736,11 +2176,9 @@ function renderReports() {
 
             </div>
           `;
-
         }
       )
       .join("");
-
 }
 
 
@@ -2755,13 +2193,10 @@ const printReportBtn =
 
 
 if (printReportBtn) {
-
   printReportBtn.addEventListener(
     "click",
     () => {
-
       safeLogActivity({
-
         email:
           auth.currentUser
             ?.email,
@@ -2774,15 +2209,11 @@ if (printReportBtn) {
 
         details:
           "Print / PDF youth report"
-
       });
 
-
       window.print();
-
     }
   );
-
 }
 
 
@@ -2797,13 +2228,10 @@ const downloadCsvBtn =
 
 
 if (downloadCsvBtn) {
-
   downloadCsvBtn.addEventListener(
     "click",
     () => {
-
       const headers = [
-
         "fullName",
         "email",
         "birthDate",
@@ -2824,39 +2252,30 @@ if (downloadCsvBtn) {
         "assistance",
         "hobbies",
         "sports"
-
       ];
 
 
       const rows =
         youthList.map(
           youth =>
-
             headers
               .map(
                 header =>
-
                   `"${String(
-                    youth[header] ??
-                    ""
+                    youth[header] ?? ""
                   ).replace(
                     /"/g,
                     '""'
                   )}"`
-
               )
               .join(",")
-
         );
 
 
       const csv =
         [
-
           headers.join(","),
-
           ...rows
-
         ].join("\n");
 
 
@@ -2881,17 +2300,12 @@ if (downloadCsvBtn) {
           "a"
         );
 
-
-      a.href =
-        url;
-
+      a.href = url;
 
       a.download =
         "bukal-youth-data.csv";
 
-
       a.click();
-
 
       URL.revokeObjectURL(
         url
@@ -2899,7 +2313,6 @@ if (downloadCsvBtn) {
 
 
       safeLogActivity({
-
         email:
           auth.currentUser
             ?.email,
@@ -2912,12 +2325,9 @@ if (downloadCsvBtn) {
 
         details:
           "Downloaded youth data CSV"
-
       });
-
     }
   );
-
 }
 
 
@@ -2926,39 +2336,30 @@ if (downloadCsvBtn) {
 // =====================================================
 
 function renderAdminAccounts() {
-
   const body =
     document.getElementById(
       "accountsTableBody"
     );
 
-
   if (!body) {
     return;
   }
 
-
   if (
     adminList.length === 0
   ) {
-
-    body.innerHTML =
-      `
-        <tr>
-
-          <td
-            colspan="5"
-            class="empty-state"
-          >
-            No admin accounts found.
-          </td>
-
-        </tr>
-      `;
-
+    body.innerHTML = `
+      <tr>
+        <td
+          colspan="5"
+          class="empty-state"
+        >
+          No admin accounts found.
+        </td>
+      </tr>
+    `;
 
     return;
-
   }
 
 
@@ -2966,7 +2367,6 @@ function renderAdminAccounts() {
     adminList
       .map(
         admin => `
-
           <tr>
 
             <td>
@@ -2998,11 +2398,9 @@ function renderAdminAccounts() {
             </td>
 
           </tr>
-
         `
       )
       .join("");
-
 }
 
 
@@ -3011,20 +2409,16 @@ function renderAdminAccounts() {
 // =====================================================
 
 async function loadAuditLogs() {
-
   const tbody =
     document.getElementById(
       "auditTableBody"
     );
 
-
   if (!tbody) {
     return;
   }
 
-
   try {
-
     const snap =
       await getDocs(
         collection(
@@ -3033,30 +2427,25 @@ async function loadAuditLogs() {
         )
       );
 
-
     const logs =
       snap.docs.map(
         documentSnapshot => ({
-
           id:
             documentSnapshot.id,
 
           ...documentSnapshot.data()
-
         })
       );
 
 
     logs.sort(
       (a, b) => {
-
         const aTime =
           a.timestamp?.toDate
             ? a.timestamp.toDate()
             : new Date(
                 a.timestamp
               );
-
 
         const bTime =
           b.timestamp?.toDate
@@ -3065,12 +2454,10 @@ async function loadAuditLogs() {
                 b.timestamp
               );
 
-
         return (
           bTime -
           aTime
         );
-
       }
     );
 
@@ -3078,24 +2465,18 @@ async function loadAuditLogs() {
     if (
       logs.length === 0
     ) {
-
-      tbody.innerHTML =
-        `
-          <tr>
-
-            <td
-              colspan="5"
-              class="empty-state"
-            >
-              No activity recorded yet.
-            </td>
-
-          </tr>
-        `;
-
+      tbody.innerHTML = `
+        <tr>
+          <td
+            colspan="5"
+            class="empty-state"
+          >
+            No activity recorded yet.
+          </td>
+        </tr>
+      `;
 
       return;
-
     }
 
 
@@ -3103,14 +2484,12 @@ async function loadAuditLogs() {
       logs
         .map(
           log => {
-
             const time =
               log.timestamp?.toDate
                 ? log.timestamp.toDate()
                 : new Date(
                     log.timestamp
                   );
-
 
             return `
               <tr>
@@ -3147,21 +2526,16 @@ async function loadAuditLogs() {
 
               </tr>
             `;
-
           }
         )
         .join("");
 
-
   } catch (error) {
-
     console.error(
       "Audit load error:",
       error
     );
-
   }
-
 }
 
 
@@ -3176,24 +2550,19 @@ const clearAuditBtn =
 
 
 if (clearAuditBtn) {
-
   clearAuditBtn.addEventListener(
     "click",
     async () => {
-
       const confirmed =
         confirm(
           "Clear all audit log entries? This cannot be undone."
         );
 
-
       if (!confirmed) {
         return;
       }
 
-
       try {
-
         const snap =
           await getDocs(
             collection(
@@ -3202,12 +2571,9 @@ if (clearAuditBtn) {
             )
           );
 
-
         await Promise.all(
-
           snap.docs.map(
             item =>
-
               deleteDoc(
                 doc(
                   db,
@@ -3215,462 +2581,23 @@ if (clearAuditBtn) {
                   item.id
                 )
               )
-
           )
-
         );
-
 
         await loadAuditLogs();
 
-
       } catch (error) {
-
         console.error(
+          "Clear audit error:",
           error
         );
 
-      }
-
-    }
-  );
-
-}
-
-
-// =====================================================
-// ANNOUNCEMENTS
-// =====================================================
-
-const announcementForm =
-  document.getElementById(
-    "announcementForm"
-  );
-
-
-const announcementTitle =
-  document.getElementById(
-    "announcementTitle"
-  );
-
-
-const announcementCategory =
-  document.getElementById(
-    "announcementCategory"
-  );
-
-
-const announcementMessage =
-  document.getElementById(
-    "announcementMessage"
-  );
-
-
-const publishAnnouncementBtn =
-  document.getElementById(
-    "publishAnnouncementBtn"
-  );
-
-
-const announcementTableBody =
-  document.getElementById(
-    "announcementTableBody"
-  );
-
-
-function getAnnouncementDate(
-  value
-) {
-
-  if (!value) {
-
-    return new Date(0);
-
-  }
-
-
-  if (
-    typeof value.toDate ===
-    "function"
-  ) {
-
-    return value.toDate();
-
-  }
-
-
-  const date =
-    new Date(value);
-
-
-  if (
-    Number.isNaN(
-      date.getTime()
-    )
-  ) {
-
-    return new Date(0);
-
-  }
-
-
-  return date;
-
-}
-
-
-async function loadAnnouncements() {
-
-  if (!announcementTableBody) {
-    return;
-  }
-
-
-  try {
-
-    const snap =
-      await getDocs(
-        collection(
-          db,
-          "announcements"
-        )
-      );
-
-
-    const announcements =
-      snap.docs.map(
-        item => ({
-
-          id:
-            item.id,
-
-          ...item.data()
-
-        })
-      );
-
-
-    announcements.sort(
-      (a, b) =>
-
-        getAnnouncementDate(
-          b.createdAt
-        ) -
-
-        getAnnouncementDate(
-          a.createdAt
-        )
-
-    );
-
-
-    if (
-      announcements.length === 0
-    ) {
-
-      announcementTableBody.innerHTML =
-        `
-          <tr>
-
-            <td
-              colspan="5"
-              class="empty-state"
-            >
-              No announcements published yet.
-            </td>
-
-          </tr>
-        `;
-
-
-      return;
-
-    }
-
-
-    announcementTableBody.innerHTML =
-      announcements
-        .map(
-          announcement => {
-
-            const date =
-              getAnnouncementDate(
-                announcement.createdAt
-              );
-
-
-            return `
-              <tr>
-
-                <td>
-                  ${escapeHtml(
-                    date.toLocaleString()
-                  )}
-                </td>
-
-                <td>
-                  ${escapeHtml(
-                    announcement.category
-                  )}
-                </td>
-
-                <td>
-                  <strong>
-                    ${escapeHtml(
-                      announcement.title
-                    )}
-                  </strong>
-                </td>
-
-                <td>
-                  ${escapeHtml(
-                    announcement.message
-                  )}
-                </td>
-
-                <td>
-
-                  <button
-                    class="action-btn delete"
-                    data-delete-announcement="${announcement.id}"
-                  >
-                    🗑
-                  </button>
-
-                </td>
-
-              </tr>
-            `;
-
-          }
-        )
-        .join("");
-
-
-    document
-      .querySelectorAll(
-        "[data-delete-announcement]"
-      )
-      .forEach(
-        button => {
-
-          button.addEventListener(
-            "click",
-            () =>
-              deleteAnnouncement(
-                button.dataset
-                  .deleteAnnouncement
-              )
-          );
-
-        }
-      );
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-  }
-
-}
-
-
-if (announcementForm) {
-
-  announcementForm.addEventListener(
-    "submit",
-    async event => {
-
-      event.preventDefault();
-
-
-      const title =
-        announcementTitle
-          ?.value
-          .trim();
-
-
-      const category =
-        announcementCategory
-          ?.value;
-
-
-      const message =
-        announcementMessage
-          ?.value
-          .trim();
-
-
-      if (
-        !title ||
-        !category ||
-        !message
-      ) {
-
         alert(
-          "Please complete all announcement fields."
+          "Something went wrong while clearing the audit logs."
         );
-
-
-        return;
-
       }
-
-
-      if (publishAnnouncementBtn) {
-
-        publishAnnouncementBtn.disabled =
-          true;
-
-
-        publishAnnouncementBtn.textContent =
-          "Publishing...";
-
-      }
-
-
-      try {
-
-        await addDoc(
-          collection(
-            db,
-            "announcements"
-          ),
-          {
-
-            title,
-
-            category,
-
-            message,
-
-            createdAt:
-              new Date(),
-
-            createdBy:
-              auth.currentUser
-                ?.email ||
-              "Admin"
-
-          }
-        );
-
-
-        safeLogActivity({
-
-          email:
-            auth.currentUser
-              ?.email,
-
-          role:
-            "admin",
-
-          activity:
-            "Published announcement",
-
-          details:
-            title
-
-        });
-
-
-        announcementForm.reset();
-
-
-        await loadAnnouncements();
-
-
-        alert(
-          "Announcement published successfully!"
-        );
-
-
-      } catch (error) {
-
-        console.error(
-          error
-        );
-
-
-      } finally {
-
-        if (publishAnnouncementBtn) {
-
-          publishAnnouncementBtn.disabled =
-            false;
-
-
-          publishAnnouncementBtn.textContent =
-            "Publish Announcement";
-
-        }
-
-      }
-
     }
   );
-
-}
-
-
-async function deleteAnnouncement(
-  announcementId
-) {
-
-  const confirmed =
-    confirm(
-      "Delete this announcement? This cannot be undone."
-    );
-
-
-  if (!confirmed) {
-    return;
-  }
-
-
-  try {
-
-    await deleteDoc(
-      doc(
-        db,
-        "announcements",
-        announcementId
-      )
-    );
-
-
-    safeLogActivity({
-
-      email:
-        auth.currentUser
-          ?.email,
-
-      role:
-        "admin",
-
-      activity:
-        "Deleted announcement",
-
-      details:
-        announcementId
-
-    });
-
-
-    await loadAnnouncements();
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-  }
-
 }
 
 
@@ -3681,14 +2608,10 @@ async function deleteAnnouncement(
 populateFilterOptions();
 
 
-// Start independent Firebase reads together.
+// Load dashboard data and audit logs together.
+// Announcement loading has been completely removed.
 
 Promise.allSettled([
-
   loadUsersData(),
-
-  loadAuditLogs(),
-
-  loadAnnouncements()
-
+  loadAuditLogs()
 ]);
