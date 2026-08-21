@@ -31,428 +31,94 @@ const FIELDS = [
 // ELEMENTS
 // =====================================================
 
-const welcomeEl =
-  document.getElementById(
-    "youthWelcome"
-  );
+const welcomeEl = document.getElementById("youthWelcome");
+const profileViewEl = document.getElementById("youthProfileView");
+const editBtn = document.getElementById("editProfileBtn");
+const dialog = document.getElementById("profileDialog");
+const editFieldsEl = document.getElementById("profileEditFields");
+const saveBtn = document.getElementById("saveProfileBtn");
+const announcementsEl = document.getElementById("youthAnnouncements");
+const quickStatsEl = document.getElementById("youthQuickStats");
 
 
-const profileViewEl =
-  document.getElementById(
-    "youthProfileView"
-  );
-
-
-const editBtn =
-  document.getElementById(
-    "editProfileBtn"
-  );
-
-
-const dialog =
-  document.getElementById(
-    "profileDialog"
-  );
-
-
-const editFieldsEl =
-  document.getElementById(
-    "profileEditFields"
-  );
-
-
-const saveBtn =
-  document.getElementById(
-    "saveProfileBtn"
-  );
-
-
-const announcementsEl =
-  document.getElementById(
-    "youthAnnouncements"
-  );
-
-
-const quickStatsEl =
-  document.getElementById(
-    "youthQuickStats"
-  );
-
-
-if (profileViewEl) {
-
-  profileViewEl.innerHTML =
-    `
-      <p class="empty-state">
-        Loading your profile...
-      </p>
-    `;
-
-}
-
-
-let currentUser =
-  null;
-
-
-let currentData =
-  null;
-
+if (profileViewEl) {profileViewEl.innerHTML = `<p class="empty-state"> Loading your profile...</p>`;}
+let currentUser = null;
+let currentData = null;
 
 // =====================================================
 // HELPERS
 // =====================================================
 
-function escapeHtml(
-  value
-) {
+function escapeHtml(value) {const div = document.createElement( "div"); div.textContent = value ?? ""; return div.innerHTML;}
+function calculateAge(birthDateValue) { if (!birthDateValue) {return null;} 
 
-  const div =
-    document.createElement(
-      "div"
-    );
+const birthDate = new Date(birthDateValue);
+  if ( Number.isNaN(birthDate.getTime())) {return null;}
 
+const today = new Date(); let age = today.getFullYear() - birthDate.getFullYear();
 
-  div.textContent =
-    value ?? "";
+const monthDifference = today.getMonth() - birthDate.getMonth();
+  if (monthDifference < 0 || (monthDifference === 0 &&today.getDate() < birthDate.getDate())) {age--;}return age;}
 
+function getYouthStatus(age) {
+  if (age >= 15 && age <= 30) {return {status:"Active",eligibility:"Eligible"};}return {status:"Inactive",eligibility:"Archived"};}
 
-  return div.innerHTML;
-
-}
-
-
-function calculateAge(
-  birthDateValue
-) {
-
-  if (!birthDateValue) {
-    return null;
-  }
-
-
-  const birthDate =
-    new Date(
-      birthDateValue
-    );
-
-
-  if (
-    Number.isNaN(
-      birthDate.getTime()
-    )
-  ) {
-
-    return null;
-
-  }
-
-
-  const today =
-    new Date();
-
-
-  let age =
-    today.getFullYear() -
-    birthDate.getFullYear();
-
-
-  const monthDifference =
-    today.getMonth() -
-    birthDate.getMonth();
-
-
-  if (
-    monthDifference < 0 ||
-    (
-      monthDifference === 0 &&
-      today.getDate() <
-      birthDate.getDate()
-    )
-  ) {
-
-    age--;
-
-  }
-
-
-  return age;
-
-}
-
-
-function getYouthStatus(
-  age
-) {
-
-  if (
-    age >= 15 &&
-    age <= 30
-  ) {
-
-    return {
-
-      status:
-        "Active",
-
-      eligibility:
-        "Eligible"
-
-    };
-
-  }
-
-
-  return {
-
-    status:
-      "Inactive",
-
-    eligibility:
-      "Archived"
-
-  };
-
-}
-
-
-function safeLogActivity(
-  data
-) {
-
-  logActivity(
-    data
-  )
-    .catch(
-      error => {
-
-        console.error(
-          "Audit log error:",
-          error
-        );
-
+function safeLogActivity(data) {logActivity(data).catch(error => {console.error("Audit log error:",error);
       }
     );
-
 }
-
 
 // =====================================================
 // QUICK STATS
 // =====================================================
 
-function renderQuickStats(
-  data
-) {
+function renderQuickStats(data) {
+  if (!quickStatsEl) {return;}
 
-  if (!quickStatsEl) {
-    return;
-  }
-
-
-  const stats = [
-
-    {
-
-      label:
-        "Age",
-
-      value:
-        data.age ||
-        "—"
-
-    },
-
-    {
-
-      label:
-        "Status",
-
-      value:
-        data.status ||
-        "—"
-
-    },
-
-    {
-
-      label:
-        "Eligibility",
-
-      value:
-        data.eligibility ||
-        "—"
-
-    },
-
-    {
-
-      label:
-        "Education",
-
-      value:
-        data.educationStatus ||
-        data.education ||
-        "—"
-
-    },
-
-    {
-
-      label:
-        "Employment",
-
-      value:
-        data.employment ||
-        "—"
-
-    },
-
-    {
-
-      label:
-        "Voter Status",
-
-      value:
-        data.voterStatus ||
-        "—"
-
-    }
-
+const stats = [
+  { label:"Age", value: data.age ||"—"},
+  { label:"Status", value: data.status ||"—"},
+  { label:"Eligibility", value: data.eligibility ||"—"},
+  { label:"Education", value: data.educationStatus || data.education ||"—"},
+  { label:"Employment", value: data.employment ||"—"},
+  { label:"Voter Status", value:  data.voterStatus ||"—"}
   ];
 
-
-  quickStatsEl.innerHTML =
-    stats
-      .map(
-        stat => `
-
-          <div class="panel stat-card">
-
-            <small>
-              ${escapeHtml(
-                stat.label
-              )}
-            </small>
-
-            <strong>
-              ${escapeHtml(
-                stat.value
-              )}
-            </strong>
-
-          </div>
-
-        `
-      )
-      .join("");
-
+  quickStatsEl.innerHTML = stats.map(stat => `<div class="panel stat-card">
+    <small>${escapeHtml(stat.label)}</small>
+    <strong>${escapeHtml(stat.value)}</strong>
+    </div>`).join("");
 }
-
 
 // =====================================================
 // PROFILE VIEW
 // =====================================================
 
-function renderProfileView(
-  data
-) {
+function renderProfileView(data) {
+  if (welcomeEl) {welcomeEl.textContent ="Welcome, " +(data.fullName ||"Youth");}renderQuickStats(data );
 
-  if (welcomeEl) {
-
-    welcomeEl.textContent =
-      "Welcome, " +
-      (
-        data.fullName ||
-        "Youth"
-      );
-
-  }
-
-
-  renderQuickStats(
-    data
-  );
-
-
-  const extraFields = [
-
-    {
-      key:
-        "email",
-      label:
-        "Email"
-    },
-
-    {
-      key:
-        "status",
-      label:
-        "Status"
-    },
-
-    {
-      key:
-        "eligibility",
-      label:
-        "Eligibility"
-    }
-
+const extraFields = [
+  { key:"email",label:"Email"},
+  { key:"status",label:"Status"},
+  { key:"eligibility",label:"Eligibility"}
   ];
 
+const rows =[...extraFields,...FIELDS]
+  .map(field => {const value =data[field.key] ||"";
+  return `<div class="info-item">
 
-  const rows =
-    [
-      ...extraFields,
-      ...FIELDS
-    ]
-      .map(
-        field => {
+  <small>${escapeHtml(field.label)}</small>
+  <span>${escapeHtml(value) ||"&mdash;"}</span>
 
-          const value =
-            data[field.key] ||
-            "";
-
-
-          return `
-            <div class="info-item">
-
-              <small>
-                ${escapeHtml(
-                  field.label
-                )}
-              </small>
-
-              <span>
-                ${
-                  escapeHtml(
-                    value
-                  ) ||
-                  "&mdash;"
-                }
-              </span>
-
-            </div>
-          `;
-
-        }
-      )
-      .join("");
-
+  </div>`;
+  }
+  ).join("");
 
   if (profileViewEl) {
-
-    profileViewEl.innerHTML =
-      `
-        <div class="info-grid">
-          ${rows}
-        </div>
-      `;
-
+    profileViewEl.innerHTML = `
+    <div class="info-grid">${rows}/div>`;
   }
-
 }
-
 
 // =====================================================
 // EDIT FIELDS
