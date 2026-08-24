@@ -162,6 +162,136 @@ form.addEventListener(
       getYouthStatus(age);
 
 
+    // =================================================
+    // GET NEW SK / KK INFORMATION
+    // =================================================
+
+    const civilStatus =
+      document
+        .querySelector(
+          '[name="civilStatus"]'
+        )
+        .value;
+
+
+    const registeredSKVoter =
+      document
+        .querySelector(
+          '[name="registeredSKVoter"]'
+        )
+        .value;
+
+
+    const votedLastSKElection =
+      document
+        .querySelector(
+          '[name="votedLastSKElection"]'
+        )
+        .value;
+
+
+    const kkAssemblyAttended =
+      document
+        .querySelector(
+          '[name="kkAssemblyAttended"]'
+        )
+        .value;
+
+
+    const kkAttendanceCount =
+      document
+        .querySelector(
+          '[name="kkAttendanceCount"]'
+        )
+        .value;
+
+
+    const kkNoReason =
+      document
+        .querySelector(
+          '[name="kkNoReason"]'
+        )
+        .value;
+
+
+    // =================================================
+    // VALIDATE SK / KK INFORMATION
+    // =================================================
+
+    if (
+      !civilStatus
+    ) {
+
+      alert(
+        "Please select your civil status."
+      );
+
+      return;
+    }
+
+
+    if (
+      !registeredSKVoter
+    ) {
+
+      alert(
+        "Please indicate if you are a registered SK voter."
+      );
+
+      return;
+    }
+
+
+    if (
+      !votedLastSKElection
+    ) {
+
+      alert(
+        "Please indicate if you voted in the last SK election."
+      );
+
+      return;
+    }
+
+
+    if (
+      !kkAssemblyAttended
+    ) {
+
+      alert(
+        "Please indicate if you have attended a KK Assembly."
+      );
+
+      return;
+    }
+
+
+    if (
+      kkAssemblyAttended === "Yes" &&
+      !kkAttendanceCount
+    ) {
+
+      alert(
+        "Please indicate how many times you attended a KK Assembly."
+      );
+
+      return;
+    }
+
+
+    if (
+      kkAssemblyAttended === "No" &&
+      !kkNoReason
+    ) {
+
+      alert(
+        "Please indicate why you have not attended a KK Assembly."
+      );
+
+      return;
+    }
+
+
     submitBtn.disabled =
       true;
 
@@ -206,6 +336,10 @@ form.addEventListener(
         ),
         {
 
+          // =============================================
+          // ACCOUNT / PERSONAL INFORMATION
+          // =============================================
+
           fullName:
             document
               .querySelector(
@@ -236,6 +370,9 @@ form.addEventListener(
               )
               .value,
 
+          civilStatus:
+            civilStatus,
+
           address:
             document
               .querySelector(
@@ -251,6 +388,11 @@ form.addEventListener(
               )
               .value
               .trim(),
+
+
+          // =============================================
+          // EDUCATION AND EMPLOYMENT
+          // =============================================
 
           education:
             document
@@ -280,6 +422,11 @@ form.addEventListener(
               )
               .value,
 
+
+          // =============================================
+          // GENERAL VOTER INFORMATION
+          // =============================================
+
           voterStatus:
             document
               .querySelector(
@@ -301,6 +448,35 @@ form.addEventListener(
               )
               .value,
 
+
+          // =============================================
+          // SK / KK INFORMATION
+          // =============================================
+
+          registeredSKVoter:
+            registeredSKVoter,
+
+          votedLastSKElection:
+            votedLastSKElection,
+
+          kkAssemblyAttended:
+            kkAssemblyAttended,
+
+          kkAttendanceCount:
+            kkAssemblyAttended === "Yes"
+              ? kkAttendanceCount
+              : "",
+
+          kkNoReason:
+            kkAssemblyAttended === "No"
+              ? kkNoReason
+              : "",
+
+
+          // =============================================
+          // SUPPORT INFORMATION
+          // =============================================
+
           specialNeeds:
             document
               .querySelector(
@@ -315,6 +491,11 @@ form.addEventListener(
               )
               .value
               .trim(),
+
+
+          // =============================================
+          // SKILLS AND INTERESTS
+          // =============================================
 
           hobbies:
             document
@@ -331,6 +512,11 @@ form.addEventListener(
               )
               .value
               .trim(),
+
+
+          // =============================================
+          // SYSTEM INFORMATION
+          // =============================================
 
           role:
             "youth",
@@ -362,7 +548,7 @@ form.addEventListener(
             "Registered",
 
           details:
-            `Youth account registered. Age: ${age}, Status: ${youthStatus.status}`
+            `Youth account registered. Age: ${age}, Status: ${youthStatus.status}, SK Voter: ${registeredSKVoter}, KK Assembly: ${kkAssemblyAttended}`
         });
 
       } catch (auditError) {

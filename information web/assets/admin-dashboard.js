@@ -13,14 +13,64 @@ import { logActivity } from "./audit-log.js";
 
 
 // =====================================================
+// PUROK / AREA OPTIONS
+// =====================================================
+
+const PUROK_OPTIONS = [
+
+  "BRIONES COMPOUND",
+  "CRDC",
+  "PENINSULA HOMES",
+  "INTERTOWN HOMES 1-6",
+  "KALYE PUTOL / BUKAL 2",
+  "SAN DIEGO VILLAGE",
+  "BERANA COMPOUND",
+  "SITIO PAG-ASA (ITAAS)",
+  "SITIO PAG-ASA (IBABA)",
+  "ENCENAREZ COMPOUND",
+  "BUKAL 1",
+  "GOLDEN MEADOWS",
+  "CIUDAD REMBINO",
+  "HIGHWAY",
+  "KRISANT VILLAGE",
+  "INTERTOWN HOMES PHASE 5",
+  "INTERTOWN HOMES PHASE 6",
+  "INTERTOWN HOMES PHASE 1-4"
+
+];
+
+
+// =====================================================
 // FIELD DEFINITIONS
 // =====================================================
 
 const FIELDS = [
-  { key: "fullName", label: "Full Name", type: "text", full: true },
-  { key: "email", label: "Email", type: "email", full: true },
-  { key: "birthDate", label: "Birth Date", type: "date" },
-  { key: "age", label: "Age", type: "number" },
+
+  {
+    key: "fullName",
+    label: "Full Name",
+    type: "text",
+    full: true
+  },
+
+  {
+    key: "email",
+    label: "Email",
+    type: "email",
+    full: true
+  },
+
+  {
+    key: "birthDate",
+    label: "Birth Date",
+    type: "date"
+  },
+
+  {
+    key: "age",
+    label: "Age",
+    type: "number"
+  },
 
   {
     key: "gender",
@@ -34,9 +84,26 @@ const FIELDS = [
   },
 
   {
+    key: "civilStatus",
+    label: "Civil Status",
+    type: "select",
+    options: [
+      "Single",
+      "Married",
+      "Widowed",
+      "Divorced",
+      "Separated",
+      "Annulled",
+      "Live-in",
+      "Unknown"
+    ]
+  },
+
+  {
     key: "address",
-    label: "Address / Purok",
-    type: "text",
+    label: "Purok / Area",
+    type: "select",
+    options: PUROK_OPTIONS,
     full: true
   },
 
@@ -128,6 +195,70 @@ const FIELDS = [
     ]
   },
 
+
+  // ===================================================
+  // SK / KK INFORMATION
+  // ===================================================
+
+  {
+    key: "registeredSKVoter",
+    label: "Registered SK Voter?",
+    type: "select",
+    options: [
+      "Yes",
+      "No"
+    ]
+  },
+
+  {
+    key: "votedLastSKElection",
+    label: "Did you vote in the last SK Election?",
+    type: "select",
+    options: [
+      "Yes",
+      "No"
+    ]
+  },
+
+  {
+    key: "kkAssemblyAttended",
+    label: "Have you attended a KK Assembly?",
+    type: "select",
+    options: [
+      "Yes",
+      "No"
+    ],
+    full: true
+  },
+
+  {
+    key: "kkAttendanceCount",
+    label: "If yes, how many times?",
+    type: "select",
+    options: [
+      "1-2 Times",
+      "3-4 Times",
+      "5 and Above"
+    ],
+    full: true
+  },
+
+  {
+    key: "kkNoReason",
+    label: "If no, why?",
+    type: "select",
+    options: [
+      "There was no KK Assembly Meeting",
+      "Not Interested to Attend"
+    ],
+    full: true
+  },
+
+
+  // ===================================================
+  // SUPPORT INFORMATION
+  // ===================================================
+
   {
     key: "specialNeeds",
     label: "Special Needs",
@@ -158,6 +289,7 @@ const FIELDS = [
     type: "text",
     full: true
   }
+
 ];
 
 
@@ -168,6 +300,8 @@ const FIELDS = [
 let allUsers = [];
 let youthList = [];
 let adminList = [];
+let announcementList = [];
+
 let charts = {};
 
 
@@ -176,61 +310,141 @@ let charts = {};
 // =====================================================
 
 function escapeHtml(value) {
-  const div = document.createElement("div");
 
-  div.textContent = value ?? "";
+  const div =
+    document.createElement(
+      "div"
+    );
+
+  div.textContent =
+    value ?? "";
 
   return div.innerHTML;
 }
 
 
-function calculateAge(birthDateValue) {
+// =====================================================
+// NORMALIZE PUROK
+// =====================================================
+
+function normalizePurok(value) {
+
+  if (!value) {
+    return "";
+  }
+
+
+  const normalized =
+    String(value)
+      .trim()
+      .toUpperCase();
+
+
+  const aliases = {
+
+    "BUKAL1":
+      "BUKAL 1",
+
+    "BUKAL 1":
+      "BUKAL 1",
+
+    "KALYE PUTOL/ BUKAL 2":
+      "KALYE PUTOL / BUKAL 2",
+
+    "KALYE PUTOL/BUKAL 2":
+      "KALYE PUTOL / BUKAL 2",
+
+    "KALYE PUTOL /BUKAL 2":
+      "KALYE PUTOL / BUKAL 2",
+
+    "KALYE PUTOL / BUKAL 2":
+      "KALYE PUTOL / BUKAL 2"
+
+  };
+
+
+  return (
+    aliases[normalized] ||
+    value
+  );
+
+}
+
+
+function calculateAge(
+  birthDateValue
+) {
+
   if (!birthDateValue) {
     return null;
   }
 
-  const birthDate = new Date(birthDateValue);
 
-  if (Number.isNaN(birthDate.getTime())) {
+  const birthDate =
+    new Date(
+      birthDateValue
+    );
+
+
+  if (
+    Number.isNaN(
+      birthDate.getTime()
+    )
+  ) {
     return null;
   }
 
-  const today = new Date();
+
+  const today =
+    new Date();
+
 
   let age =
     today.getFullYear() -
     birthDate.getFullYear();
 
+
   const monthDifference =
     today.getMonth() -
     birthDate.getMonth();
+
 
   if (
     monthDifference < 0 ||
     (
       monthDifference === 0 &&
-      today.getDate() < birthDate.getDate()
+      today.getDate() <
+        birthDate.getDate()
     )
   ) {
     age--;
   }
 
+
   return age;
 }
 
 
-function getYouthStatus(age) {
-  const numericAge = Number(age);
+function getYouthStatus(
+  age
+) {
+
+  const numericAge =
+    Number(age);
+
 
   if (
     numericAge >= 15 &&
     numericAge <= 30
   ) {
+
     return {
       status: "Active",
       eligibility: "Eligible"
     };
+
   }
+
 
   return {
     status: "Inactive",
@@ -239,7 +453,10 @@ function getYouthStatus(age) {
 }
 
 
-function isActiveYouth(youth) {
+function isActiveYouth(
+  youth
+) {
+
   if (
     youth.status === "Inactive" ||
     youth.eligibility === "Archived"
@@ -247,7 +464,12 @@ function isActiveYouth(youth) {
     return false;
   }
 
-  const age = Number(youth.age);
+
+  const age =
+    Number(
+      youth.age
+    );
+
 
   return (
     age >= 15 &&
@@ -256,8 +478,13 @@ function isActiveYouth(youth) {
 }
 
 
-function ageGroup(age) {
-  const n = Number(age);
+function ageGroup(
+  age
+) {
+
+  const n =
+    Number(age);
+
 
   if (
     n >= 15 &&
@@ -266,12 +493,14 @@ function ageGroup(age) {
     return "15-19";
   }
 
+
   if (
     n >= 20 &&
     n <= 24
   ) {
     return "20-24";
   }
+
 
   if (
     n >= 25 &&
@@ -280,21 +509,36 @@ function ageGroup(age) {
     return "25-30";
   }
 
+
   return "Unspecified";
 }
 
 
-function countBy(list, keyFn) {
+function countBy(
+  list,
+  keyFn
+) {
+
   const counts = {};
 
-  list.forEach(item => {
-    const key =
-      keyFn(item) ||
-      "Unspecified";
 
-    counts[key] =
-      (counts[key] || 0) + 1;
-  });
+  list.forEach(
+    item => {
+
+      const key =
+        keyFn(item) ||
+        "Unspecified";
+
+
+      counts[key] =
+        (
+          counts[key] ||
+          0
+        ) + 1;
+
+    }
+  );
+
 
   return counts;
 }
@@ -304,29 +548,54 @@ function countMultiValueField(
   list,
   fieldName
 ) {
+
   const counts = {};
 
-  list.forEach(item => {
-    const values =
-      String(item[fieldName] || "")
-        .split(",")
-        .map(value => value.trim())
-        .filter(Boolean);
 
-    values.forEach(value => {
-      counts[value] =
-        (counts[value] || 0) + 1;
-    });
-  });
+  list.forEach(
+    item => {
+
+      const values =
+        String(
+          item[fieldName] ||
+          ""
+        )
+          .split(",")
+          .map(
+            value =>
+              value.trim()
+          )
+          .filter(Boolean);
+
+
+      values.forEach(
+        value => {
+
+          counts[value] =
+            (
+              counts[value] ||
+              0
+            ) + 1;
+
+        }
+      );
+
+    }
+  );
+
 
   return counts;
 }
 
 
-function getCreatedDate(value) {
+function getCreatedDate(
+  value
+) {
+
   if (!value) {
     return null;
   }
+
 
   if (
     typeof value.toDate ===
@@ -335,13 +604,17 @@ function getCreatedDate(value) {
     return value.toDate();
   }
 
+
   if (
     value instanceof Date
   ) {
     return value;
   }
 
-  const date = new Date(value);
+
+  const date =
+    new Date(value);
+
 
   if (
     Number.isNaN(
@@ -351,7 +624,76 @@ function getCreatedDate(value) {
     return null;
   }
 
+
   return date;
+}
+
+
+// =====================================================
+// LOCAL DATE
+// =====================================================
+
+function getLocalDateString(
+  date = new Date()
+) {
+
+  const year =
+    date.getFullYear();
+
+
+  const month =
+    String(
+      date.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  const day =
+    String(
+      date.getDate()
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  return `${year}-${month}-${day}`;
+}
+
+
+// =====================================================
+// ANNOUNCEMENT EXPIRATION
+// =====================================================
+
+function isAnnouncementExpired(
+  announcement
+) {
+
+  if (
+    !announcement.expiryDate
+  ) {
+    return false;
+  }
+
+
+  const today =
+    getLocalDateString();
+
+
+  /*
+    Event / Display Until:
+    August 24, 2026
+
+    August 24 = VISIBLE
+    August 25 = EXPIRED
+  */
+
+  return (
+    today >
+    announcement.expiryDate
+  );
 }
 
 
@@ -359,14 +701,129 @@ function getCreatedDate(value) {
 // BACKGROUND AUDIT LOG
 // =====================================================
 
-function safeLogActivity(data) {
-  logActivity(data)
-    .catch(error => {
-      console.error(
-        "Audit log error:",
-        error
-      );
-    });
+function safeLogActivity(
+  data
+) {
+
+  logActivity(
+    data
+  )
+    .catch(
+      error => {
+
+        console.error(
+          "Audit log error:",
+          error
+        );
+
+      }
+    );
+}
+
+
+// =====================================================
+// AUTO DELETE EXPIRED ANNOUNCEMENTS
+// =====================================================
+
+async function deleteExpiredAnnouncements(
+  announcements
+) {
+
+  const expired =
+    announcements.filter(
+      announcement =>
+        isAnnouncementExpired(
+          announcement
+        )
+    );
+
+
+  if (
+    expired.length === 0
+  ) {
+
+    return announcements;
+
+  }
+
+
+  const results =
+    await Promise.allSettled(
+
+      expired.map(
+        announcement =>
+
+          deleteDoc(
+            doc(
+              db,
+              "announcements",
+              announcement.id
+            )
+          )
+
+      )
+
+    );
+
+
+  results.forEach(
+    (
+      result,
+      index
+    ) => {
+
+      const announcement =
+        expired[index];
+
+
+      if (
+        result.status ===
+        "fulfilled"
+      ) {
+
+        console.log(
+          "Expired announcement automatically deleted:",
+          announcement.title
+        );
+
+
+        safeLogActivity({
+
+          email:
+            auth.currentUser?.email ||
+            "System",
+
+          role:
+            "admin",
+
+          activity:
+            "Auto-deleted expired announcement",
+
+          details:
+            `${announcement.title} • Displayed until: ${announcement.expiryDate}`
+
+        });
+
+      } else {
+
+        console.error(
+          "Could not automatically delete expired announcement:",
+          announcement.title,
+          result.reason
+        );
+
+      }
+
+    }
+  );
+
+
+  return announcements.filter(
+    announcement =>
+      !isAnnouncementExpired(
+        announcement
+      )
+  );
 }
 
 
@@ -379,48 +836,61 @@ const tabButtons =
     ".tab-nav button[data-tab]"
   );
 
+
 const tabPanels =
   document.querySelectorAll(
     ".tab-panel"
   );
 
 
-tabButtons.forEach(btn => {
-  btn.addEventListener(
-    "click",
-    () => {
-      tabButtons.forEach(
-        button =>
-          button.classList.remove(
-            "active"
-          )
-      );
+tabButtons.forEach(
+  btn => {
 
-      tabPanels.forEach(
-        panel =>
-          panel.classList.remove(
-            "active"
-          )
-      );
+    btn.addEventListener(
+      "click",
+      () => {
 
-      btn.classList.add(
-        "active"
-      );
-
-      const panel =
-        document.getElementById(
-          "tab-" +
-          btn.dataset.tab
+        tabButtons.forEach(
+          button =>
+            button.classList.remove(
+              "active"
+            )
         );
 
-      if (panel) {
-        panel.classList.add(
+
+        tabPanels.forEach(
+          panel =>
+            panel.classList.remove(
+              "active"
+            )
+        );
+
+
+        btn.classList.add(
           "active"
         );
+
+
+        const panel =
+          document.getElementById(
+            "tab-" +
+            btn.dataset.tab
+          );
+
+
+        if (panel) {
+
+          panel.classList.add(
+            "active"
+          );
+
+        }
+
       }
-    }
-  );
-});
+    );
+
+  }
+);
 
 
 // =====================================================
@@ -428,38 +898,52 @@ tabButtons.forEach(btn => {
 // =====================================================
 
 async function loadUsersData() {
+
   const statCards =
     document.getElementById(
       "statCards"
     );
+
 
   const tableBody =
     document.getElementById(
       "youthTableBody"
     );
 
+
   if (statCards) {
-    statCards.innerHTML = `
-      <p class="empty-state">
-        Loading dashboard data...
-      </p>
-    `;
+
+    statCards.innerHTML =
+      `
+        <p class="empty-state">
+          Loading dashboard data...
+        </p>
+      `;
+
   }
+
 
   if (tableBody) {
-    tableBody.innerHTML = `
-      <tr>
-        <td
-          colspan="8"
-          class="empty-state"
-        >
-          Loading youth records...
-        </td>
-      </tr>
-    `;
+
+    tableBody.innerHTML =
+      `
+        <tr>
+
+          <td
+            colspan="11"
+            class="empty-state"
+          >
+            Loading youth records...
+          </td>
+
+        </tr>
+      `;
+
   }
 
+
   try {
+
     const snap =
       await getDocs(
         collection(
@@ -468,13 +952,16 @@ async function loadUsersData() {
         )
       );
 
+
     allUsers =
       snap.docs.map(
         documentSnapshot => ({
+
           id:
             documentSnapshot.id,
 
           ...documentSnapshot.data()
+
         })
       );
 
@@ -489,40 +976,63 @@ async function loadUsersData() {
           user =>
             user.role === "youth"
         )
-        .map(user => {
-          const youthData = {
-            ...user
-          };
+        .map(
+          user => {
 
-          if (
-            youthData.birthDate
-          ) {
-            const calculatedAge =
-              calculateAge(
-                youthData.birthDate
+            const youthData = {
+              ...user
+            };
+
+
+            // STANDARDIZE OLD PUROK VALUES
+
+            youthData.address =
+              normalizePurok(
+                youthData.address
               );
 
+
             if (
-              calculatedAge !== null
+              youthData.birthDate
             ) {
-              const youthStatus =
-                getYouthStatus(
-                  calculatedAge
+
+              const calculatedAge =
+                calculateAge(
+                  youthData.birthDate
                 );
 
-              youthData.age =
-                calculatedAge;
 
-              youthData.status =
-                youthStatus.status;
+              if (
+                calculatedAge !==
+                null
+              ) {
 
-              youthData.eligibility =
-                youthStatus.eligibility;
+                const youthStatus =
+                  getYouthStatus(
+                    calculatedAge
+                  );
+
+
+                youthData.age =
+                  calculatedAge;
+
+
+                youthData.status =
+                  youthStatus.status;
+
+
+                youthData.eligibility =
+                  youthStatus.eligibility;
+
+              }
+
             }
-          }
 
-          return youthData;
-        });
+
+            return youthData;
+
+          }
+        );
 
 
     // =================================================
@@ -537,7 +1047,7 @@ async function loadUsersData() {
 
 
     // =================================================
-    // RENDER CONTENT
+    // RENDER
     // =================================================
 
     renderStats();
@@ -551,37 +1061,53 @@ async function loadUsersData() {
 
     requestAnimationFrame(
       () => {
+
         renderCharts();
+
       }
     );
 
+
   } catch (error) {
+
     console.error(
       "Users load error:",
       error
     );
 
+
     if (statCards) {
-      statCards.innerHTML = `
-        <p class="empty-state">
-          Unable to load dashboard data.
-        </p>
-      `;
+
+      statCards.innerHTML =
+        `
+          <p class="empty-state">
+            Unable to load dashboard data.
+          </p>
+        `;
+
     }
 
+
     if (tableBody) {
-      tableBody.innerHTML = `
-        <tr>
-          <td
-            colspan="8"
-            class="empty-state"
-          >
-            Unable to load youth records.
-          </td>
-        </tr>
-      `;
+
+      tableBody.innerHTML =
+        `
+          <tr>
+
+            <td
+              colspan="11"
+              class="empty-state"
+            >
+              Unable to load youth records.
+            </td>
+
+          </tr>
+        `;
+
     }
+
   }
+
 }
 
 
@@ -590,83 +1116,89 @@ async function loadUsersData() {
 // =====================================================
 
 function renderStats() {
+
   const activeYouth =
     youthList.filter(
       isActiveYouth
     );
 
+
   const cards = [
-    {
-      label:
-        "Total Active Youth",
 
-      value:
-        activeYouth.length
+    {
+      label: "Total Active Youth",
+      value: activeYouth.length
     },
 
     {
-      label:
-        "Male",
+      label: "Male",
 
       value:
         activeYouth.filter(
           youth =>
-            youth.gender === "Male"
+            youth.gender ===
+            "Male"
         ).length
     },
 
     {
-      label:
-        "Female",
+      label: "Female",
 
       value:
         activeYouth.filter(
           youth =>
-            youth.gender === "Female"
+            youth.gender ===
+            "Female"
         ).length
     },
 
     {
-      label:
-        "Students",
+      label: "Students",
 
       value:
         activeYouth.filter(
           youth =>
-            youth.employment === "Student"
+            youth.employment ===
+            "Student"
         ).length
     }
+
   ];
+
 
   const container =
     document.getElementById(
       "statCards"
     );
 
+
   if (!container) {
     return;
   }
 
+
   container.innerHTML =
     cards
       .map(
-        card => `
-          <div class="panel stat-card">
+        card =>
+          `
+            <div class="panel stat-card">
 
-            <small>
-              ${escapeHtml(
-                card.label
-              )}
-            </small>
+              <small>
+                ${escapeHtml(
+                  card.label
+                )}
+              </small>
 
-            <strong>
-              ${card.value}
-            </strong>
+              <strong>
+                ${card.value}
+              </strong>
 
-          </div>
-        `
+            </div>
+          `
       )
       .join("");
+
 }
 
 
@@ -681,42 +1213,58 @@ function drawChart(
   data,
   colors
 ) {
+
   const canvas =
     document.getElementById(
       canvasId
     );
 
+
   if (!canvas) {
     return;
   }
 
-  if (charts[canvasId]) {
+
+  if (
+    charts[canvasId]
+  ) {
+
     charts[
       canvasId
     ].destroy();
+
   }
 
+
   const isDoughnut =
-    type === "doughnut";
+    type ===
+    "doughnut";
+
 
   const isBar =
-    type === "bar";
+    type ===
+    "bar";
+
 
   charts[canvasId] =
     new Chart(
       canvas,
       {
+
         type,
 
         data: {
+
           labels,
 
           datasets: [
             {
+
               data,
 
               backgroundColor:
-                colors || [
+                colors ||
+                [
                   "#0a5255",
                   "#d8ad76",
                   "#5f8c8d",
@@ -746,18 +1294,23 @@ function drawChart(
                 isBar
                   ? 5
                   : 0
+
             }
           ]
+
         },
 
         options: {
-          responsive: true,
+
+          responsive:
+            true,
 
           maintainAspectRatio:
             false,
 
           animation: {
-            duration: 100
+            duration:
+              100
           },
 
           cutout:
@@ -766,32 +1319,48 @@ function drawChart(
               : undefined,
 
           plugins: {
+
             legend: {
+
               display:
                 isDoughnut,
 
               position:
                 "bottom"
+
             }
+
           },
 
           scales:
             isBar
               ? {
+
                   y: {
+
                     beginAtZero:
                       true,
 
                     ticks: {
-                      precision: 0,
-                      stepSize: 1
+
+                      precision:
+                        0,
+
+                      stepSize:
+                        1
+
                     }
+
                   }
+
                 }
               : undefined
+
         }
+
       }
     );
+
 }
 
 
@@ -800,28 +1369,36 @@ function drawChart(
 // =====================================================
 
 function renderRegistrationTrendChart() {
+
   const canvas =
     document.getElementById(
       "registrationTrendChart"
     );
 
+
   if (!canvas) {
     return;
   }
 
+
   if (
     charts.registrationTrendChart
   ) {
+
     charts
       .registrationTrendChart
       .destroy();
+
   }
+
 
   const currentYear =
     new Date()
       .getFullYear();
 
+
   const months = [
+
     "Jan",
     "Feb",
     "Mar",
@@ -834,45 +1411,60 @@ function renderRegistrationTrendChart() {
     "Oct",
     "Nov",
     "Dec"
+
   ];
+
 
   const monthly =
     new Array(12)
       .fill(0);
 
+
   youthList.forEach(
     youth => {
+
       const date =
         getCreatedDate(
           youth.createdAt
         );
 
+
       if (!date) {
         return;
       }
+
 
       if (
         date.getFullYear() ===
         currentYear
       ) {
+
         monthly[
           date.getMonth()
         ]++;
+
       }
+
     }
   );
+
 
   charts.registrationTrendChart =
     new Chart(
       canvas,
       {
-        type: "line",
+
+        type:
+          "line",
 
         data: {
-          labels: months,
+
+          labels:
+            months,
 
           datasets: [
             {
+
               label:
                 `Youth Registrations ${currentYear}`,
 
@@ -893,34 +1485,51 @@ function renderRegistrationTrendChart() {
 
               fill:
                 true
+
             }
           ]
+
         },
 
         options: {
-          responsive: true,
+
+          responsive:
+            true,
 
           maintainAspectRatio:
             false,
 
           animation: {
-            duration: 100
+            duration:
+              100
           },
 
           scales: {
+
             y: {
+
               beginAtZero:
                 true,
 
               ticks: {
-                precision: 0,
-                stepSize: 1
+
+                precision:
+                  0,
+
+                stepSize:
+                  1
+
               }
+
             }
+
           }
+
         }
+
       }
     );
+
 }
 
 
@@ -929,11 +1538,16 @@ function renderRegistrationTrendChart() {
 // =====================================================
 
 function renderCharts() {
+
   const activeYouth =
     youthList.filter(
       isActiveYouth
     );
 
+
+  // ===================================================
+  // GENDER
+  // ===================================================
 
   const gender =
     countBy(
@@ -942,6 +1556,7 @@ function renderCharts() {
         youth.gender
     );
 
+
   drawChart(
     "genderChart",
     "doughnut",
@@ -949,6 +1564,10 @@ function renderCharts() {
     Object.values(gender)
   );
 
+
+  // ===================================================
+  // AGE
+  // ===================================================
 
   const ages =
     countBy(
@@ -959,6 +1578,7 @@ function renderCharts() {
         )
     );
 
+
   drawChart(
     "ageChart",
     "bar",
@@ -967,12 +1587,74 @@ function renderCharts() {
   );
 
 
+  // ===================================================
+  // PUROK / AREA
+  // ===================================================
+
+  const purok =
+    countBy(
+      activeYouth,
+      youth =>
+        normalizePurok(
+          youth.address
+        )
+    );
+
+
+  const sortedPurok =
+    Object
+      .entries(purok)
+      .sort(
+        (a, b) =>
+          b[1] - a[1]
+      );
+
+
+  drawChart(
+    "purokChart",
+    "bar",
+    sortedPurok.map(
+      item =>
+        item[0]
+    ),
+    sortedPurok.map(
+      item =>
+        item[1]
+    )
+  );
+
+
+  // ===================================================
+  // CIVIL STATUS
+  // ===================================================
+
+  const civilStatus =
+    countBy(
+      activeYouth,
+      youth =>
+        youth.civilStatus
+    );
+
+
+  drawChart(
+    "civilStatusChart",
+    "doughnut",
+    Object.keys(civilStatus),
+    Object.values(civilStatus)
+  );
+
+
+  // ===================================================
+  // EDUCATION
+  // ===================================================
+
   const education =
     countBy(
       activeYouth,
       youth =>
         youth.education
     );
+
 
   drawChart(
     "educationChart",
@@ -982,12 +1664,17 @@ function renderCharts() {
   );
 
 
+  // ===================================================
+  // EDUCATION STATUS
+  // ===================================================
+
   const educationStatus =
     countBy(
       activeYouth,
       youth =>
         youth.educationStatus
     );
+
 
   drawChart(
     "educationStatusChart",
@@ -1001,12 +1688,17 @@ function renderCharts() {
   );
 
 
+  // ===================================================
+  // EMPLOYMENT
+  // ===================================================
+
   const employment =
     countBy(
       activeYouth,
       youth =>
         youth.employment
     );
+
 
   drawChart(
     "employmentChart",
@@ -1016,12 +1708,17 @@ function renderCharts() {
   );
 
 
+  // ===================================================
+  // GENERAL VOTER
+  // ===================================================
+
   const voter =
     countBy(
       activeYouth,
       youth =>
         youth.voterStatus
     );
+
 
   drawChart(
     "voterChart",
@@ -1031,12 +1728,17 @@ function renderCharts() {
   );
 
 
+  // ===================================================
+  // VOTER PARTICIPATION
+  // ===================================================
+
   const voterParticipation =
     countBy(
       activeYouth,
       youth =>
         youth.voterParticipation
     );
+
 
   drawChart(
     "voterParticipationChart",
@@ -1050,12 +1752,17 @@ function renderCharts() {
   );
 
 
+  // ===================================================
+  // NEW VOTER
+  // ===================================================
+
   const newVoter =
     countBy(
       activeYouth,
       youth =>
         youth.newVoter
     );
+
 
   drawChart(
     "newVoterChart",
@@ -1065,12 +1772,133 @@ function renderCharts() {
   );
 
 
+  // ===================================================
+  // SK VOTER
+  // ===================================================
+
+  const skVoter =
+    countBy(
+      activeYouth,
+      youth =>
+        youth.registeredSKVoter
+    );
+
+
+  drawChart(
+    "skVoterChart",
+    "doughnut",
+    Object.keys(skVoter),
+    Object.values(skVoter)
+  );
+
+
+  // ===================================================
+  // SK ELECTION
+  // ===================================================
+
+  const skElection =
+    countBy(
+      activeYouth,
+      youth =>
+        youth.votedLastSKElection
+    );
+
+
+  drawChart(
+    "skElectionChart",
+    "doughnut",
+    Object.keys(skElection),
+    Object.values(skElection)
+  );
+
+
+  // ===================================================
+  // KK ATTENDANCE
+  // ===================================================
+
+  const kkAttendance =
+    countBy(
+      activeYouth,
+      youth =>
+        youth.kkAssemblyAttended
+    );
+
+
+  drawChart(
+    "kkAttendanceChart",
+    "doughnut",
+    Object.keys(kkAttendance),
+    Object.values(kkAttendance)
+  );
+
+
+  // ===================================================
+  // KK FREQUENCY
+  // ===================================================
+
+  const attendedYouth =
+    activeYouth.filter(
+      youth =>
+        youth.kkAssemblyAttended ===
+        "Yes"
+    );
+
+
+  const kkFrequency =
+    countBy(
+      attendedYouth,
+      youth =>
+        youth.kkAttendanceCount
+    );
+
+
+  drawChart(
+    "kkFrequencyChart",
+    "bar",
+    Object.keys(kkFrequency),
+    Object.values(kkFrequency)
+  );
+
+
+  // ===================================================
+  // KK REASON
+  // ===================================================
+
+  const notAttendedYouth =
+    activeYouth.filter(
+      youth =>
+        youth.kkAssemblyAttended ===
+        "No"
+    );
+
+
+  const kkReason =
+    countBy(
+      notAttendedYouth,
+      youth =>
+        youth.kkNoReason
+    );
+
+
+  drawChart(
+    "kkReasonChart",
+    "bar",
+    Object.keys(kkReason),
+    Object.values(kkReason)
+  );
+
+
+  // ===================================================
+  // CIVIC
+  // ===================================================
+
   const civic =
     countBy(
       activeYouth,
       youth =>
         youth.civic
     );
+
 
   drawChart(
     "civicChart",
@@ -1080,12 +1908,17 @@ function renderCharts() {
   );
 
 
+  // ===================================================
+  // SPECIAL NEEDS
+  // ===================================================
+
   const specialNeeds =
     countBy(
       activeYouth,
       youth =>
         youth.specialNeeds
     );
+
 
   drawChart(
     "specialNeedsChart",
@@ -1099,11 +1932,16 @@ function renderCharts() {
   );
 
 
+  // ===================================================
+  // SPORTS
+  // ===================================================
+
   const sports =
     countMultiValueField(
       activeYouth,
       "sports"
     );
+
 
   const topSports =
     Object
@@ -1112,25 +1950,36 @@ function renderCharts() {
         (a, b) =>
           b[1] - a[1]
       )
-      .slice(0, 8);
+      .slice(
+        0,
+        8
+      );
+
 
   drawChart(
     "sportsChart",
     "bar",
     topSports.map(
-      item => item[0]
+      item =>
+        item[0]
     ),
     topSports.map(
-      item => item[1]
+      item =>
+        item[1]
     )
   );
 
+
+  // ===================================================
+  // HOBBIES
+  // ===================================================
 
   const hobbies =
     countMultiValueField(
       activeYouth,
       "hobbies"
     );
+
 
   const topHobbies =
     Object
@@ -1139,21 +1988,28 @@ function renderCharts() {
         (a, b) =>
           b[1] - a[1]
       )
-      .slice(0, 8);
+      .slice(
+        0,
+        8
+      );
+
 
   drawChart(
     "hobbiesChart",
     "bar",
     topHobbies.map(
-      item => item[0]
+      item =>
+        item[0]
     ),
     topHobbies.map(
-      item => item[1]
+      item =>
+        item[1]
     )
   );
 
 
   renderRegistrationTrendChart();
+
 }
 
 
@@ -1166,25 +2022,48 @@ const searchInput =
     "youthSearch"
   );
 
+
 const filterGender =
   document.getElementById(
     "filterGender"
   );
+
+
+const filterPurok =
+  document.getElementById(
+    "filterPurok"
+  );
+
 
 const filterEducation =
   document.getElementById(
     "filterEducation"
   );
 
+
 const filterEmployment =
   document.getElementById(
     "filterEmployment"
   );
 
+
 const filterStatus =
   document.getElementById(
     "filterStatus"
   );
+
+
+const filterSKVoter =
+  document.getElementById(
+    "filterSKVoter"
+  );
+
+
+const filterKKAttendance =
+  document.getElementById(
+    "filterKKAttendance"
+  );
+
 
 const clearFiltersBtn =
   document.getElementById(
@@ -1192,8 +2071,14 @@ const clearFiltersBtn =
   );
 
 
+// =====================================================
+// POPULATE FILTER OPTIONS
+// =====================================================
+
 function populateFilterOptions() {
+
   const eduOptions = [
+
     "Elementary",
     "High School",
     "Senior High School",
@@ -1201,16 +2086,52 @@ function populateFilterOptions() {
     "Vocational",
     "Graduate",
     "Out of School Youth"
+
   ];
 
+
   const empOptions = [
+
     "Student",
     "Employed",
     "Unemployed",
     "Self-employed"
+
   ];
 
+
+  // ===================================================
+  // PUROK
+  // ===================================================
+
+  if (filterPurok) {
+
+    filterPurok.innerHTML =
+      `
+        <option value="">
+          All Purok / Area
+        </option>
+      ` +
+      PUROK_OPTIONS
+        .map(
+          option =>
+            `
+              <option value="${escapeHtml(option)}">
+                ${escapeHtml(option)}
+              </option>
+            `
+        )
+        .join("");
+
+  }
+
+
+  // ===================================================
+  // EDUCATION
+  // ===================================================
+
   if (filterEducation) {
+
     filterEducation.innerHTML =
       `
         <option value="">
@@ -1219,16 +2140,24 @@ function populateFilterOptions() {
       ` +
       eduOptions
         .map(
-          option => `
-            <option value="${option}">
-              ${option}
-            </option>
-          `
+          option =>
+            `
+              <option value="${escapeHtml(option)}">
+                ${escapeHtml(option)}
+              </option>
+            `
         )
         .join("");
+
   }
 
+
+  // ===================================================
+  // EMPLOYMENT
+  // ===================================================
+
   if (filterEmployment) {
+
     filterEmployment.innerHTML =
       `
         <option value="">
@@ -1237,18 +2166,26 @@ function populateFilterOptions() {
       ` +
       empOptions
         .map(
-          option => `
-            <option value="${option}">
-              ${option}
-            </option>
-          `
+          option =>
+            `
+              <option value="${escapeHtml(option)}">
+                ${escapeHtml(option)}
+              </option>
+            `
         )
         .join("");
+
   }
+
 }
 
 
+// =====================================================
+// GET FILTERED YOUTH
+// =====================================================
+
 function getFilteredYouth() {
+
   const term =
     (
       searchInput?.value ||
@@ -1257,8 +2194,11 @@ function getFilteredYouth() {
       .toLowerCase()
       .trim();
 
+
   return youthList.filter(
     youth => {
+
+
       const matchesSearch =
         !term ||
 
@@ -1290,6 +2230,14 @@ function getFilteredYouth() {
           filterGender.value;
 
 
+      const matchesPurok =
+        !filterPurok?.value ||
+        normalizePurok(
+          youth.address
+        ) ===
+          filterPurok.value;
+
+
       const matchesEducation =
         !filterEducation?.value ||
         youth.education ===
@@ -1308,72 +2256,110 @@ function getFilteredYouth() {
         (
           filterStatus.value ===
             "active" &&
-          isActiveYouth(youth)
+          isActiveYouth(
+            youth
+          )
         ) ||
 
         (
           filterStatus.value ===
             "inactive" &&
-          !isActiveYouth(youth)
+          !isActiveYouth(
+            youth
+          )
         );
 
 
+      const matchesSKVoter =
+        !filterSKVoter?.value ||
+        youth.registeredSKVoter ===
+          filterSKVoter.value;
+
+
+      const matchesKKAttendance =
+        !filterKKAttendance?.value ||
+        youth.kkAssemblyAttended ===
+          filterKKAttendance.value;
+
+
       return (
+
         matchesSearch &&
         matchesGender &&
+        matchesPurok &&
         matchesEducation &&
         matchesEmployment &&
-        matchesStatus
+        matchesStatus &&
+        matchesSKVoter &&
+        matchesKKAttendance
+
       );
+
     }
   );
+
 }
 
 
 // =====================================================
-// TABLE
+// YOUTH TABLE
 // =====================================================
 
 function renderTable() {
+
   const body =
     document.getElementById(
       "youthTableBody"
     );
 
+
   if (!body) {
     return;
   }
 
+
   const filtered =
     getFilteredYouth();
 
+
   if (
-    filtered.length === 0
+    filtered.length ===
+    0
   ) {
-    body.innerHTML = `
-      <tr>
-        <td
-          colspan="8"
-          class="empty-state"
-        >
-          No youth records found.
-        </td>
-      </tr>
-    `;
+
+    body.innerHTML =
+      `
+        <tr>
+
+          <td
+            colspan="11"
+            class="empty-state"
+          >
+            No youth records found.
+          </td>
+
+        </tr>
+      `;
+
   } else {
+
     body.innerHTML =
       filtered
         .map(
           youth => {
+
+
             const active =
               isActiveYouth(
                 youth
               );
 
+
             const status =
               active
                 ? "Active"
                 : "Inactive / Archived";
+
 
             return `
               <tr>
@@ -1404,6 +2390,13 @@ function renderTable() {
 
                 <td>
                   ${escapeHtml(
+                    youth.civilStatus ||
+                    "—"
+                  )}
+                </td>
+
+                <td>
+                  ${escapeHtml(
                     youth.education
                   )}
                 </td>
@@ -1411,6 +2404,20 @@ function renderTable() {
                 <td>
                   ${escapeHtml(
                     youth.employment
+                  )}
+                </td>
+
+                <td>
+                  ${escapeHtml(
+                    youth.registeredSKVoter ||
+                    "—"
+                  )}
+                </td>
+
+                <td>
+                  ${escapeHtml(
+                    youth.kkAssemblyAttended ||
+                    "—"
                   )}
                 </td>
 
@@ -1435,6 +2442,8 @@ function renderTable() {
                     <button
                       class="action-btn edit"
                       data-edit="${youth.id}"
+                      type="button"
+                      title="Edit"
                     >
                       ✎
                     </button>
@@ -1442,6 +2451,8 @@ function renderTable() {
                     <button
                       class="action-btn delete"
                       data-delete="${youth.id}"
+                      type="button"
+                      title="Delete"
                     >
                       🗑
                     </button>
@@ -1452,9 +2463,11 @@ function renderTable() {
 
               </tr>
             `;
+
           }
         )
         .join("");
+
   }
 
 
@@ -1463,18 +2476,23 @@ function renderTable() {
       "youthCountText"
     );
 
+
   if (countText) {
+
     const activeCount =
       youthList.filter(
         isActiveYouth
       ).length;
 
+
     const archivedCount =
       youthList.length -
       activeCount;
 
+
     countText.textContent =
       `Showing ${filtered.length} of ${youthList.length} youth records • ${activeCount} Active • ${archivedCount} Archived`;
+
   }
 
 
@@ -1482,30 +2500,39 @@ function renderTable() {
     .querySelectorAll(
       "[data-edit]"
     )
-    .forEach(button => {
-      button.addEventListener(
-        "click",
-        () =>
-          openYouthDialog(
-            button.dataset.edit
-          )
-      );
-    });
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            openYouthDialog(
+              button.dataset.edit
+            )
+        );
+
+      }
+    );
 
 
   document
     .querySelectorAll(
       "[data-delete]"
     )
-    .forEach(button => {
-      button.addEventListener(
-        "click",
-        () =>
-          deleteYouth(
-            button.dataset.delete
-          )
-      );
-    });
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () =>
+            deleteYouth(
+              button.dataset.delete
+            )
+        );
+
+      }
+    );
+
 }
 
 
@@ -1516,51 +2543,85 @@ function renderTable() {
 [
   searchInput,
   filterGender,
+  filterPurok,
   filterEducation,
   filterEmployment,
-  filterStatus
+  filterStatus,
+  filterSKVoter,
+  filterKKAttendance
 ]
   .filter(Boolean)
-  .forEach(element => {
-    element.addEventListener(
-      "input",
-      renderTable
-    );
+  .forEach(
+    element => {
 
-    element.addEventListener(
-      "change",
-      renderTable
-    );
-  });
+      element.addEventListener(
+        "input",
+        renderTable
+      );
 
 
-if (clearFiltersBtn) {
+      element.addEventListener(
+        "change",
+        renderTable
+      );
+
+    }
+  );
+
+
+if (
+  clearFiltersBtn
+) {
+
   clearFiltersBtn.addEventListener(
     "click",
     () => {
+
       if (searchInput) {
         searchInput.value = "";
       }
+
 
       if (filterGender) {
         filterGender.value = "";
       }
 
+
+      if (filterPurok) {
+        filterPurok.value = "";
+      }
+
+
       if (filterEducation) {
         filterEducation.value = "";
       }
+
 
       if (filterEmployment) {
         filterEmployment.value = "";
       }
 
+
       if (filterStatus) {
         filterStatus.value = "";
       }
 
+
+      if (filterSKVoter) {
+        filterSKVoter.value = "";
+      }
+
+
+      if (filterKKAttendance) {
+        filterKKAttendance.value = "";
+      }
+
+
       renderTable();
+
     }
   );
+
 }
 
 
@@ -1573,25 +2634,30 @@ const youthDialog =
     "youthDialog"
   );
 
+
 const youthDialogTitle =
   document.getElementById(
     "youthDialogTitle"
   );
+
 
 const youthFieldsEl =
   document.getElementById(
     "adminYouthFields"
   );
 
+
 const saveYouthBtn =
   document.getElementById(
     "saveYouthAdminBtn"
   );
 
+
 const idInput =
   document.querySelector(
     '#adminYouthForm [name="id"]'
   );
+
 
 const openAddYouthBtn =
   document.getElementById(
@@ -1599,84 +2665,185 @@ const openAddYouthBtn =
   );
 
 
-if (openAddYouthBtn) {
+if (
+  openAddYouthBtn
+) {
+
   openAddYouthBtn.addEventListener(
     "click",
     () =>
-      openYouthDialog(null)
+      openYouthDialog(
+        null
+      )
   );
+
 }
 
+
+// =====================================================
+// BUILD YOUTH FIELDS
+// =====================================================
 
 function buildYouthFields(
   data = {}
 ) {
-  if (!youthFieldsEl) {
+
+  if (
+    !youthFieldsEl
+  ) {
     return;
   }
 
+
+  const normalizedData = {
+    ...data,
+    address:
+      normalizePurok(
+        data.address
+      )
+  };
+
+
   youthFieldsEl.innerHTML =
     FIELDS
-      .map(field => {
-        const value =
-          data[field.key] ?? "";
-
-        const fieldClass =
-          field.full
-            ? "field full"
-            : "field";
+      .map(
+        field => {
 
 
-        if (
-          field.type === "select"
-        ) {
-          const options =
-            field.options
-              .map(
-                option => `
-                  <option
-                    value="${escapeHtml(option)}"
-                    ${
-                      option === value
-                        ? "selected"
-                        : ""
-                    }
-                  >
-                    ${escapeHtml(option)}
+          const value =
+            normalizedData[field.key] ??
+            "";
+
+
+          const fieldClass =
+            field.full
+              ? "field full"
+              : "field";
+
+
+          let displayStyle =
+            "";
+
+
+          if (
+            field.key ===
+              "kkAttendanceCount" &&
+            normalizedData.kkAssemblyAttended !==
+              "Yes"
+          ) {
+
+            displayStyle =
+              'style="display:none;"';
+
+          }
+
+
+          if (
+            field.key ===
+              "kkNoReason" &&
+            normalizedData.kkAssemblyAttended !==
+              "No"
+          ) {
+
+            displayStyle =
+              'style="display:none;"';
+
+          }
+
+
+          if (
+            field.type ===
+            "select"
+          ) {
+
+
+            const options =
+              field.options
+                .map(
+                  option =>
+                    `
+                      <option
+                        value="${escapeHtml(option)}"
+                        ${
+                          option ===
+                          value
+                            ? "selected"
+                            : ""
+                        }
+                      >
+                        ${escapeHtml(option)}
+                      </option>
+                    `
+                )
+                .join("");
+
+
+            return `
+              <label
+                class="${fieldClass}"
+                data-field-wrapper="${field.key}"
+                ${displayStyle}
+              >
+
+                <span>
+                  ${escapeHtml(
+                    field.label
+                  )}
+                </span>
+
+                <select
+                  name="${field.key}"
+                >
+
+                  <option value="">
+                    Select
                   </option>
-                `
-              )
-              .join("");
+
+                  ${options}
+
+                </select>
+
+              </label>
+            `;
+
+          }
+
+
+          if (
+            field.key ===
+            "age"
+          ) {
+
+            return `
+              <label
+                class="${fieldClass}"
+                data-field-wrapper="${field.key}"
+              >
+
+                <span>
+                  ${escapeHtml(
+                    field.label
+                  )}
+                </span>
+
+                <input
+                  type="number"
+                  name="${field.key}"
+                  value="${escapeHtml(value)}"
+                  readonly
+                />
+
+              </label>
+            `;
+
+          }
+
 
           return `
-            <label class="${fieldClass}">
-
-              <span>
-                ${escapeHtml(
-                  field.label
-                )}
-              </span>
-
-              <select name="${field.key}">
-
-                <option value="">
-                  Select
-                </option>
-
-                ${options}
-
-              </select>
-
-            </label>
-          `;
-        }
-
-
-        if (
-          field.key === "age"
-        ) {
-          return `
-            <label class="${fieldClass}">
+            <label
+              class="${fieldClass}"
+              data-field-wrapper="${field.key}"
+            >
 
               <span>
                 ${escapeHtml(
@@ -1685,42 +2852,28 @@ function buildYouthFields(
               </span>
 
               <input
-                type="number"
+                type="${field.type}"
                 name="${field.key}"
                 value="${escapeHtml(value)}"
-                readonly
               />
 
             </label>
           `;
+
         }
-
-
-        return `
-          <label class="${fieldClass}">
-
-            <span>
-              ${escapeHtml(
-                field.label
-              )}
-            </span>
-
-            <input
-              type="${field.type}"
-              name="${field.key}"
-              value="${escapeHtml(value)}"
-            />
-
-          </label>
-        `;
-      })
+      )
       .join("");
 
+
+  // ===================================================
+  // BIRTH DATE / AGE
+  // ===================================================
 
   const birthDateInput =
     youthFieldsEl.querySelector(
       '[name="birthDate"]'
     );
+
 
   const ageInput =
     youthFieldsEl.querySelector(
@@ -1732,27 +2885,202 @@ function buildYouthFields(
     birthDateInput &&
     ageInput
   ) {
+
     birthDateInput.addEventListener(
       "change",
       () => {
+
         const age =
           calculateAge(
             birthDateInput.value
           );
 
+
         ageInput.value =
           age !== null
             ? age
             : "";
+
       }
     );
+
   }
+
+
+  // ===================================================
+  // KK CONDITIONAL FIELDS
+  // ===================================================
+
+  const kkInput =
+    youthFieldsEl.querySelector(
+      '[name="kkAssemblyAttended"]'
+    );
+
+
+  const countWrapper =
+    youthFieldsEl.querySelector(
+      '[data-field-wrapper="kkAttendanceCount"]'
+    );
+
+
+  const reasonWrapper =
+    youthFieldsEl.querySelector(
+      '[data-field-wrapper="kkNoReason"]'
+    );
+
+
+  const countInput =
+    youthFieldsEl.querySelector(
+      '[name="kkAttendanceCount"]'
+    );
+
+
+  const reasonInput =
+    youthFieldsEl.querySelector(
+      '[name="kkNoReason"]'
+    );
+
+
+  function updateKKFields() {
+
+    if (!kkInput) {
+      return;
+    }
+
+
+    if (
+      kkInput.value ===
+      "Yes"
+    ) {
+
+      if (countWrapper) {
+        countWrapper.style.display =
+          "flex";
+      }
+
+
+      if (reasonWrapper) {
+        reasonWrapper.style.display =
+          "none";
+      }
+
+
+      if (countInput) {
+        countInput.required =
+          true;
+      }
+
+
+      if (reasonInput) {
+
+        reasonInput.required =
+          false;
+
+        reasonInput.value =
+          "";
+
+      }
+
+
+    } else if (
+      kkInput.value ===
+      "No"
+    ) {
+
+      if (countWrapper) {
+        countWrapper.style.display =
+          "none";
+      }
+
+
+      if (reasonWrapper) {
+        reasonWrapper.style.display =
+          "flex";
+      }
+
+
+      if (countInput) {
+
+        countInput.required =
+          false;
+
+        countInput.value =
+          "";
+
+      }
+
+
+      if (reasonInput) {
+        reasonInput.required =
+          true;
+      }
+
+
+    } else {
+
+      if (countWrapper) {
+        countWrapper.style.display =
+          "none";
+      }
+
+
+      if (reasonWrapper) {
+        reasonWrapper.style.display =
+          "none";
+      }
+
+
+      if (countInput) {
+
+        countInput.required =
+          false;
+
+        countInput.value =
+          "";
+
+      }
+
+
+      if (reasonInput) {
+
+        reasonInput.required =
+          false;
+
+        reasonInput.value =
+          "";
+
+      }
+
+    }
+
+  }
+
+
+  if (
+    kkInput
+  ) {
+
+    kkInput.addEventListener(
+      "change",
+      updateKKFields
+    );
+
+
+    updateKKFields();
+
+  }
+
 }
 
+
+// =====================================================
+// OPEN YOUTH DIALOG
+// =====================================================
 
 function openYouthDialog(
   youthId
 ) {
+
   if (
     !youthDialog ||
     !idInput
@@ -1760,37 +3088,65 @@ function openYouthDialog(
     return;
   }
 
-  if (youthId) {
+
+  if (
+    youthId
+  ) {
+
     const existing =
       youthList.find(
         youth =>
-          youth.id === youthId
+          youth.id ===
+          youthId
       );
 
-    if (youthDialogTitle) {
+
+    if (
+      youthDialogTitle
+    ) {
+
       youthDialogTitle.textContent =
         "Edit Youth Profile";
+
     }
+
 
     idInput.value =
       youthId;
 
+
     buildYouthFields(
-      existing || {}
+      existing ||
+      {}
     );
 
+
   } else {
-    if (youthDialogTitle) {
+
+
+    if (
+      youthDialogTitle
+    ) {
+
       youthDialogTitle.textContent =
         "Add Youth Profile";
+
     }
 
-    idInput.value = "";
 
-    buildYouthFields({});
+    idInput.value =
+      "";
+
+
+    buildYouthFields(
+      {}
+    );
+
   }
 
+
   youthDialog.showModal();
+
 }
 
 
@@ -1798,64 +3154,170 @@ function openYouthDialog(
 // SAVE YOUTH
 // =====================================================
 
-if (saveYouthBtn) {
+if (
+  saveYouthBtn
+) {
+
   saveYouthBtn.addEventListener(
     "click",
     async () => {
+
+
       saveYouthBtn.disabled =
         true;
+
 
       saveYouthBtn.textContent =
         "Saving...";
 
-      const payload = {};
 
-      FIELDS.forEach(field => {
-        const input =
-          youthFieldsEl
-            ?.querySelector(
-              `[name="${field.key}"]`
-            );
+      const payload =
+        {};
 
-        if (!input) {
-          return;
+
+      FIELDS.forEach(
+        field => {
+
+          const input =
+            youthFieldsEl
+              ?.querySelector(
+                `[name="${field.key}"]`
+              );
+
+
+          if (
+            !input
+          ) {
+            return;
+          }
+
+
+          payload[field.key] =
+            field.type ===
+            "number"
+              ? Number(
+                  input.value
+                )
+              : input.value.trim();
+
         }
+      );
 
-        payload[field.key] =
-          field.type === "number"
-            ? Number(
-                input.value
-              )
-            : input.value.trim();
-      });
+
+      // STANDARDIZE PUROK BEFORE SAVE
+
+      payload.address =
+        normalizePurok(
+          payload.address
+        );
 
 
       if (
         payload.birthDate
       ) {
+
         const calculatedAge =
           calculateAge(
             payload.birthDate
           );
 
+
         if (
-          calculatedAge === null
+          calculatedAge ===
+          null
         ) {
+
           alert(
             "Please enter a valid birth date."
           );
 
+
           saveYouthBtn.disabled =
             false;
+
 
           saveYouthBtn.textContent =
             "Save Profile";
 
+
           return;
+
         }
+
 
         payload.age =
           calculatedAge;
+
+      }
+
+
+      if (
+        payload.kkAssemblyAttended ===
+          "Yes" &&
+        !payload.kkAttendanceCount
+      ) {
+
+        alert(
+          "Please indicate how many times the youth attended a KK Assembly."
+        );
+
+
+        saveYouthBtn.disabled =
+          false;
+
+
+        saveYouthBtn.textContent =
+          "Save Profile";
+
+
+        return;
+
+      }
+
+
+      if (
+        payload.kkAssemblyAttended ===
+          "No" &&
+        !payload.kkNoReason
+      ) {
+
+        alert(
+          "Please indicate why the youth has not attended a KK Assembly."
+        );
+
+
+        saveYouthBtn.disabled =
+          false;
+
+
+        saveYouthBtn.textContent =
+          "Save Profile";
+
+
+        return;
+
+      }
+
+
+      if (
+        payload.kkAssemblyAttended ===
+        "Yes"
+      ) {
+
+        payload.kkNoReason =
+          "";
+
+      }
+
+
+      if (
+        payload.kkAssemblyAttended ===
+        "No"
+      ) {
+
+        payload.kkAttendanceCount =
+          "";
+
       }
 
 
@@ -1864,23 +3326,31 @@ if (saveYouthBtn) {
           payload.age
         );
 
+
       payload.status =
         youthStatus.status;
+
 
       payload.eligibility =
         youthStatus.eligibility;
 
+
       payload.role =
         "youth";
+
 
       payload.updatedAt =
         new Date();
 
 
       try {
+
+
         if (
           idInput.value
         ) {
+
+
           await updateDoc(
             doc(
               db,
@@ -1890,7 +3360,9 @@ if (saveYouthBtn) {
             payload
           );
 
+
           safeLogActivity({
+
             email:
               auth.currentUser
                 ?.email,
@@ -1902,12 +3374,17 @@ if (saveYouthBtn) {
               "Edited youth profile",
 
             details:
-              `${payload.fullName} • Age ${payload.age} • ${payload.status}`
+              `${payload.fullName} • Purok: ${payload.address || "N/A"} • Age ${payload.age} • SK Voter: ${payload.registeredSKVoter || "N/A"} • KK Assembly: ${payload.kkAssemblyAttended || "N/A"}`
+
           });
 
+
         } else {
+
+
           payload.createdAt =
             new Date();
+
 
           await addDoc(
             collection(
@@ -1917,7 +3394,9 @@ if (saveYouthBtn) {
             payload
           );
 
+
           safeLogActivity({
+
             email:
               auth.currentUser
                 ?.email,
@@ -1929,38 +3408,53 @@ if (saveYouthBtn) {
               "Added youth profile",
 
             details:
-              `${payload.fullName} • Age ${payload.age} • ${payload.status}`
+              `${payload.fullName} • Purok: ${payload.address || "N/A"} • Age ${payload.age}`
+
           });
+
         }
 
 
         youthDialog.close();
 
+
         await loadUsersData();
+
 
         alert(
           "Youth profile saved!"
         );
 
+
       } catch (error) {
+
+
         console.error(
           "Save youth error:",
           error
         );
 
+
         alert(
           "Something went wrong while saving. Please try again."
         );
 
+
       } finally {
+
+
         saveYouthBtn.disabled =
           false;
 
+
         saveYouthBtn.textContent =
           "Save Profile";
+
       }
+
     }
   );
+
 }
 
 
@@ -1971,22 +3465,31 @@ if (saveYouthBtn) {
 async function deleteYouth(
   youthId
 ) {
+
   const confirmed =
     confirm(
       "Are you sure you want to delete this youth profile? This cannot be undone."
     );
 
-  if (!confirmed) {
+
+  if (
+    !confirmed
+  ) {
     return;
   }
+
 
   const target =
     youthList.find(
       youth =>
-        youth.id === youthId
+        youth.id ===
+        youthId
     );
 
+
   try {
+
+
     await deleteDoc(
       doc(
         db,
@@ -1995,7 +3498,9 @@ async function deleteYouth(
       )
     );
 
+
     safeLogActivity({
+
       email:
         auth.currentUser
           ?.email,
@@ -2009,20 +3514,28 @@ async function deleteYouth(
       details:
         target?.fullName ||
         youthId
+
     });
+
 
     await loadUsersData();
 
+
   } catch (error) {
+
+
     console.error(
       "Delete youth error:",
       error
     );
 
+
     alert(
       "Something went wrong while deleting. Please try again."
     );
+
   }
+
 }
 
 
@@ -2031,23 +3544,31 @@ async function deleteYouth(
 // =====================================================
 
 function renderReports() {
+
   const reportSummary =
     document.getElementById(
       "reportSummary"
     );
 
-  if (!reportSummary) {
+
+  if (
+    !reportSummary
+  ) {
     return;
   }
+
 
   const activeYouth =
     youthList.filter(
       isActiveYouth
     );
 
+
   const categories = [
+
     [
       "Youth Status",
+
       {
         Active:
           activeYouth.length,
@@ -2058,8 +3579,27 @@ function renderReports() {
       }
     ],
 
+
+    // =================================================
+    // PUROK / AREA
+    // =================================================
+
+    [
+      "Youth Distribution by Purok / Area",
+
+      countBy(
+        activeYouth,
+        youth =>
+          normalizePurok(
+            youth.address
+          )
+      )
+    ],
+
+
     [
       "Gender Breakdown",
+
       countBy(
         activeYouth,
         youth =>
@@ -2067,8 +3607,21 @@ function renderReports() {
       )
     ],
 
+
+    [
+      "Civil Status",
+
+      countBy(
+        activeYouth,
+        youth =>
+          youth.civilStatus
+      )
+    ],
+
+
     [
       "Education Level",
+
       countBy(
         activeYouth,
         youth =>
@@ -2076,8 +3629,10 @@ function renderReports() {
       )
     ],
 
+
     [
       "Education Status",
+
       countBy(
         activeYouth,
         youth =>
@@ -2085,8 +3640,10 @@ function renderReports() {
       )
     ],
 
+
     [
       "Employment Status",
+
       countBy(
         activeYouth,
         youth =>
@@ -2094,8 +3651,10 @@ function renderReports() {
       )
     ],
 
+
     [
       "Voter Registration",
+
       countBy(
         activeYouth,
         youth =>
@@ -2103,8 +3662,10 @@ function renderReports() {
       )
     ],
 
+
     [
       "Voter Participation",
+
       countBy(
         activeYouth,
         youth =>
@@ -2112,8 +3673,10 @@ function renderReports() {
       )
     ],
 
+
     [
       "New Voter Status",
+
       countBy(
         activeYouth,
         youth =>
@@ -2121,8 +3684,73 @@ function renderReports() {
       )
     ],
 
+
+    [
+      "Registered SK Voter",
+
+      countBy(
+        activeYouth,
+        youth =>
+          youth.registeredSKVoter
+      )
+    ],
+
+
+    [
+      "Last SK Election Participation",
+
+      countBy(
+        activeYouth,
+        youth =>
+          youth.votedLastSKElection
+      )
+    ],
+
+
+    [
+      "KK Assembly Attendance",
+
+      countBy(
+        activeYouth,
+        youth =>
+          youth.kkAssemblyAttended
+      )
+    ],
+
+
+    [
+      "KK Assembly Attendance Frequency",
+
+      countBy(
+        activeYouth.filter(
+          youth =>
+            youth.kkAssemblyAttended ===
+            "Yes"
+        ),
+        youth =>
+          youth.kkAttendanceCount
+      )
+    ],
+
+
+    [
+      "Reasons for Not Attending KK Assembly",
+
+      countBy(
+        activeYouth.filter(
+          youth =>
+            youth.kkAssemblyAttended ===
+            "No"
+        ),
+        youth =>
+          youth.kkNoReason
+      )
+    ],
+
+
     [
       "Civic Participation",
+
       countBy(
         activeYouth,
         youth =>
@@ -2130,35 +3758,57 @@ function renderReports() {
       )
     ],
 
+
     [
       "Special Needs",
+
       countBy(
         activeYouth,
         youth =>
           youth.specialNeeds
       )
     ]
+
   ];
 
 
   reportSummary.innerHTML =
     categories
       .map(
-        ([title, counts]) => {
+        (
+          [
+            title,
+            counts
+          ]
+        ) => {
+
+
           const items =
             Object
-              .entries(counts)
+              .entries(
+                counts
+              )
               .map(
-                ([key, value]) => `
-                  <li>
-                    ${escapeHtml(key)}:
-                    <strong>
-                      ${value}
-                    </strong>
-                  </li>
-                `
+                (
+                  [
+                    key,
+                    value
+                  ]
+                ) =>
+                  `
+                    <li>
+
+                      ${escapeHtml(key)}:
+
+                      <strong>
+                        ${value}
+                      </strong>
+
+                    </li>
+                  `
               )
               .join("");
+
 
           return `
             <div class="summary-box">
@@ -2168,17 +3818,21 @@ function renderReports() {
               </h3>
 
               <ul>
+
                 ${
                   items ||
                   "<li>No data yet</li>"
                 }
+
               </ul>
 
             </div>
           `;
+
         }
       )
       .join("");
+
 }
 
 
@@ -2192,11 +3846,17 @@ const printReportBtn =
   );
 
 
-if (printReportBtn) {
+if (
+  printReportBtn
+) {
+
   printReportBtn.addEventListener(
     "click",
     () => {
+
+
       safeLogActivity({
+
         email:
           auth.currentUser
             ?.email,
@@ -2209,11 +3869,15 @@ if (printReportBtn) {
 
         details:
           "Print / PDF youth report"
+
       });
 
+
       window.print();
+
     }
   );
+
 }
 
 
@@ -2227,11 +3891,17 @@ const downloadCsvBtn =
   );
 
 
-if (downloadCsvBtn) {
+if (
+  downloadCsvBtn
+) {
+
   downloadCsvBtn.addEventListener(
     "click",
     () => {
+
+
       const headers = [
+
         "fullName",
         "email",
         "birthDate",
@@ -2239,6 +3909,7 @@ if (downloadCsvBtn) {
         "status",
         "eligibility",
         "gender",
+        "civilStatus",
         "address",
         "contact",
         "education",
@@ -2248,27 +3919,38 @@ if (downloadCsvBtn) {
         "voterStatus",
         "newVoter",
         "voterParticipation",
+        "registeredSKVoter",
+        "votedLastSKElection",
+        "kkAssemblyAttended",
+        "kkAttendanceCount",
+        "kkNoReason",
         "specialNeeds",
         "assistance",
         "hobbies",
         "sports"
+
       ];
 
 
       const rows =
         youthList.map(
           youth =>
+
             headers
               .map(
                 header =>
                   `"${String(
-                    youth[header] ?? ""
+                    youth[
+                      header
+                    ] ??
+                    ""
                   ).replace(
                     /"/g,
                     '""'
                   )}"`
               )
               .join(",")
+
         );
 
 
@@ -2276,12 +3958,15 @@ if (downloadCsvBtn) {
         [
           headers.join(","),
           ...rows
-        ].join("\n");
+        ]
+          .join("\n");
 
 
       const blob =
         new Blob(
-          [csv],
+          [
+            csv
+          ],
           {
             type:
               "text/csv"
@@ -2300,12 +3985,17 @@ if (downloadCsvBtn) {
           "a"
         );
 
-      a.href = url;
+
+      a.href =
+        url;
+
 
       a.download =
         "bukal-youth-data.csv";
 
+
       a.click();
+
 
       URL.revokeObjectURL(
         url
@@ -2313,6 +4003,7 @@ if (downloadCsvBtn) {
 
 
       safeLogActivity({
+
         email:
           auth.currentUser
             ?.email,
@@ -2325,9 +4016,935 @@ if (downloadCsvBtn) {
 
         details:
           "Downloaded youth data CSV"
+
       });
+
     }
   );
+
+}
+
+
+// =====================================================
+// ANNOUNCEMENT ELEMENTS
+// =====================================================
+
+const announcementDialog =
+  document.getElementById(
+    "announcementDialog"
+  );
+
+
+const announcementDialogTitle =
+  document.getElementById(
+    "announcementDialogTitle"
+  );
+
+
+const announcementForm =
+  document.getElementById(
+    "announcementForm"
+  );
+
+
+const announcementIdInput =
+  announcementForm
+    ?.querySelector(
+      '[name="announcementId"]'
+    );
+
+
+const announcementCategoryInput =
+  announcementForm
+    ?.querySelector(
+      '[name="announcementCategory"]'
+    );
+
+
+const announcementTitleInput =
+  announcementForm
+    ?.querySelector(
+      '[name="announcementTitle"]'
+    );
+
+
+const announcementMessageInput =
+  announcementForm
+    ?.querySelector(
+      '[name="announcementMessage"]'
+    );
+
+
+const announcementExpiryDateInput =
+  announcementForm
+    ?.querySelector(
+      '[name="announcementExpiryDate"]'
+    );
+
+
+const saveAnnouncementBtn =
+  document.getElementById(
+    "saveAnnouncementBtn"
+  );
+
+
+const openAddAnnouncementBtn =
+  document.getElementById(
+    "openAddAnnouncement"
+  );
+
+
+// =====================================================
+// LOAD ANNOUNCEMENTS
+// =====================================================
+
+async function loadAnnouncements() {
+
+  const body =
+    document.getElementById(
+      "announcementTableBody"
+    );
+
+
+  if (
+    !body
+  ) {
+    return;
+  }
+
+
+  body.innerHTML =
+    `
+      <tr>
+
+        <td
+          colspan="6"
+          class="empty-state"
+        >
+          Loading announcements...
+        </td>
+
+      </tr>
+    `;
+
+
+  try {
+
+
+    const snap =
+      await getDocs(
+        collection(
+          db,
+          "announcements"
+        )
+      );
+
+
+    let loadedAnnouncements =
+      snap.docs.map(
+        documentSnapshot => ({
+
+          id:
+            documentSnapshot.id,
+
+          ...documentSnapshot.data()
+
+        })
+      );
+
+
+    loadedAnnouncements =
+      await deleteExpiredAnnouncements(
+        loadedAnnouncements
+      );
+
+
+    announcementList =
+      loadedAnnouncements;
+
+
+    announcementList.sort(
+      (
+        a,
+        b
+      ) => {
+
+
+        const aDate =
+          getCreatedDate(
+            a.createdAt
+          );
+
+
+        const bDate =
+          getCreatedDate(
+            b.createdAt
+          );
+
+
+        return (
+          (
+            bDate?.getTime() ||
+            0
+          ) -
+          (
+            aDate?.getTime() ||
+            0
+          )
+        );
+
+      }
+    );
+
+
+    renderAnnouncementTable();
+
+
+  } catch (error) {
+
+
+    console.error(
+      "Announcement load error:",
+      error
+    );
+
+
+    body.innerHTML =
+      `
+        <tr>
+
+          <td
+            colspan="6"
+            class="empty-state"
+          >
+            Unable to load announcements.
+          </td>
+
+        </tr>
+      `;
+
+  }
+
+}
+
+
+// =====================================================
+// RENDER ANNOUNCEMENTS
+// =====================================================
+
+function renderAnnouncementTable() {
+
+  const body =
+    document.getElementById(
+      "announcementTableBody"
+    );
+
+
+  const countText =
+    document.getElementById(
+      "announcementCountText"
+    );
+
+
+  if (!body) {
+    return;
+  }
+
+
+  if (
+    announcementList.length ===
+    0
+  ) {
+
+    body.innerHTML =
+      `
+        <tr>
+
+          <td
+            colspan="6"
+            class="empty-state"
+          >
+            No announcements available.
+          </td>
+
+        </tr>
+      `;
+
+
+    if (
+      countText
+    ) {
+
+      countText.textContent =
+        "0 announcements";
+
+    }
+
+
+    return;
+
+  }
+
+
+  body.innerHTML =
+    announcementList
+      .map(
+        announcement => {
+
+
+          const createdDate =
+            getCreatedDate(
+              announcement.createdAt
+            );
+
+
+          const formattedDate =
+            createdDate
+              ? createdDate
+                  .toLocaleDateString(
+                    "en-PH",
+                    {
+                      year:
+                        "numeric",
+
+                      month:
+                        "short",
+
+                      day:
+                        "numeric"
+                    }
+                  )
+              : "—";
+
+
+          const formattedExpiry =
+            announcement.expiryDate
+              ? new Date(
+                  `${announcement.expiryDate}T00:00:00`
+                )
+                  .toLocaleDateString(
+                    "en-PH",
+                    {
+                      year:
+                        "numeric",
+
+                      month:
+                        "short",
+
+                      day:
+                        "numeric"
+                    }
+                  )
+              : "—";
+
+
+          return `
+            <tr>
+
+              <td>
+                ${escapeHtml(
+                  formattedDate
+                )}
+              </td>
+
+
+              <td>
+                ${escapeHtml(
+                  announcement.category ||
+                  "General"
+                )}
+              </td>
+
+
+              <td>
+                ${escapeHtml(
+                  announcement.title ||
+                  ""
+                )}
+              </td>
+
+
+              <td>
+                ${escapeHtml(
+                  announcement.message ||
+                  ""
+                )}
+              </td>
+
+
+              <td>
+
+                <strong>
+                  ${escapeHtml(
+                    formattedExpiry
+                  )}
+                </strong>
+
+                <small
+                  style="
+                    display:block;
+                    margin-top:5px;
+                    color:#71838a;
+                  "
+                >
+                  Visible through this date
+                </small>
+
+              </td>
+
+
+              <td>
+
+                <div class="action-row">
+
+                  <button
+                    class="action-btn edit"
+                    data-edit-announcement="${announcement.id}"
+                    type="button"
+                    title="Edit Announcement"
+                  >
+                    ✎
+                  </button>
+
+                  <button
+                    class="action-btn delete"
+                    data-delete-announcement="${announcement.id}"
+                    type="button"
+                    title="Delete Announcement"
+                  >
+                    🗑
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+          `;
+
+        }
+      )
+      .join("");
+
+
+  if (
+    countText
+  ) {
+
+    countText.textContent =
+      `${announcementList.length} announcement${
+        announcementList.length ===
+        1
+          ? ""
+          : "s"
+      }`;
+
+  }
+
+
+  document
+    .querySelectorAll(
+      "[data-edit-announcement]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            openAnnouncementDialog(
+              button.dataset
+                .editAnnouncement
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      "[data-delete-announcement]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            deleteAnnouncement(
+              button.dataset
+                .deleteAnnouncement
+            );
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+// =====================================================
+// OPEN ANNOUNCEMENT DIALOG
+// =====================================================
+
+function openAnnouncementDialog(
+  announcementId = null
+) {
+
+  if (
+    !announcementDialog ||
+    !announcementIdInput ||
+    !announcementCategoryInput ||
+    !announcementTitleInput ||
+    !announcementMessageInput ||
+    !announcementExpiryDateInput
+  ) {
+    return;
+  }
+
+
+  if (
+    announcementId
+  ) {
+
+
+    const existing =
+      announcementList.find(
+        announcement =>
+          announcement.id ===
+          announcementId
+      );
+
+
+    if (
+      !existing
+    ) {
+      return;
+    }
+
+
+    announcementIdInput.value =
+      existing.id;
+
+
+    announcementCategoryInput.value =
+      existing.category ||
+      "General";
+
+
+    announcementTitleInput.value =
+      existing.title ||
+      "";
+
+
+    announcementMessageInput.value =
+      existing.message ||
+      "";
+
+
+    announcementExpiryDateInput.value =
+      existing.expiryDate ||
+      "";
+
+
+    if (
+      announcementDialogTitle
+    ) {
+
+      announcementDialogTitle.textContent =
+        "Edit Announcement";
+
+    }
+
+
+  } else {
+
+
+    announcementIdInput.value =
+      "";
+
+
+    announcementCategoryInput.value =
+      "";
+
+
+    announcementTitleInput.value =
+      "";
+
+
+    announcementMessageInput.value =
+      "";
+
+
+    announcementExpiryDateInput.value =
+      getLocalDateString();
+
+
+    if (
+      announcementDialogTitle
+    ) {
+
+      announcementDialogTitle.textContent =
+        "New Announcement";
+
+    }
+
+  }
+
+
+  announcementDialog.showModal();
+
+}
+
+
+// =====================================================
+// NEW ANNOUNCEMENT
+// =====================================================
+
+if (
+  openAddAnnouncementBtn
+) {
+
+  openAddAnnouncementBtn
+    .addEventListener(
+      "click",
+      () => {
+
+        openAnnouncementDialog();
+
+      }
+    );
+
+}
+
+
+// =====================================================
+// SAVE ANNOUNCEMENT
+// =====================================================
+
+if (
+  saveAnnouncementBtn
+) {
+
+  saveAnnouncementBtn.addEventListener(
+    "click",
+    async () => {
+
+
+      if (
+        !announcementCategoryInput ||
+        !announcementTitleInput ||
+        !announcementMessageInput ||
+        !announcementExpiryDateInput
+      ) {
+        return;
+      }
+
+
+      const category =
+        announcementCategoryInput
+          .value
+          .trim();
+
+
+      const title =
+        announcementTitleInput
+          .value
+          .trim();
+
+
+      const message =
+        announcementMessageInput
+          .value
+          .trim();
+
+
+      const expiryDate =
+        announcementExpiryDateInput
+          .value;
+
+
+      if (
+        !category ||
+        !title ||
+        !message ||
+        !expiryDate
+      ) {
+
+        alert(
+          "Please complete the category, title, announcement message, and Event / Display Until Date."
+        );
+
+
+        return;
+
+      }
+
+
+      const today =
+        getLocalDateString();
+
+
+      if (
+        expiryDate <
+        today
+      ) {
+
+        alert(
+          "Event / Display Until Date cannot be earlier than today."
+        );
+
+
+        return;
+
+      }
+
+
+      saveAnnouncementBtn.disabled =
+        true;
+
+
+      saveAnnouncementBtn.textContent =
+        "Saving...";
+
+
+      try {
+
+
+        if (
+          announcementIdInput
+            ?.value
+        ) {
+
+
+          await updateDoc(
+            doc(
+              db,
+              "announcements",
+              announcementIdInput.value
+            ),
+            {
+
+              category,
+              title,
+              message,
+              expiryDate,
+
+              updatedAt:
+                new Date()
+
+            }
+          );
+
+
+          safeLogActivity({
+
+            email:
+              auth.currentUser
+                ?.email,
+
+            role:
+              "admin",
+
+            activity:
+              "Updated announcement",
+
+            details:
+              `${title} • Display until: ${expiryDate}`
+
+          });
+
+
+          alert(
+            "Announcement updated successfully!"
+          );
+
+
+        } else {
+
+
+          await addDoc(
+            collection(
+              db,
+              "announcements"
+            ),
+            {
+
+              category,
+              title,
+              message,
+              expiryDate,
+
+              createdAt:
+                new Date(),
+
+              updatedAt:
+                new Date(),
+
+              createdBy:
+                auth.currentUser
+                  ?.email ||
+                ""
+
+            }
+          );
+
+
+          safeLogActivity({
+
+            email:
+              auth.currentUser
+                ?.email,
+
+            role:
+              "admin",
+
+            activity:
+              "Created announcement",
+
+            details:
+              `${title} • Display until: ${expiryDate}`
+
+          });
+
+
+          alert(
+            "Announcement created successfully!"
+          );
+
+        }
+
+
+        announcementDialog
+          ?.close();
+
+
+        await loadAnnouncements();
+
+
+      } catch (error) {
+
+
+        console.error(
+          "Announcement save error:",
+          error
+        );
+
+
+        alert(
+          "Something went wrong while saving the announcement. Please check your Firestore permissions."
+        );
+
+
+      } finally {
+
+
+        saveAnnouncementBtn.disabled =
+          false;
+
+
+        saveAnnouncementBtn.textContent =
+          "Save Announcement";
+
+      }
+
+    }
+  );
+
+}
+
+
+// =====================================================
+// DELETE ANNOUNCEMENT
+// =====================================================
+
+async function deleteAnnouncement(
+  announcementId
+) {
+
+  const target =
+    announcementList.find(
+      announcement =>
+        announcement.id ===
+        announcementId
+    );
+
+
+  if (
+    !target
+  ) {
+    return;
+  }
+
+
+  const confirmed =
+    confirm(
+      `Delete announcement "${target.title}"? This cannot be undone.`
+    );
+
+
+  if (
+    !confirmed
+  ) {
+    return;
+  }
+
+
+  try {
+
+
+    await deleteDoc(
+      doc(
+        db,
+        "announcements",
+        announcementId
+      )
+    );
+
+
+    safeLogActivity({
+
+      email:
+        auth.currentUser
+          ?.email,
+
+      role:
+        "admin",
+
+      activity:
+        "Deleted announcement",
+
+      details:
+        target.title
+
+    });
+
+
+    await loadAnnouncements();
+
+
+  } catch (error) {
+
+
+    console.error(
+      "Announcement delete error:",
+      error
+    );
+
+
+    alert(
+      "Something went wrong while deleting the announcement."
+    );
+
+  }
+
 }
 
 
@@ -2336,71 +4953,87 @@ if (downloadCsvBtn) {
 // =====================================================
 
 function renderAdminAccounts() {
+
   const body =
     document.getElementById(
       "accountsTableBody"
     );
 
+
   if (!body) {
     return;
   }
 
+
   if (
-    adminList.length === 0
+    adminList.length ===
+    0
   ) {
-    body.innerHTML = `
-      <tr>
-        <td
-          colspan="5"
-          class="empty-state"
-        >
-          No admin accounts found.
-        </td>
-      </tr>
-    `;
+
+    body.innerHTML =
+      `
+        <tr>
+
+          <td
+            colspan="5"
+            class="empty-state"
+          >
+            No admin accounts found.
+          </td>
+
+        </tr>
+      `;
+
 
     return;
+
   }
 
 
   body.innerHTML =
     adminList
       .map(
-        admin => `
-          <tr>
+        admin =>
+          `
+            <tr>
 
-            <td>
-              ${escapeHtml(
-                admin.fullName
-              )}
-            </td>
+              <td>
+                ${escapeHtml(
+                  admin.fullName
+                )}
+              </td>
 
-            <td>
-              ${escapeHtml(
-                admin.email
-              )}
-            </td>
+              <td>
+                ${escapeHtml(
+                  admin.email
+                )}
+              </td>
 
-            <td>
-              Admin
-            </td>
+              <td>
+                Admin
+              </td>
 
-            <td>
-              <span class="status-pill">
-                Active
-              </span>
-            </td>
+              <td>
 
-            <td>
-              <span class="muted-text">
-                Managed via Firebase Auth
-              </span>
-            </td>
+                <span class="status-pill">
+                  Active
+                </span>
 
-          </tr>
-        `
+              </td>
+
+              <td>
+
+                <span class="muted-text">
+                  Managed via Firebase Auth
+                </span>
+
+              </td>
+
+            </tr>
+          `
       )
       .join("");
+
 }
 
 
@@ -2409,16 +5042,21 @@ function renderAdminAccounts() {
 // =====================================================
 
 async function loadAuditLogs() {
+
   const tbody =
     document.getElementById(
       "auditTableBody"
     );
 
+
   if (!tbody) {
     return;
   }
 
+
   try {
+
+
     const snap =
       await getDocs(
         collection(
@@ -2427,25 +5065,34 @@ async function loadAuditLogs() {
         )
       );
 
+
     const logs =
       snap.docs.map(
         documentSnapshot => ({
+
           id:
             documentSnapshot.id,
 
           ...documentSnapshot.data()
+
         })
       );
 
 
     logs.sort(
-      (a, b) => {
+      (
+        a,
+        b
+      ) => {
+
+
         const aTime =
           a.timestamp?.toDate
             ? a.timestamp.toDate()
             : new Date(
                 a.timestamp
               );
+
 
         const bTime =
           b.timestamp?.toDate
@@ -2454,29 +5101,38 @@ async function loadAuditLogs() {
                 b.timestamp
               );
 
+
         return (
           bTime -
           aTime
         );
+
       }
     );
 
 
     if (
-      logs.length === 0
+      logs.length ===
+      0
     ) {
-      tbody.innerHTML = `
-        <tr>
-          <td
-            colspan="5"
-            class="empty-state"
-          >
-            No activity recorded yet.
-          </td>
-        </tr>
-      `;
+
+      tbody.innerHTML =
+        `
+          <tr>
+
+            <td
+              colspan="5"
+              class="empty-state"
+            >
+              No activity recorded yet.
+            </td>
+
+          </tr>
+        `;
+
 
       return;
+
     }
 
 
@@ -2484,12 +5140,15 @@ async function loadAuditLogs() {
       logs
         .map(
           log => {
+
+
             const time =
               log.timestamp?.toDate
                 ? log.timestamp.toDate()
                 : new Date(
                     log.timestamp
                   );
+
 
             return `
               <tr>
@@ -2526,16 +5185,22 @@ async function loadAuditLogs() {
 
               </tr>
             `;
+
           }
         )
         .join("");
 
+
   } catch (error) {
+
+
     console.error(
       "Audit load error:",
       error
     );
+
   }
+
 }
 
 
@@ -2549,20 +5214,31 @@ const clearAuditBtn =
   );
 
 
-if (clearAuditBtn) {
+if (
+  clearAuditBtn
+) {
+
   clearAuditBtn.addEventListener(
     "click",
     async () => {
+
+
       const confirmed =
         confirm(
           "Clear all audit log entries? This cannot be undone."
         );
 
-      if (!confirmed) {
+
+      if (
+        !confirmed
+      ) {
         return;
       }
 
+
       try {
+
+
         const snap =
           await getDocs(
             collection(
@@ -2570,6 +5246,7 @@ if (clearAuditBtn) {
               "auditLogs"
             )
           );
+
 
         await Promise.all(
           snap.docs.map(
@@ -2584,20 +5261,28 @@ if (clearAuditBtn) {
           )
         );
 
+
         await loadAuditLogs();
 
+
       } catch (error) {
+
+
         console.error(
           "Clear audit error:",
           error
         );
 
+
         alert(
           "Something went wrong while clearing the audit logs."
         );
+
       }
+
     }
   );
+
 }
 
 
@@ -2608,10 +5293,12 @@ if (clearAuditBtn) {
 populateFilterOptions();
 
 
-// Load dashboard data and audit logs together.
-// Announcement loading has been completely removed.
-
 Promise.allSettled([
+
   loadUsersData(),
-  loadAuditLogs()
+
+  loadAuditLogs(),
+
+  loadAnnouncements()
+
 ]);

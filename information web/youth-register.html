@@ -81,6 +81,11 @@
           class="form-grid"
         >
 
+
+          <!-- =========================================
+               ACCOUNT INFORMATION
+          ========================================== -->
+
           <h2>Account Information</h2>
 
 
@@ -149,16 +154,56 @@
           </label>
 
 
-          <label class="field full">
-            <span>Address / Purok</span>
+          <label class="field">
+            <span>Civil Status</span>
 
-            <input
-              type="text"
-              name="address"
-              placeholder="Street, Purok, Barangay Bukal"
+            <select
+              name="civilStatus"
               required
-            />
+            >
+              <option value="">Select</option>
+              <option>Single</option>
+              <option>Married</option>
+              <option>Widowed</option>
+              <option>Divorced</option>
+              <option>Separated</option>
+              <option>Annulled</option>
+              <option>Live-in</option>
+              <option>Unknown</option>
+            </select>
           </label>
+
+
+<label class="field full">
+  <span>Purok / Area</span>
+
+  <select
+    name="address"
+    required
+  >
+    <option value="">Select Purok / Area</option>
+
+    <option value="BRIONES COMPOUND">BRIONES COMPOUND</option>
+    <option value="CRDC">CRDC</option>
+    <option value="PENINSULA HOMES">PENINSULA HOMES</option>
+    <option value="INTERTOWN HOMES 1-6">INTERTOWN HOMES 1-6</option>
+    <option value="KALYE PUTOL/ BUKAL 2">KALYE PUTOL / BUKAL 2</option>
+    <option value="SAN DIEGO VILLAGE">SAN DIEGO VILLAGE</option>
+    <option value="BERANA COMPOUND">BERANA COMPOUND</option>
+    <option value="SITIO PAG-ASA (ITAAS)">SITIO PAG-ASA (ITAAS)</option>
+    <option value="SITIO PAG-ASA (IBABA)">SITIO PAG-ASA (IBABA)</option>
+    <option value="ENCENAREZ COMPOUND">ENCENAREZ COMPOUND</option>
+    <option value="BUKAL1">BUKAL 1</option>
+    <option value="GOLDEN MEADOWS">GOLDEN MEADOWS</option>
+    <option value="CIUDAD REMBINO">CIUDAD REMBINO</option>
+    <option value="HIGHWAY">HIGHWAY</option>
+    <option value="KRISANT VILLAGE">KRISANT VILLAGE</option>
+    <option value="INTERTOWN HOMES PHASE 5">INTERTOWN HOMES PHASE 5</option>
+    <option value="INTERTOWN HOMES PHASE 6">INTERTOWN HOMES PHASE 6</option>
+    <option value="INTERTOWN HOMES PHASE 1-4">INTERTOWN HOMES PHASE 1-4</option>
+
+  </select>
+</label>
 
 
           <label class="field full">
@@ -172,6 +217,11 @@
             />
           </label>
 
+
+
+          <!-- =========================================
+               EDUCATION AND EMPLOYMENT
+          ========================================== -->
 
           <h2>Education and Employment</h2>
 
@@ -240,6 +290,11 @@
             </select>
           </label>
 
+
+
+          <!-- =========================================
+               VOTER AND SUPPORT INFORMATION
+          ========================================== -->
 
           <h2>Voter and Support Information</h2>
 
@@ -313,6 +368,103 @@
           </label>
 
 
+
+          <!-- =========================================
+               SK / KK INFORMATION
+          ========================================== -->
+
+          <h2>SK / KK Information</h2>
+
+
+          <label class="field">
+            <span>Registered SK Voter?</span>
+
+            <select
+              name="registeredSKVoter"
+              required
+            >
+              <option value="">Select</option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+          </label>
+
+
+          <label class="field">
+            <span>Did you vote in the last SK Election?</span>
+
+            <select
+              name="votedLastSKElection"
+              required
+            >
+              <option value="">Select</option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+          </label>
+
+
+          <label class="field full">
+            <span>Have you already attended a KK Assembly?</span>
+
+            <select
+              name="kkAssemblyAttended"
+              id="kkAssemblyAttended"
+              required
+            >
+              <option value="">Select</option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+          </label>
+
+
+          <!-- SHOW ONLY IF YES -->
+
+          <label
+            class="field full"
+            id="kkAttendanceCountField"
+            style="display:none;"
+          >
+            <span>If yes, how many times?</span>
+
+            <select
+              name="kkAttendanceCount"
+              id="kkAttendanceCount"
+            >
+              <option value="">Select</option>
+              <option>1-2 Times</option>
+              <option>3-4 Times</option>
+              <option>5 and Above</option>
+            </select>
+          </label>
+
+
+          <!-- SHOW ONLY IF NO -->
+
+          <label
+            class="field full"
+            id="kkNoReasonField"
+            style="display:none;"
+          >
+            <span>If no, why?</span>
+
+            <select
+              name="kkNoReason"
+              id="kkNoReason"
+            >
+              <option value="">Select</option>
+              <option>There was no KK Assembly Meeting</option>
+              <option>Not Interested to Attend</option>
+            </select>
+          </label>
+
+
+
+          <!-- =========================================
+               SKILLS AND INTERESTS
+          ========================================== -->
+
           <h2>Skills and Interests</h2>
 
 
@@ -339,6 +491,11 @@
             />
           </label>
 
+
+
+          <!-- =========================================
+               ACTIONS
+          ========================================== -->
 
           <div class="form-actions full">
 
@@ -374,6 +531,72 @@
     type="module"
     src="assets/youth-register.js"
   ></script>
+
+
+  <!-- =========================================
+       KK ASSEMBLY CONDITIONAL FIELDS
+  ========================================== -->
+
+  <script>
+
+    const kkAssemblyAttended =
+      document.getElementById("kkAssemblyAttended");
+
+    const kkAttendanceCountField =
+      document.getElementById("kkAttendanceCountField");
+
+    const kkNoReasonField =
+      document.getElementById("kkNoReasonField");
+
+    const kkAttendanceCount =
+      document.getElementById("kkAttendanceCount");
+
+    const kkNoReason =
+      document.getElementById("kkNoReason");
+
+
+    kkAssemblyAttended.addEventListener("change", () => {
+
+      const value = kkAssemblyAttended.value;
+
+
+      if (value === "Yes") {
+
+        kkAttendanceCountField.style.display = "flex";
+        kkNoReasonField.style.display = "none";
+
+        kkAttendanceCount.required = true;
+        kkNoReason.required = false;
+
+        kkNoReason.value = "";
+
+      } else if (value === "No") {
+
+        kkAttendanceCountField.style.display = "none";
+        kkNoReasonField.style.display = "flex";
+
+        kkAttendanceCount.required = false;
+        kkNoReason.required = true;
+
+        kkAttendanceCount.value = "";
+
+      } else {
+
+        kkAttendanceCountField.style.display = "none";
+        kkNoReasonField.style.display = "none";
+
+        kkAttendanceCount.required = false;
+        kkNoReason.required = false;
+
+        kkAttendanceCount.value = "";
+        kkNoReason.value = "";
+
+      }
+
+    });
+
+  </script>
+
 
 </body>
 </html>

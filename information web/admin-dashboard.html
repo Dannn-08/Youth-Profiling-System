@@ -10,7 +10,9 @@
     content="width=device-width, initial-scale=1.0"
   />
 
-  <title>Bukal Youth Data | Admin Dashboard</title>
+  <title>
+    Bukal Youth Data | Admin Dashboard
+  </title>
 
   <link
     rel="icon"
@@ -72,7 +74,7 @@
 
         <img
           src="assets/logosk.png"
-          alt="Second logo"
+          alt="Sangguniang Kabataan logo"
           style="height:35px;"
         />
 
@@ -111,6 +113,7 @@
       <button
         class="logout-btn"
         data-logout
+        type="button"
       >
         ↪ Logout
       </button>
@@ -133,6 +136,10 @@
 
       <button data-tab="youth">
         Youth Management
+      </button>
+
+      <button data-tab="announcements">
+        Announcements
       </button>
 
       <button data-tab="reports">
@@ -179,7 +186,9 @@
 
 
 
-      <!-- ANALYTICS -->
+      <!-- =================================================
+           ANALYTICS
+      ================================================== -->
 
       <div class="analytics-grid">
 
@@ -193,9 +202,7 @@
           </h2>
 
           <div class="chart-container">
-
             <canvas id="genderChart"></canvas>
-
           </div>
 
         </article>
@@ -211,9 +218,39 @@
           </h2>
 
           <div class="chart-container">
-
             <canvas id="ageChart"></canvas>
+          </div>
 
+        </article>
+
+
+
+        <!-- PUROK / AREA -->
+
+        <article class="panel chart-panel">
+
+          <h2>
+            Youth Distribution by Purok / Area
+          </h2>
+
+          <div class="chart-container">
+            <canvas id="purokChart"></canvas>
+          </div>
+
+        </article>
+
+
+
+        <!-- CIVIL STATUS -->
+
+        <article class="panel chart-panel">
+
+          <h2>
+            Civil Status Distribution
+          </h2>
+
+          <div class="chart-container">
+            <canvas id="civilStatusChart"></canvas>
           </div>
 
         </article>
@@ -229,9 +266,7 @@
           </h2>
 
           <div class="chart-container">
-
             <canvas id="educationChart"></canvas>
-
           </div>
 
         </article>
@@ -247,9 +282,7 @@
           </h2>
 
           <div class="chart-container">
-
             <canvas id="educationStatusChart"></canvas>
-
           </div>
 
         </article>
@@ -265,9 +298,7 @@
           </h2>
 
           <div class="chart-container">
-
             <canvas id="employmentChart"></canvas>
-
           </div>
 
         </article>
@@ -283,9 +314,7 @@
           </h2>
 
           <div class="chart-container">
-
             <canvas id="voterChart"></canvas>
-
           </div>
 
         </article>
@@ -301,9 +330,7 @@
           </h2>
 
           <div class="chart-container">
-
             <canvas id="voterParticipationChart"></canvas>
-
           </div>
 
         </article>
@@ -319,9 +346,87 @@
           </h2>
 
           <div class="chart-container">
-
             <canvas id="newVoterChart"></canvas>
+          </div>
 
+        </article>
+
+
+
+        <!-- REGISTERED SK VOTER -->
+
+        <article class="panel chart-panel">
+
+          <h2>
+            Registered SK Voter
+          </h2>
+
+          <div class="chart-container">
+            <canvas id="skVoterChart"></canvas>
+          </div>
+
+        </article>
+
+
+
+        <!-- LAST SK ELECTION -->
+
+        <article class="panel chart-panel">
+
+          <h2>
+            Last SK Election Participation
+          </h2>
+
+          <div class="chart-container">
+            <canvas id="skElectionChart"></canvas>
+          </div>
+
+        </article>
+
+
+
+        <!-- KK ASSEMBLY ATTENDANCE -->
+
+        <article class="panel chart-panel">
+
+          <h2>
+            KK Assembly Attendance
+          </h2>
+
+          <div class="chart-container">
+            <canvas id="kkAttendanceChart"></canvas>
+          </div>
+
+        </article>
+
+
+
+        <!-- KK ATTENDANCE FREQUENCY -->
+
+        <article class="panel chart-panel">
+
+          <h2>
+            KK Assembly Attendance Frequency
+          </h2>
+
+          <div class="chart-container">
+            <canvas id="kkFrequencyChart"></canvas>
+          </div>
+
+        </article>
+
+
+
+        <!-- REASON FOR NON-ATTENDANCE -->
+
+        <article class="panel chart-panel">
+
+          <h2>
+            Reasons for Not Attending KK Assembly
+          </h2>
+
+          <div class="chart-container">
+            <canvas id="kkReasonChart"></canvas>
           </div>
 
         </article>
@@ -337,9 +442,7 @@
           </h2>
 
           <div class="chart-container">
-
             <canvas id="civicChart"></canvas>
-
           </div>
 
         </article>
@@ -355,9 +458,7 @@
           </h2>
 
           <div class="chart-container">
-
             <canvas id="specialNeedsChart"></canvas>
-
           </div>
 
         </article>
@@ -373,9 +474,7 @@
           </h2>
 
           <div class="chart-container">
-
             <canvas id="sportsChart"></canvas>
-
           </div>
 
         </article>
@@ -391,9 +490,7 @@
           </h2>
 
           <div class="chart-container">
-
             <canvas id="hobbiesChart"></canvas>
-
           </div>
 
         </article>
@@ -409,9 +506,7 @@
           </h2>
 
           <div class="chart-container">
-
             <canvas id="registrationTrendChart"></canvas>
-
           </div>
 
         </article>
@@ -446,7 +541,8 @@
             </h2>
 
             <p>
-              Manage registered youth information and records.
+              Manage registered youth information,
+              SK/KK data, purok information, and records.
             </p>
 
           </div>
@@ -455,8 +551,6 @@
 
           <div class="table-tools">
 
-
-            <!-- SEARCH -->
 
             <label class="search-field">
 
@@ -467,18 +561,16 @@
               <input
                 type="search"
                 id="youthSearch"
-                placeholder="Search by name, email, or address..."
+                placeholder="Search by name, email, or purok..."
               />
 
             </label>
 
 
-
-            <!-- ADD YOUTH -->
-
             <button
               class="btn btn-primary btn-sm"
               id="openAddYouth"
+              type="button"
             >
               + Add Youth
             </button>
@@ -490,12 +582,12 @@
 
 
 
-        <!-- =================================================
-             FILTERS
-        ================================================== -->
+        <!-- FILTERS -->
 
         <div class="filter-row">
 
+
+          <!-- GENDER -->
 
           <select id="filterGender">
 
@@ -519,6 +611,20 @@
 
 
 
+          <!-- PUROK / AREA -->
+
+          <select id="filterPurok">
+
+            <option value="">
+              All Purok / Area
+            </option>
+
+          </select>
+
+
+
+          <!-- EDUCATION -->
+
           <select id="filterEducation">
 
             <option value="">
@@ -529,6 +635,8 @@
 
 
 
+          <!-- EMPLOYMENT -->
+
           <select id="filterEmployment">
 
             <option value="">
@@ -538,6 +646,8 @@
           </select>
 
 
+
+          <!-- STATUS -->
 
           <select id="filterStatus">
 
@@ -557,9 +667,52 @@
 
 
 
+          <!-- SK VOTER -->
+
+          <select id="filterSKVoter">
+
+            <option value="">
+              All SK Voters
+            </option>
+
+            <option value="Yes">
+              Registered SK Voter
+            </option>
+
+            <option value="No">
+              Not Registered SK Voter
+            </option>
+
+          </select>
+
+
+
+          <!-- KK ATTENDANCE -->
+
+          <select id="filterKKAttendance">
+
+            <option value="">
+              All KK Attendance
+            </option>
+
+            <option value="Yes">
+              Attended KK Assembly
+            </option>
+
+            <option value="No">
+              Never Attended
+            </option>
+
+          </select>
+
+
+
+          <!-- CLEAR -->
+
           <button
             class="btn btn-muted btn-sm"
             id="clearFilters"
+            type="button"
           >
             Clear Filters
           </button>
@@ -569,9 +722,7 @@
 
 
 
-        <!-- =================================================
-             YOUTH TABLE
-        ================================================== -->
+        <!-- YOUTH TABLE -->
 
         <div class="table-scroll">
 
@@ -600,11 +751,23 @@
                 </th>
 
                 <th>
+                  Civil Status
+                </th>
+
+                <th>
                   Education
                 </th>
 
                 <th>
                   Employment
+                </th>
+
+                <th>
+                  SK Voter
+                </th>
+
+                <th>
+                  KK Assembly
                 </th>
 
                 <th>
@@ -620,7 +783,6 @@
             </thead>
 
 
-
             <tbody id="youthTableBody"></tbody>
 
 
@@ -630,10 +792,128 @@
         </div>
 
 
-
         <p
           class="table-count"
           id="youthCountText"
+        ></p>
+
+
+      </article>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         ANNOUNCEMENTS
+    ================================================== -->
+
+    <section
+      class="tab-panel"
+      id="tab-announcements"
+    >
+
+
+      <article class="panel table-panel">
+
+
+        <div class="table-heading">
+
+
+          <div>
+
+            <h2>
+              Announcement Management
+            </h2>
+
+            <p>
+              Create and manage announcements that will be
+              displayed on the Youth Dashboard.
+            </p>
+
+          </div>
+
+
+          <button
+            class="btn btn-primary btn-sm"
+            id="openAddAnnouncement"
+            type="button"
+          >
+            + New Announcement
+          </button>
+
+
+        </div>
+
+
+
+        <div class="table-scroll">
+
+
+          <table class="data-table">
+
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Date
+                </th>
+
+                <th>
+                  Category
+                </th>
+
+                <th>
+                  Title
+                </th>
+
+                <th>
+                  Announcement
+                </th>
+
+                <th>
+                  Display Until
+                </th>
+
+                <th>
+                  Actions
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody id="announcementTableBody">
+
+
+              <tr>
+
+                <td
+                  colspan="6"
+                  class="empty-state"
+                >
+                  Loading announcements...
+                </td>
+
+              </tr>
+
+
+            </tbody>
+
+
+          </table>
+
+
+        </div>
+
+
+        <p
+          class="table-count"
+          id="announcementCountText"
         ></p>
 
 
@@ -667,33 +947,29 @@
             </h2>
 
             <p>
-              Generate report files for Barangay Bukal youth
-              planning and documentation.
+              Generate report files for Barangay Bukal
+              youth planning and documentation.
             </p>
 
           </div>
 
 
-
           <div class="table-tools">
 
-
-            <!-- PRINT / PDF -->
 
             <button
               class="btn btn-muted btn-sm"
               id="printReportBtn"
+              type="button"
             >
               Export PDF / Print
             </button>
 
 
-
-            <!-- CSV -->
-
             <button
               class="btn btn-primary btn-sm"
               id="downloadCsvBtn"
+              type="button"
             >
               Export Excel CSV
             </button>
@@ -703,7 +979,6 @@
 
 
         </div>
-
 
 
         <div
@@ -748,17 +1023,16 @@
           </div>
 
 
-
           <button
             class="btn btn-muted btn-sm"
             id="clearAuditBtn"
+            type="button"
           >
             Clear Logs
           </button>
 
 
         </div>
-
 
 
         <div class="table-scroll">
@@ -796,7 +1070,6 @@
             </thead>
 
 
-
             <tbody id="auditTableBody"></tbody>
 
 
@@ -826,10 +1099,7 @@
       <div class="settings-grid">
 
 
-
-        <!-- =================================================
-             ADMIN ACCOUNTS
-        ================================================== -->
+        <!-- ADMIN ACCOUNTS -->
 
         <article class="panel table-panel">
 
@@ -850,17 +1120,16 @@
             </div>
 
 
-
             <button
               class="btn btn-primary btn-sm"
               onclick="location.href='admin-register.html'"
+              type="button"
             >
               + New Admin
             </button>
 
 
           </div>
-
 
 
           <div class="table-scroll">
@@ -898,7 +1167,6 @@
               </thead>
 
 
-
               <tbody id="accountsTableBody"></tbody>
 
 
@@ -912,9 +1180,7 @@
 
 
 
-        <!-- =================================================
-             SYSTEM SETTINGS
-        ================================================== -->
+        <!-- SYSTEM SETTINGS -->
 
         <article class="panel settings-card">
 
@@ -938,22 +1204,22 @@
           </p>
 
 
-
           <div class="settings-actions">
 
 
             <button
               class="btn btn-muted"
               id="backupDataBtn"
+              type="button"
             >
               Download Backup Excel
             </button>
 
 
-
             <button
               class="btn btn-danger"
               id="resetDemoBtn"
+              type="button"
             >
               Reset Data
             </button>
@@ -1000,11 +1266,11 @@
         </h2>
 
 
-
         <button
           class="icon-btn"
           value="cancel"
           type="submit"
+          aria-label="Close"
         >
           ×
         </button>
@@ -1013,18 +1279,216 @@
       </div>
 
 
-
       <input
         type="hidden"
         name="id"
       />
 
 
-
       <div
         class="form-grid"
         id="adminYouthFields"
       ></div>
+
+
+      <div class="modal-actions">
+
+
+        <button
+          class="btn btn-muted"
+          value="cancel"
+          type="submit"
+        >
+          Cancel
+        </button>
+
+
+        <button
+          class="btn btn-primary"
+          id="saveYouthAdminBtn"
+          value="default"
+          type="button"
+        >
+          Save Profile
+        </button>
+
+
+      </div>
+
+
+    </form>
+
+
+  </dialog>
+
+
+
+  <!-- =================================================
+       ADD / EDIT ANNOUNCEMENT DIALOG
+  ================================================== -->
+
+  <dialog
+    id="announcementDialog"
+    class="modal-card"
+  >
+
+
+    <form
+      method="dialog"
+      class="modal-inner"
+      id="announcementForm"
+    >
+
+
+      <div class="modal-heading">
+
+
+        <h2 id="announcementDialogTitle">
+          New Announcement
+        </h2>
+
+
+        <button
+          class="icon-btn"
+          value="cancel"
+          type="submit"
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+
+      </div>
+
+
+      <input
+        type="hidden"
+        name="announcementId"
+      />
+
+
+      <div class="form-grid single">
+
+
+        <!-- CATEGORY -->
+
+        <label class="field full">
+
+          <span>
+            Category
+          </span>
+
+          <select
+            name="announcementCategory"
+            required
+          >
+
+            <option value="">
+              Select
+            </option>
+
+            <option value="General">
+              General
+            </option>
+
+            <option value="Advisory">
+              Advisory
+            </option>
+
+            <option value="Event">
+              Event
+            </option>
+
+            <option value="KK Assembly">
+              KK Assembly
+            </option>
+
+            <option value="Program">
+              Program
+            </option>
+
+            <option value="Reminder">
+              Reminder
+            </option>
+
+          </select>
+
+        </label>
+
+
+
+        <!-- TITLE -->
+
+        <label class="field full">
+
+          <span>
+            Title
+          </span>
+
+          <input
+            type="text"
+            name="announcementTitle"
+            placeholder="Enter announcement title"
+            required
+          />
+
+        </label>
+
+
+
+        <!-- ANNOUNCEMENT MESSAGE -->
+
+        <label class="field full">
+
+          <span>
+            Announcement
+          </span>
+
+          <textarea
+            name="announcementMessage"
+            rows="7"
+            placeholder="Enter announcement details..."
+            required
+            style="
+              min-height:150px;
+              padding:12px;
+              resize:vertical;
+            "
+          ></textarea>
+
+        </label>
+
+
+
+        <!-- EVENT / DISPLAY UNTIL DATE -->
+
+        <label class="field full">
+
+          <span>
+            Event / Display Until Date
+          </span>
+
+          <input
+            type="date"
+            name="announcementExpiryDate"
+            id="announcementExpiryDate"
+          />
+
+          <small
+            class="muted-text"
+            style="
+              display:block;
+              margin-top:6px;
+            "
+          >
+            The announcement will remain visible until the end of
+            this date and will automatically expire the following day.
+          </small>
+
+        </label>
+
+
+      </div>
 
 
 
@@ -1040,14 +1504,13 @@
         </button>
 
 
-
         <button
           class="btn btn-primary"
-          id="saveYouthAdminBtn"
+          id="saveAnnouncementBtn"
           value="default"
           type="button"
         >
-          Save Profile
+          Save Announcement
         </button>
 
 

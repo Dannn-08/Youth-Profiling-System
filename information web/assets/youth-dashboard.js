@@ -1,123 +1,807 @@
 import { auth, db } from "./firebase-config.js";
-import { onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+import {
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
 import { logActivity } from "./audit-log.js";
+
 
 // =====================================================
 // FIELD DEFINITIONS
 // =====================================================
 
 const FIELDS = [
-  { key: "fullName", label: "Full Name", type: "text", full: true },
-  { key: "birthDate", label: "Birth Date", type: "date" },
-  { key: "age", label: "Age", type: "number" },
-  { key: "gender", label: "Gender",type: "select", options: ["Male","Female","Prefer not to say"]},
-  { key: "address", label: "Address / Purok", type: "text", full: true},
-  { key: "contact", label: "Contact Number", type: "tel", full: true},
-  { key: "education", label: "Educational Attainment", type: "select", options: ["Elementary","High School", "Senior High School","College","Vocational","Graduate", "Out of School Youth"]},
-  { key: "educationStatus", label: "Current Education Status", type: "select", options: ["Currently Studying", "Not Studying","Graduated"]},
-  { key: "employment", label: "Employment Status", type: "select", options: ["Student","Employed","Unemployed","Self-employed"]},
-  { key: "civic", label: "Civic Participation",type: "select",options: ["Active","Occasional","Not Active"]},
-  { key: "voterStatus", label: "Voter Registration Status",type: "select",options: ["Registered Voter","Not Registered"]},
-  { key: "newVoter", label: "New Voter Status",type: "select",options: ["New Voter","Existing Voter","Not Applicable"]},
-  { key: "voterParticipation", label: "Voter Participation", type: "select", options: ["Participated","Not Participated","Not Applicable"]},
-  { key: "specialNeeds", label: "Special Needs",type: "select", options: ["No","Yes"]},
-  { key: "assistance", label: "Specific Assistance Needed", type: "text", full: true},
-  { key: "hobbies", label: "Hobbies / Skills", type: "text", full: true},
-  { key: "sports", label: "Sports Interests", type: "text", full: true}
+
+  {
+    key: "fullName",
+    label: "Full Name",
+    type: "text",
+    full: true
+  },
+
+  {
+    key: "birthDate",
+    label: "Birth Date",
+    type: "date"
+  },
+
+  {
+    key: "age",
+    label: "Age",
+    type: "number"
+  },
+
+  {
+    key: "gender",
+    label: "Gender",
+    type: "select",
+    options: [
+      "Male",
+      "Female",
+      "Prefer not to say"
+    ]
+  },
+
+  {
+    key: "civilStatus",
+    label: "Civil Status",
+    type: "select",
+    options: [
+      "Single",
+      "Married",
+      "Widowed",
+      "Divorced",
+      "Separated",
+      "Annulled",
+      "Live-in",
+      "Unknown"
+    ]
+  },
+
+{
+  key: "address",
+  label: "Purok / Area",
+  type: "select",
+  options: [
+    "BRIONES COMPOUND",
+    "CRDC",
+    "PENINSULA HOMES",
+    "INTERTOWN HOMES 1-6",
+    "KALYE PUTOL / BUKAL 2",
+    "SAN DIEGO VILLAGE",
+    "BERANA COMPOUND",
+    "SITIO PAG-ASA (ITAAS)",
+    "SITIO PAG-ASA (IBABA)",
+    "ENCENAREZ COMPOUND",
+    "BUKAL 1",
+    "GOLDEN MEADOWS",
+    "CIUDAD REMBINO",
+    "HIGHWAY",
+    "KRISANT VILLAGE",
+    "INTERTOWN HOMES PHASE 5",
+    "INTERTOWN HOMES PHASE 6",
+    "INTERTOWN HOMES PHASE 1-4"
+  ],
+  full: true
+},
+
+  {
+    key: "contact",
+    label: "Contact Number",
+    type: "tel",
+    full: true
+  },
+
+  {
+    key: "education",
+    label: "Educational Attainment",
+    type: "select",
+    options: [
+      "Elementary",
+      "High School",
+      "Senior High School",
+      "College",
+      "Vocational",
+      "Graduate",
+      "Out of School Youth"
+    ]
+  },
+
+  {
+    key: "educationStatus",
+    label: "Current Education Status",
+    type: "select",
+    options: [
+      "Currently Studying",
+      "Not Studying",
+      "Graduated"
+    ]
+  },
+
+  {
+    key: "employment",
+    label: "Employment Status",
+    type: "select",
+    options: [
+      "Student",
+      "Employed",
+      "Unemployed",
+      "Self-employed"
+    ]
+  },
+
+  {
+    key: "civic",
+    label: "Civic Participation",
+    type: "select",
+    options: [
+      "Active",
+      "Occasional",
+      "Not Active"
+    ]
+  },
+
+  {
+    key: "voterStatus",
+    label: "Voter Registration Status",
+    type: "select",
+    options: [
+      "Registered Voter",
+      "Not Registered"
+    ]
+  },
+
+  {
+    key: "newVoter",
+    label: "New Voter Status",
+    type: "select",
+    options: [
+      "New Voter",
+      "Existing Voter",
+      "Not Applicable"
+    ]
+  },
+
+  {
+    key: "voterParticipation",
+    label: "Voter Participation",
+    type: "select",
+    options: [
+      "Participated",
+      "Not Participated",
+      "Not Applicable"
+    ]
+  },
+
+
+  // ===================================================
+  // SK / KK INFORMATION
+  // ===================================================
+
+  {
+    key: "registeredSKVoter",
+    label: "Registered SK Voter?",
+    type: "select",
+    options: [
+      "Yes",
+      "No"
+    ]
+  },
+
+  {
+    key: "votedLastSKElection",
+    label: "Did you vote in the last SK Election?",
+    type: "select",
+    options: [
+      "Yes",
+      "No"
+    ]
+  },
+
+  {
+    key: "kkAssemblyAttended",
+    label: "Have you attended a KK Assembly?",
+    type: "select",
+    options: [
+      "Yes",
+      "No"
+    ],
+    full: true
+  },
+
+  {
+    key: "kkAttendanceCount",
+    label: "If yes, how many times?",
+    type: "select",
+    options: [
+      "1-2 Times",
+      "3-4 Times",
+      "5 and Above"
+    ],
+    full: true,
+    conditional: true
+  },
+
+  {
+    key: "kkNoReason",
+    label: "If no, why?",
+    type: "select",
+    options: [
+      "There was no KK Assembly Meeting",
+      "Not Interested to Attend"
+    ],
+    full: true,
+    conditional: true
+  },
+
+
+  // ===================================================
+  // SUPPORT INFORMATION
+  // ===================================================
+
+  {
+    key: "specialNeeds",
+    label: "Special Needs",
+    type: "select",
+    options: [
+      "No",
+      "Yes"
+    ]
+  },
+
+  {
+    key: "assistance",
+    label: "Specific Assistance Needed",
+    type: "text",
+    full: true
+  },
+
+
+  // ===================================================
+  // SKILLS AND INTERESTS
+  // ===================================================
+
+  {
+    key: "hobbies",
+    label: "Hobbies / Skills",
+    type: "text",
+    full: true
+  },
+
+  {
+    key: "sports",
+    label: "Sports Interests",
+    type: "text",
+    full: true
+  }
+
 ];
+
 
 // =====================================================
 // ELEMENTS
 // =====================================================
 
-const welcomeEl = document.getElementById("youthWelcome");
-const profileViewEl = document.getElementById("youthProfileView");
-const editBtn = document.getElementById("editProfileBtn");
-const dialog = document.getElementById("profileDialog");
-const editFieldsEl = document.getElementById("profileEditFields");
-const saveBtn = document.getElementById("saveProfileBtn");
-const quickStatsEl = document.getElementById("youthQuickStats");
+const welcomeEl =
+  document.getElementById(
+    "youthWelcome"
+  );
+
+const profileViewEl =
+  document.getElementById(
+    "youthProfileView"
+  );
+
+const editBtn =
+  document.getElementById(
+    "editProfileBtn"
+  );
+
+const dialog =
+  document.getElementById(
+    "profileDialog"
+  );
+
+const editFieldsEl =
+  document.getElementById(
+    "profileEditFields"
+  );
+
+const saveBtn =
+  document.getElementById(
+    "saveProfileBtn"
+  );
+
+const quickStatsEl =
+  document.getElementById(
+    "youthQuickStats"
+  );
+
+const announcementsEl =
+  document.getElementById(
+    "youthAnnouncements"
+  );
 
 
-if (profileViewEl) {profileViewEl.innerHTML = `<p class="empty-state"> Loading your profile...</p>`;}
-let currentUser = null;
-let currentData = null;
+if (profileViewEl) {
+
+  profileViewEl.innerHTML =
+    `
+      <p class="empty-state">
+        Loading your profile...
+      </p>
+    `;
+
+}
+
+
+let currentUser =
+  null;
+
+let currentData =
+  null;
+
 
 // =====================================================
 // HELPERS
 // =====================================================
 
-function escapeHtml(value) {const div = document.createElement( "div"); div.textContent = value ?? ""; return div.innerHTML;}
-function calculateAge(birthDateValue) { if (!birthDateValue) {return null;} 
+function escapeHtml(
+  value
+) {
 
-const birthDate = new Date(birthDateValue);
-  if ( Number.isNaN(birthDate.getTime())) {return null;}
+  const div =
+    document.createElement(
+      "div"
+    );
 
-const today = new Date(); let age = today.getFullYear() - birthDate.getFullYear();
+  div.textContent =
+    value ?? "";
 
-const monthDifference = today.getMonth() - birthDate.getMonth();
-  if (monthDifference < 0 || (monthDifference === 0 &&today.getDate() < birthDate.getDate())) {age--;}return age;}
+  return div.innerHTML;
 
-function getYouthStatus(age) {
-  if (age >= 15 && age <= 30) {return {status:"Active",eligibility:"Eligible"};}return {status:"Inactive",eligibility:"Archived"};}
+}
 
-function safeLogActivity(data) {logActivity(data).catch(error => {console.error("Audit log error:",error);
+
+function calculateAge(
+  birthDateValue
+) {
+
+  if (!birthDateValue) {
+    return null;
+  }
+
+
+  const birthDate =
+    new Date(
+      birthDateValue
+    );
+
+
+  if (
+    Number.isNaN(
+      birthDate.getTime()
+    )
+  ) {
+    return null;
+  }
+
+
+  const today =
+    new Date();
+
+
+  let age =
+    today.getFullYear() -
+    birthDate.getFullYear();
+
+
+  const monthDifference =
+    today.getMonth() -
+    birthDate.getMonth();
+
+
+  if (
+    monthDifference < 0 ||
+    (
+      monthDifference === 0 &&
+      today.getDate() <
+        birthDate.getDate()
+    )
+  ) {
+    age--;
+  }
+
+
+  return age;
+
+}
+
+
+function getYouthStatus(
+  age
+) {
+
+  if (
+    age >= 15 &&
+    age <= 30
+  ) {
+
+    return {
+      status:
+        "Active",
+
+      eligibility:
+        "Eligible"
+    };
+
+  }
+
+
+  return {
+    status:
+      "Inactive",
+
+    eligibility:
+      "Archived"
+  };
+
+}
+
+
+function safeLogActivity(
+  data
+) {
+
+  logActivity(
+    data
+  )
+    .catch(
+      error => {
+
+        console.error(
+          "Audit log error:",
+          error
+        );
+
       }
     );
+
 }
+
+
+// =====================================================
+// LOCAL DATE HELPER
+// =====================================================
+
+function getLocalDateString(
+  date = new Date()
+) {
+
+  const year =
+    date.getFullYear();
+
+
+  const month =
+    String(
+      date.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  const day =
+    String(
+      date.getDate()
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  return `${year}-${month}-${day}`;
+
+}
+
+
+// =====================================================
+// ANNOUNCEMENT EXPIRATION CHECK
+// =====================================================
+
+function isAnnouncementExpired(
+  announcement
+) {
+
+  if (
+    !announcement.expiryDate
+  ) {
+
+    /*
+      Existing announcements created before the
+      Event / Display Until Date feature will
+      remain visible.
+    */
+
+    return false;
+
+  }
+
+
+  const today =
+    getLocalDateString();
+
+
+  /*
+    Example:
+
+    Event / Display Until:
+    August 24, 2026
+
+    August 24 = VISIBLE
+    August 25 = EXPIRED / HIDDEN
+  */
+
+
+  return (
+    today >
+    announcement.expiryDate
+  );
+
+}
+
 
 // =====================================================
 // QUICK STATS
 // =====================================================
 
-function renderQuickStats(data) {
-  if (!quickStatsEl) {return;}
+function renderQuickStats(
+  data
+) {
 
-const stats = [
-  { label:"Age", value: data.age ||"—"},
-  { label:"Status", value: data.status ||"—"},
-  { label:"Eligibility", value: data.eligibility ||"—"},
-  { label:"Education", value: data.educationStatus || data.education ||"—"},
-  { label:"Employment", value: data.employment ||"—"},
-  { label:"Voter Status", value:  data.voterStatus ||"—"}
+  if (!quickStatsEl) {
+    return;
+  }
+
+
+  const stats = [
+
+    {
+      label:
+        "Age",
+
+      value:
+        data.age ||
+        "—"
+    },
+
+    {
+      label:
+        "Status",
+
+      value:
+        data.status ||
+        "—"
+    },
+
+    {
+      label:
+        "Eligibility",
+
+      value:
+        data.eligibility ||
+        "—"
+    },
+
+    {
+      label:
+        "Education",
+
+      value:
+        data.educationStatus ||
+        data.education ||
+        "—"
+    },
+
+    {
+      label:
+        "Employment",
+
+      value:
+        data.employment ||
+        "—"
+    },
+
+    {
+      label:
+        "SK Voter",
+
+      value:
+        data.registeredSKVoter ||
+        "—"
+    }
+
   ];
 
-  quickStatsEl.innerHTML = stats.map(stat => `<div class="panel stat-card">
-    <small>${escapeHtml(stat.label)}</small>
-    <strong>${escapeHtml(stat.value)}</strong>
-    </div>`).join("");
+
+  quickStatsEl.innerHTML =
+    stats
+      .map(
+        stat =>
+          `
+            <div class="panel stat-card">
+
+              <small>
+                ${escapeHtml(
+                  stat.label
+                )}
+              </small>
+
+              <strong>
+                ${escapeHtml(
+                  stat.value
+                )}
+              </strong>
+
+            </div>
+          `
+      )
+      .join("");
+
 }
+
 
 // =====================================================
 // PROFILE VIEW
 // =====================================================
 
-function renderProfileView(data) {
-  if (welcomeEl) {welcomeEl.textContent ="Welcome, " +(data.fullName ||"Youth");}renderQuickStats(data );
+function renderProfileView(
+  data
+) {
 
-const extraFields = [
-  { key:"email",label:"Email"},
-  { key:"status",label:"Status"},
-  { key:"eligibility",label:"Eligibility"}
+  if (welcomeEl) {
+
+    welcomeEl.textContent =
+      "Welcome, " +
+      (
+        data.fullName ||
+        "Youth"
+      );
+
+  }
+
+
+  renderQuickStats(
+    data
+  );
+
+
+  const extraFields = [
+
+    {
+      key:
+        "email",
+
+      label:
+        "Email"
+    },
+
+    {
+      key:
+        "status",
+
+      label:
+        "Status"
+    },
+
+    {
+      key:
+        "eligibility",
+
+      label:
+        "Eligibility"
+    }
+
   ];
 
-const rows =[...extraFields,...FIELDS]
-  .map(field => {const value =data[field.key] ||"";
-  return `<div class="info-item">
 
-  <small>${escapeHtml(field.label)}</small>
-  <span>${escapeHtml(value) ||"&mdash;"}</span>
+  const visibleFields =
+    FIELDS.filter(
+      field => {
 
-  </div>`;
-  }
-  ).join("");
+        if (
+          field.key ===
+          "kkAttendanceCount"
+        ) {
+
+          return (
+            data.kkAssemblyAttended ===
+            "Yes"
+          );
+
+        }
+
+
+        if (
+          field.key ===
+          "kkNoReason"
+        ) {
+
+          return (
+            data.kkAssemblyAttended ===
+            "No"
+          );
+
+        }
+
+
+        return true;
+
+      }
+    );
+
+
+  const rows =
+    [
+      ...extraFields,
+      ...visibleFields
+    ]
+      .map(
+        field => {
+
+          const value =
+            data[field.key] ||
+            "";
+
+
+          return `
+            <div class="info-item">
+
+              <small>
+                ${escapeHtml(
+                  field.label
+                )}
+              </small>
+
+              <span>
+                ${
+                  escapeHtml(
+                    value
+                  ) ||
+                  "&mdash;"
+                }
+              </span>
+
+            </div>
+          `;
+
+        }
+      )
+      .join("");
+
 
   if (profileViewEl) {
-    profileViewEl.innerHTML = `
-    <div class="info-grid">${rows}</div>`;
+
+    profileViewEl.innerHTML =
+      `
+        <div class="info-grid">
+          ${rows}
+        </div>
+      `;
+
   }
+
 }
+
 
 // =====================================================
 // EDIT FIELDS
@@ -148,6 +832,36 @@ function buildEditFields(
               : "field";
 
 
+          let displayStyle =
+            "";
+
+
+          if (
+            field.key ===
+            "kkAttendanceCount" &&
+            data.kkAssemblyAttended !==
+              "Yes"
+          ) {
+
+            displayStyle =
+              'style="display:none;"';
+
+          }
+
+
+          if (
+            field.key ===
+            "kkNoReason" &&
+            data.kkAssemblyAttended !==
+              "No"
+          ) {
+
+            displayStyle =
+              'style="display:none;"';
+
+          }
+
+
           if (
             field.type ===
             "select"
@@ -157,26 +871,33 @@ function buildEditFields(
               field.options
                 .map(
                   option =>
-
                     `
                       <option
-                        value="${escapeHtml(option)}"
+                        value="${escapeHtml(
+                          option
+                        )}"
                         ${
-                          option === value
+                          option ===
+                          value
                             ? "selected"
                             : ""
                         }
                       >
-                        ${escapeHtml(option)}
+                        ${escapeHtml(
+                          option
+                        )}
                       </option>
                     `
-
                 )
                 .join("");
 
 
             return `
-              <label class="${fieldClass}">
+              <label
+                class="${fieldClass}"
+                data-field-wrapper="${field.key}"
+                ${displayStyle}
+              >
 
                 <span>
                   ${escapeHtml(
@@ -184,7 +905,9 @@ function buildEditFields(
                   )}
                 </span>
 
-                <select name="${field.key}">
+                <select
+                  name="${field.key}"
+                >
 
                   <option value="">
                     Select
@@ -206,7 +929,10 @@ function buildEditFields(
           ) {
 
             return `
-              <label class="${fieldClass}">
+              <label
+                class="${fieldClass}"
+                data-field-wrapper="${field.key}"
+              >
 
                 <span>
                   ${escapeHtml(
@@ -215,9 +941,11 @@ function buildEditFields(
                 </span>
 
                 <input
-                  type="${field.type}"
+                  type="number"
                   name="${field.key}"
-                  value="${escapeHtml(value)}"
+                  value="${escapeHtml(
+                    value
+                  )}"
                   readonly
                 />
 
@@ -228,7 +956,10 @@ function buildEditFields(
 
 
           return `
-            <label class="${fieldClass}">
+            <label
+              class="${fieldClass}"
+              data-field-wrapper="${field.key}"
+            >
 
               <span>
                 ${escapeHtml(
@@ -239,7 +970,9 @@ function buildEditFields(
               <input
                 type="${field.type}"
                 name="${field.key}"
-                value="${escapeHtml(value)}"
+                value="${escapeHtml(
+                  value
+                )}"
               />
 
             </label>
@@ -249,6 +982,10 @@ function buildEditFields(
       )
       .join("");
 
+
+  // ===================================================
+  // BIRTH DATE / AGE
+  // ===================================================
 
   const birthDateInput =
     editFieldsEl.querySelector(
@@ -292,6 +1029,216 @@ function buildEditFields(
 
   }
 
+
+  // ===================================================
+  // KK ASSEMBLY CONDITIONAL FIELDS
+  // ===================================================
+
+  const kkAssemblyInput =
+    editFieldsEl.querySelector(
+      '[name="kkAssemblyAttended"]'
+    );
+
+
+  const kkAttendanceWrapper =
+    editFieldsEl.querySelector(
+      '[data-field-wrapper="kkAttendanceCount"]'
+    );
+
+
+  const kkReasonWrapper =
+    editFieldsEl.querySelector(
+      '[data-field-wrapper="kkNoReason"]'
+    );
+
+
+  const kkAttendanceInput =
+    editFieldsEl.querySelector(
+      '[name="kkAttendanceCount"]'
+    );
+
+
+  const kkReasonInput =
+    editFieldsEl.querySelector(
+      '[name="kkNoReason"]'
+    );
+
+
+  function updateKKConditionalFields() {
+
+    if (
+      !kkAssemblyInput
+    ) {
+      return;
+    }
+
+
+    const value =
+      kkAssemblyInput.value;
+
+
+    if (
+      value ===
+      "Yes"
+    ) {
+
+      if (
+        kkAttendanceWrapper
+      ) {
+
+        kkAttendanceWrapper.style.display =
+          "flex";
+
+      }
+
+
+      if (
+        kkReasonWrapper
+      ) {
+
+        kkReasonWrapper.style.display =
+          "none";
+
+      }
+
+
+      if (
+        kkAttendanceInput
+      ) {
+
+        kkAttendanceInput.required =
+          true;
+
+      }
+
+
+      if (
+        kkReasonInput
+      ) {
+
+        kkReasonInput.required =
+          false;
+
+        kkReasonInput.value =
+          "";
+
+      }
+
+
+    } else if (
+      value ===
+      "No"
+    ) {
+
+      if (
+        kkAttendanceWrapper
+      ) {
+
+        kkAttendanceWrapper.style.display =
+          "none";
+
+      }
+
+
+      if (
+        kkReasonWrapper
+      ) {
+
+        kkReasonWrapper.style.display =
+          "flex";
+
+      }
+
+
+      if (
+        kkAttendanceInput
+      ) {
+
+        kkAttendanceInput.required =
+          false;
+
+        kkAttendanceInput.value =
+          "";
+
+      }
+
+
+      if (
+        kkReasonInput
+      ) {
+
+        kkReasonInput.required =
+          true;
+
+      }
+
+
+    } else {
+
+      if (
+        kkAttendanceWrapper
+      ) {
+
+        kkAttendanceWrapper.style.display =
+          "none";
+
+      }
+
+
+      if (
+        kkReasonWrapper
+      ) {
+
+        kkReasonWrapper.style.display =
+          "none";
+
+      }
+
+
+      if (
+        kkAttendanceInput
+      ) {
+
+        kkAttendanceInput.required =
+          false;
+
+        kkAttendanceInput.value =
+          "";
+
+      }
+
+
+      if (
+        kkReasonInput
+      ) {
+
+        kkReasonInput.required =
+          false;
+
+        kkReasonInput.value =
+          "";
+
+      }
+
+    }
+
+  }
+
+
+  if (
+    kkAssemblyInput
+  ) {
+
+    kkAssemblyInput.addEventListener(
+      "change",
+      updateKKConditionalFields
+    );
+
+
+    updateKKConditionalFields();
+
+  }
+
 }
 
 
@@ -299,13 +1246,17 @@ function buildEditFields(
 // OPEN EDIT
 // =====================================================
 
-if (editBtn) {
+if (
+  editBtn
+) {
 
   editBtn.addEventListener(
     "click",
     () => {
 
-      if (!currentData) {
+      if (
+        !currentData
+      ) {
         return;
       }
 
@@ -327,13 +1278,17 @@ if (editBtn) {
 // SAVE PROFILE
 // =====================================================
 
-if (saveBtn) {
+if (
+  saveBtn
+) {
 
   saveBtn.addEventListener(
     "click",
     async () => {
 
-      if (!currentUser) {
+      if (
+        !currentUser
+      ) {
         return;
       }
 
@@ -346,7 +1301,8 @@ if (saveBtn) {
         "Saving...";
 
 
-      const updated = {};
+      const updated =
+        {};
 
 
       FIELDS.forEach(
@@ -359,7 +1315,9 @@ if (saveBtn) {
               );
 
 
-          if (!input) {
+          if (
+            !input
+          ) {
             return;
           }
 
@@ -376,6 +1334,10 @@ if (saveBtn) {
       );
 
 
+      // =================================================
+      // VALIDATE BIRTH DATE / AGE
+      // =================================================
+
       if (
         updated.birthDate
       ) {
@@ -384,6 +1346,31 @@ if (saveBtn) {
           calculateAge(
             updated.birthDate
           );
+
+
+        if (
+          updated.age === null ||
+          Number.isNaN(
+            updated.age
+          )
+        ) {
+
+          alert(
+            "Please enter a valid birth date."
+          );
+
+
+          saveBtn.disabled =
+            false;
+
+
+          saveBtn.textContent =
+            "Save Changes";
+
+
+          return;
+
+        }
 
 
         const youthStatus =
@@ -398,6 +1385,80 @@ if (saveBtn) {
 
         updated.eligibility =
           youthStatus.eligibility;
+
+      }
+
+
+      // =================================================
+      // VALIDATE KK ASSEMBLY
+      // =================================================
+
+      if (
+        updated.kkAssemblyAttended ===
+          "Yes" &&
+        !updated.kkAttendanceCount
+      ) {
+
+        alert(
+          "Please indicate how many times you attended a KK Assembly."
+        );
+
+
+        saveBtn.disabled =
+          false;
+
+
+        saveBtn.textContent =
+          "Save Changes";
+
+
+        return;
+
+      }
+
+
+      if (
+        updated.kkAssemblyAttended ===
+          "No" &&
+        !updated.kkNoReason
+      ) {
+
+        alert(
+          "Please indicate why you have not attended a KK Assembly."
+        );
+
+
+        saveBtn.disabled =
+          false;
+
+
+        saveBtn.textContent =
+          "Save Changes";
+
+
+        return;
+
+      }
+
+
+      if (
+        updated.kkAssemblyAttended ===
+        "Yes"
+      ) {
+
+        updated.kkNoReason =
+          "";
+
+      }
+
+
+      if (
+        updated.kkAssemblyAttended ===
+        "No"
+      ) {
+
+        updated.kkAttendanceCount =
+          "";
 
       }
 
@@ -427,8 +1488,6 @@ if (saveBtn) {
         };
 
 
-        // Update screen immediately
-
         renderProfileView(
           currentData
         );
@@ -442,8 +1501,6 @@ if (saveBtn) {
         );
 
 
-        // Audit log runs in background
-
         safeLogActivity({
 
           email:
@@ -456,7 +1513,7 @@ if (saveBtn) {
             "Updated profile",
 
           details:
-            `Profile updated. Age: ${updated.age}, Status: ${updated.status}`
+            `Profile updated. Age: ${updated.age}, Status: ${updated.status}, SK Voter: ${updated.registeredSKVoter}, KK Assembly: ${updated.kkAssemblyAttended}`
 
         });
 
@@ -492,6 +1549,351 @@ if (saveBtn) {
 
 
 // =====================================================
+// ANNOUNCEMENT DATE
+// =====================================================
+
+function getAnnouncementDate(
+  value
+) {
+
+  if (
+    !value
+  ) {
+    return null;
+  }
+
+
+  if (
+    typeof value.toDate ===
+    "function"
+  ) {
+
+    return value.toDate();
+
+  }
+
+
+  const date =
+    new Date(
+      value
+    );
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return null;
+
+  }
+
+
+  return date;
+
+}
+
+
+// =====================================================
+// LOAD ANNOUNCEMENTS
+// =====================================================
+
+async function loadYouthAnnouncements() {
+
+  if (
+    !announcementsEl
+  ) {
+    return;
+  }
+
+
+  announcementsEl.innerHTML =
+    `
+      <p class="empty-state">
+        Loading announcements...
+      </p>
+    `;
+
+
+  try {
+
+    const snap =
+      await getDocs(
+        collection(
+          db,
+          "announcements"
+        )
+      );
+
+
+    let announcements =
+      snap.docs.map(
+        documentSnapshot => ({
+
+          id:
+            documentSnapshot.id,
+
+          ...documentSnapshot.data()
+
+        })
+      );
+
+
+    // =================================================
+    // HIDE EXPIRED ANNOUNCEMENTS
+    // =================================================
+
+    announcements =
+      announcements.filter(
+        announcement =>
+          !isAnnouncementExpired(
+            announcement
+          )
+      );
+
+
+    // =================================================
+    // NEWEST FIRST
+    // =================================================
+
+    announcements.sort(
+      (
+        a,
+        b
+      ) => {
+
+        const aDate =
+          getAnnouncementDate(
+            a.createdAt ||
+            a.date
+          );
+
+
+        const bDate =
+          getAnnouncementDate(
+            b.createdAt ||
+            b.date
+          );
+
+
+        return (
+          (
+            bDate?.getTime() ||
+            0
+          ) -
+          (
+            aDate?.getTime() ||
+            0
+          )
+        );
+
+      }
+    );
+
+
+    // =================================================
+    // EMPTY STATE
+    // =================================================
+
+    if (
+      announcements.length ===
+      0
+    ) {
+
+      announcementsEl.innerHTML =
+        `
+          <p class="empty-state">
+            No announcements available at this time.
+          </p>
+        `;
+
+
+      return;
+
+    }
+
+
+    // =================================================
+    // DISPLAY ANNOUNCEMENTS
+    // =================================================
+
+    announcementsEl.innerHTML =
+      announcements
+        .map(
+          announcement => {
+
+
+            const date =
+              getAnnouncementDate(
+                announcement.createdAt ||
+                announcement.date
+              );
+
+
+            const formattedDate =
+              date
+                ? date.toLocaleDateString(
+                    "en-PH",
+                    {
+                      year:
+                        "numeric",
+
+                      month:
+                        "long",
+
+                      day:
+                        "numeric"
+                    }
+                  )
+                : "";
+
+
+            const formattedExpiry =
+              announcement.expiryDate
+                ? new Date(
+                    `${announcement.expiryDate}T00:00:00`
+                  )
+                    .toLocaleDateString(
+                      "en-PH",
+                      {
+                        year:
+                          "numeric",
+
+                        month:
+                          "long",
+
+                        day:
+                          "numeric"
+                      }
+                    )
+                : "";
+
+
+            const category =
+              announcement.category ||
+              "General";
+
+
+            const title =
+              announcement.title ||
+              "Announcement";
+
+
+            const message =
+              announcement.message ||
+              announcement.description ||
+              announcement.content ||
+              "";
+
+
+            return `
+              <article class="summary-box">
+
+                <small
+                  style="
+                    display:inline-block;
+                    margin-bottom:7px;
+                    color:#0a5255;
+                    font-weight:800;
+                    text-transform:uppercase;
+                    font-size:10px;
+                    letter-spacing:.05em;
+                  "
+                >
+                  ${escapeHtml(
+                    category
+                  )}
+                </small>
+
+
+                <h3>
+                  ${escapeHtml(
+                    title
+                  )}
+                </h3>
+
+
+                ${
+                  formattedDate
+                    ? `
+                        <small
+                          style="
+                            display:block;
+                            margin-bottom:5px;
+                            color:#71838a;
+                          "
+                        >
+                          Posted:
+                          ${escapeHtml(
+                            formattedDate
+                          )}
+                        </small>
+                      `
+                    : ""
+                }
+
+
+                ${
+                  formattedExpiry
+                    ? `
+                        <small
+                          style="
+                            display:block;
+                            margin-bottom:10px;
+                            color:#71838a;
+                          "
+                        >
+                          Event / Display Until:
+                          ${escapeHtml(
+                            formattedExpiry
+                          )}
+                        </small>
+                      `
+                    : ""
+                }
+
+
+                <p
+                  style="
+                    margin:0;
+                    white-space:pre-line;
+                  "
+                >
+                  ${escapeHtml(
+                    message
+                  )}
+                </p>
+
+              </article>
+            `;
+
+          }
+        )
+        .join("");
+
+
+  } catch (error) {
+
+    console.error(
+      "Announcement load error:",
+      error
+    );
+
+
+    announcementsEl.innerHTML =
+      `
+        <p class="empty-state">
+          Unable to load announcements at this time.
+        </p>
+      `;
+
+  }
+
+}
+
+
+// =====================================================
 // AUTH / PROFILE
 // =====================================================
 
@@ -499,13 +1901,30 @@ onAuthStateChanged(
   auth,
   async user => {
 
-    if (!user) {
+    if (
+      !user
+    ) {
       return;
     }
 
 
     currentUser =
       user;
+
+
+    // =================================================
+    // LOAD ANNOUNCEMENTS
+    // =================================================
+
+    /*
+      Youth does NOT need permission to delete
+      announcements.
+
+      Expired announcements are simply filtered
+      from the Youth Dashboard.
+    */
+
+    loadYouthAnnouncements();
 
 
     try {
@@ -520,9 +1939,13 @@ onAuthStateChanged(
         );
 
 
-      if (!snap.exists()) {
+      if (
+        !snap.exists()
+      ) {
 
-        if (profileViewEl) {
+        if (
+          profileViewEl
+        ) {
 
           profileViewEl.innerHTML =
             `
@@ -561,7 +1984,8 @@ onAuthStateChanged(
 
 
         if (
-          calculatedAge !== null
+          calculatedAge !==
+          null
         ) {
 
           const youthStatus =
@@ -601,15 +2025,18 @@ onAuthStateChanged(
       }
 
 
-      // IMPORTANT:
-      // render first, don't wait for Firestore update.
+      // =================================================
+      // RENDER PROFILE
+      // =================================================
 
       renderProfileView(
         currentData
       );
 
 
-      // Update only if age/status really changed.
+      // =================================================
+      // UPDATE AGE / STATUS WHEN NECESSARY
+      // =================================================
 
       if (
         needsStatusUpdate
@@ -656,12 +2083,15 @@ onAuthStateChanged(
       );
 
 
-      if (profileViewEl) {
+      if (
+        profileViewEl
+      ) {
 
         profileViewEl.innerHTML =
           `
             <p class="empty-state">
-              Could not load your profile. Please refresh the page.
+              Could not load your profile.
+              Please refresh the page.
             </p>
           `;
 
