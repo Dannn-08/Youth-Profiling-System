@@ -46,7 +46,6 @@
 
     <!-- OVERVIEW -->
     <section class="tab-panel active" id="tab-overview">
-
       <div class="stat-grid" id="statCards"></div>
 
       <div class="analytics-grid">
@@ -277,6 +276,8 @@
         <label class="field full"><span>Title</span><input type="text" name="announcementTitle" placeholder="Enter announcement title" required /></label>
 
         <label class="field full"><span>Announcement</span><textarea name="announcementMessage" rows="7" placeholder="Enter announcement details..." required style="min-height:150px; padding:12px; resize:vertical;"></textarea></label>
+
+        <label class="field full"><span>Announcement Image (Optional)</span><input type="file" name="announcementImage" id="announcementImage" accept="image/*" /><small class="muted-text" style="display:block; margin-top:6px;">Optional image or poster for the announcement. Maximum file size: 5 MB.</small></label>
 
         <label class="field full"><span>Event / Display Until Date</span><input type="date" name="announcementExpiryDate" id="announcementExpiryDate" /><small class="muted-text" style="display:block; margin-top:6px;">The announcement will remain visible until the end of this date and will automatically expire the following day.</small></label>
 

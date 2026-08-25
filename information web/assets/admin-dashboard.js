@@ -1,4 +1,4 @@
-import { auth, db } from "./firebase-config.js";
+import { auth, db, storage } from "./firebase-config.js";
 
 import {
   collection,
@@ -9,6 +9,13 @@ import {
   deleteDoc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+
 import { logActivity } from "./audit-log.js";
 
 
@@ -17,7 +24,6 @@ import { logActivity } from "./audit-log.js";
 // =====================================================
 
 const PUROK_OPTIONS = [
-
   "BRIONES COMPOUND",
   "CRDC",
   "PENINSULA HOMES",
@@ -36,7 +42,6 @@ const PUROK_OPTIONS = [
   "INTERTOWN HOMES PHASE 5",
   "INTERTOWN HOMES PHASE 6",
   "INTERTOWN HOMES PHASE 1-4"
-
 ];
 
 
@@ -45,7 +50,6 @@ const PUROK_OPTIONS = [
 // =====================================================
 
 const FIELDS = [
-
   {
     key: "fullName",
     label: "Full Name",
@@ -289,7 +293,6 @@ const FIELDS = [
     type: "text",
     full: true
   }
-
 ];
 
 
@@ -310,15 +313,8 @@ let charts = {};
 // =====================================================
 
 function escapeHtml(value) {
-
-  const div =
-    document.createElement(
-      "div"
-    );
-
-  div.textContent =
-    value ?? "";
-
+  const div = document.createElement("div");
+  div.textContent = value ?? "";
   return div.innerHTML;
 }
 
@@ -328,123 +324,68 @@ function escapeHtml(value) {
 // =====================================================
 
 function normalizePurok(value) {
-
   if (!value) {
     return "";
   }
 
-
-  const normalized =
-    String(value)
-      .trim()
-      .toUpperCase();
-
+  const normalized = String(value).trim().toUpperCase();
 
   const aliases = {
-
-    "BUKAL1":
-      "BUKAL 1",
-
-    "BUKAL 1":
-      "BUKAL 1",
-
-    "KALYE PUTOL/ BUKAL 2":
-      "KALYE PUTOL / BUKAL 2",
-
-    "KALYE PUTOL/BUKAL 2":
-      "KALYE PUTOL / BUKAL 2",
-
-    "KALYE PUTOL /BUKAL 2":
-      "KALYE PUTOL / BUKAL 2",
-
-    "KALYE PUTOL / BUKAL 2":
-      "KALYE PUTOL / BUKAL 2"
-
+    "BUKAL1": "BUKAL 1",
+    "BUKAL 1": "BUKAL 1",
+    "KALYE PUTOL/ BUKAL 2": "KALYE PUTOL / BUKAL 2",
+    "KALYE PUTOL/BUKAL 2": "KALYE PUTOL / BUKAL 2",
+    "KALYE PUTOL /BUKAL 2": "KALYE PUTOL / BUKAL 2",
+    "KALYE PUTOL / BUKAL 2": "KALYE PUTOL / BUKAL 2"
   };
 
-
-  return (
-    aliases[normalized] ||
-    value
-  );
-
+  return aliases[normalized] || value;
 }
 
 
-function calculateAge(
-  birthDateValue
-) {
-
+function calculateAge(birthDateValue) {
   if (!birthDateValue) {
     return null;
   }
 
+  const birthDate = new Date(birthDateValue);
 
-  const birthDate =
-    new Date(
-      birthDateValue
-    );
-
-
-  if (
-    Number.isNaN(
-      birthDate.getTime()
-    )
-  ) {
+  if (Number.isNaN(birthDate.getTime())) {
     return null;
   }
 
+  const today = new Date();
 
-  const today =
-    new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
 
-
-  let age =
-    today.getFullYear() -
-    birthDate.getFullYear();
-
-
-  const monthDifference =
-    today.getMonth() -
-    birthDate.getMonth();
-
+  const monthDifference = today.getMonth() - birthDate.getMonth();
 
   if (
     monthDifference < 0 ||
     (
       monthDifference === 0 &&
-      today.getDate() <
-        birthDate.getDate()
+      today.getDate() < birthDate.getDate()
     )
   ) {
     age--;
   }
 
-
   return age;
 }
 
 
-function getYouthStatus(
-  age
-) {
-
-  const numericAge =
-    Number(age);
-
+function getYouthStatus(age) {
+  const numericAge = Number(age);
 
   if (
     numericAge >= 15 &&
     numericAge <= 30
   ) {
-
     return {
       status: "Active",
       eligibility: "Eligible"
     };
-
   }
-
 
   return {
     status: "Inactive",
@@ -453,10 +394,7 @@ function getYouthStatus(
 }
 
 
-function isActiveYouth(
-  youth
-) {
-
+function isActiveYouth(youth) {
   if (
     youth.status === "Inactive" ||
     youth.eligibility === "Archived"
@@ -464,12 +402,7 @@ function isActiveYouth(
     return false;
   }
 
-
-  const age =
-    Number(
-      youth.age
-    );
-
+  const age = Number(youth.age);
 
   return (
     age >= 15 &&
@@ -478,13 +411,8 @@ function isActiveYouth(
 }
 
 
-function ageGroup(
-  age
-) {
-
-  const n =
-    Number(age);
-
+function ageGroup(age) {
+  const n = Number(age);
 
   if (
     n >= 15 &&
@@ -493,14 +421,12 @@ function ageGroup(
     return "15-19";
   }
 
-
   if (
     n >= 20 &&
     n <= 24
   ) {
     return "20-24";
   }
-
 
   if (
     n >= 25 &&
@@ -509,93 +435,57 @@ function ageGroup(
     return "25-30";
   }
 
-
   return "Unspecified";
 }
 
 
-function countBy(
-  list,
-  keyFn
-) {
-
+function countBy(list, keyFn) {
   const counts = {};
 
+  list.forEach(item => {
+    const key = keyFn(item) || "Unspecified";
 
-  list.forEach(
-    item => {
+    counts[key] =
+      (
+        counts[key] ||
+        0
+      ) + 1;
+  });
 
-      const key =
-        keyFn(item) ||
-        "Unspecified";
+  return counts;
+}
 
 
-      counts[key] =
+function countMultiValueField(list, fieldName) {
+  const counts = {};
+
+  list.forEach(item => {
+    const values =
+      String(
+        item[fieldName] ||
+        ""
+      )
+        .split(",")
+        .map(value => value.trim())
+        .filter(Boolean);
+
+    values.forEach(value => {
+      counts[value] =
         (
-          counts[key] ||
+          counts[value] ||
           0
         ) + 1;
-
-    }
-  );
-
+    });
+  });
 
   return counts;
 }
 
 
-function countMultiValueField(
-  list,
-  fieldName
-) {
-
-  const counts = {};
-
-
-  list.forEach(
-    item => {
-
-      const values =
-        String(
-          item[fieldName] ||
-          ""
-        )
-          .split(",")
-          .map(
-            value =>
-              value.trim()
-          )
-          .filter(Boolean);
-
-
-      values.forEach(
-        value => {
-
-          counts[value] =
-            (
-              counts[value] ||
-              0
-            ) + 1;
-
-        }
-      );
-
-    }
-  );
-
-
-  return counts;
-}
-
-
-function getCreatedDate(
-  value
-) {
-
+function getCreatedDate(value) {
   if (!value) {
     return null;
   }
-
 
   if (
     typeof value.toDate ===
@@ -604,17 +494,14 @@ function getCreatedDate(
     return value.toDate();
   }
 
-
   if (
     value instanceof Date
   ) {
     return value;
   }
 
-
   const date =
     new Date(value);
-
 
   if (
     Number.isNaN(
@@ -624,7 +511,6 @@ function getCreatedDate(
     return null;
   }
 
-
   return date;
 }
 
@@ -633,13 +519,9 @@ function getCreatedDate(
 // LOCAL DATE
 // =====================================================
 
-function getLocalDateString(
-  date = new Date()
-) {
-
+function getLocalDateString(date = new Date()) {
   const year =
     date.getFullYear();
-
 
   const month =
     String(
@@ -649,7 +531,6 @@ function getLocalDateString(
       "0"
     );
 
-
   const day =
     String(
       date.getDate()
@@ -657,7 +538,6 @@ function getLocalDateString(
       2,
       "0"
     );
-
 
   return `${year}-${month}-${day}`;
 }
@@ -667,28 +547,15 @@ function getLocalDateString(
 // ANNOUNCEMENT EXPIRATION
 // =====================================================
 
-function isAnnouncementExpired(
-  announcement
-) {
-
+function isAnnouncementExpired(announcement) {
   if (
     !announcement.expiryDate
   ) {
     return false;
   }
 
-
   const today =
     getLocalDateString();
-
-
-  /*
-    Event / Display Until:
-    August 24, 2026
-
-    August 24 = VISIBLE
-    August 25 = EXPIRED
-  */
 
   return (
     today >
@@ -701,23 +568,107 @@ function isAnnouncementExpired(
 // BACKGROUND AUDIT LOG
 // =====================================================
 
-function safeLogActivity(
-  data
-) {
+function safeLogActivity(data) {
+  logActivity(data)
+    .catch(error => {
+      console.error(
+        "Audit log error:",
+        error
+      );
+    });
+}
 
-  logActivity(
-    data
-  )
-    .catch(
-      error => {
 
-        console.error(
-          "Audit log error:",
-          error
-        );
+// =====================================================
+// ANNOUNCEMENT IMAGE HELPERS
+// =====================================================
 
-      }
+async function uploadAnnouncementImage(file) {
+  if (!file) {
+    return null;
+  }
+
+  if (
+    !file.type.startsWith(
+      "image/"
+    )
+  ) {
+    throw new Error(
+      "Please select a valid image file."
     );
+  }
+
+  const maxSize =
+    5 * 1024 * 1024;
+
+  if (
+    file.size >
+    maxSize
+  ) {
+    throw new Error(
+      "Announcement image must not exceed 5 MB."
+    );
+  }
+
+  const safeName =
+    file.name.replace(
+      /[^a-zA-Z0-9._-]/g,
+      "_"
+    );
+
+  const imagePath =
+    `announcements/${Date.now()}_${safeName}`;
+
+  const imageRef =
+    ref(
+      storage,
+      imagePath
+    );
+
+  await uploadBytes(
+    imageRef,
+    file
+  );
+
+  const imageUrl =
+    await getDownloadURL(
+      imageRef
+    );
+
+  return {
+    imageUrl,
+    imagePath
+  };
+}
+
+
+async function deleteAnnouncementImage(imagePath) {
+  if (!imagePath) {
+    return;
+  }
+
+  try {
+    const imageRef =
+      ref(
+        storage,
+        imagePath
+      );
+
+    await deleteObject(
+      imageRef
+    );
+
+  } catch (error) {
+    if (
+      error.code !==
+      "storage/object-not-found"
+    ) {
+      console.error(
+        "Announcement image delete error:",
+        error
+      );
+    }
+  }
 }
 
 
@@ -725,10 +676,7 @@ function safeLogActivity(
 // AUTO DELETE EXPIRED ANNOUNCEMENTS
 // =====================================================
 
-async function deleteExpiredAnnouncements(
-  announcements
-) {
-
+async function deleteExpiredAnnouncements(announcements) {
   const expired =
     announcements.filter(
       announcement =>
@@ -737,34 +685,38 @@ async function deleteExpiredAnnouncements(
         )
     );
 
-
   if (
     expired.length === 0
   ) {
-
     return announcements;
-
   }
-
 
   const results =
     await Promise.allSettled(
 
       expired.map(
-        announcement =>
+        async announcement => {
 
-          deleteDoc(
+          await deleteDoc(
             doc(
               db,
               "announcements",
               announcement.id
             )
-          )
+          );
 
+          if (
+            announcement.imagePath
+          ) {
+            await deleteAnnouncementImage(
+              announcement.imagePath
+            );
+          }
+
+        }
       )
 
     );
-
 
   results.forEach(
     (
@@ -775,48 +727,37 @@ async function deleteExpiredAnnouncements(
       const announcement =
         expired[index];
 
-
       if (
         result.status ===
         "fulfilled"
       ) {
-
         console.log(
           "Expired announcement automatically deleted:",
           announcement.title
         );
 
-
         safeLogActivity({
-
           email:
             auth.currentUser?.email ||
             "System",
-
           role:
             "admin",
-
           activity:
             "Auto-deleted expired announcement",
-
           details:
             `${announcement.title} • Displayed until: ${announcement.expiryDate}`
-
         });
 
       } else {
-
         console.error(
           "Could not automatically delete expired announcement:",
           announcement.title,
           result.reason
         );
-
       }
 
     }
   );
-
 
   return announcements.filter(
     announcement =>
@@ -836,61 +777,49 @@ const tabButtons =
     ".tab-nav button[data-tab]"
   );
 
-
 const tabPanels =
   document.querySelectorAll(
     ".tab-panel"
   );
 
+tabButtons.forEach(btn => {
+  btn.addEventListener(
+    "click",
+    () => {
 
-tabButtons.forEach(
-  btn => {
+      tabButtons.forEach(
+        button =>
+          button.classList.remove(
+            "active"
+          )
+      );
 
-    btn.addEventListener(
-      "click",
-      () => {
+      tabPanels.forEach(
+        panel =>
+          panel.classList.remove(
+            "active"
+          )
+      );
 
-        tabButtons.forEach(
-          button =>
-            button.classList.remove(
-              "active"
-            )
+      btn.classList.add(
+        "active"
+      );
+
+      const panel =
+        document.getElementById(
+          "tab-" +
+          btn.dataset.tab
         );
 
-
-        tabPanels.forEach(
-          panel =>
-            panel.classList.remove(
-              "active"
-            )
-        );
-
-
-        btn.classList.add(
+      if (panel) {
+        panel.classList.add(
           "active"
         );
-
-
-        const panel =
-          document.getElementById(
-            "tab-" +
-            btn.dataset.tab
-          );
-
-
-        if (panel) {
-
-          panel.classList.add(
-            "active"
-          );
-
-        }
-
       }
-    );
 
-  }
-);
+    }
+  );
+});
 
 
 // =====================================================
@@ -898,52 +827,37 @@ tabButtons.forEach(
 // =====================================================
 
 async function loadUsersData() {
-
   const statCards =
     document.getElementById(
       "statCards"
     );
-
 
   const tableBody =
     document.getElementById(
       "youthTableBody"
     );
 
-
   if (statCards) {
-
     statCards.innerHTML =
       `
         <p class="empty-state">
           Loading dashboard data...
         </p>
       `;
-
   }
 
-
   if (tableBody) {
-
     tableBody.innerHTML =
       `
         <tr>
-
-          <td
-            colspan="11"
-            class="empty-state"
-          >
+          <td colspan="11" class="empty-state">
             Loading youth records...
           </td>
-
         </tr>
       `;
-
   }
 
-
   try {
-
     const snap =
       await getDocs(
         collection(
@@ -952,23 +866,14 @@ async function loadUsersData() {
         )
       );
 
-
     allUsers =
       snap.docs.map(
         documentSnapshot => ({
-
           id:
             documentSnapshot.id,
-
           ...documentSnapshot.data()
-
         })
       );
-
-
-    // =================================================
-    // YOUTH
-    // =================================================
 
     youthList =
       allUsers
@@ -983,61 +888,42 @@ async function loadUsersData() {
               ...user
             };
 
-
-            // STANDARDIZE OLD PUROK VALUES
-
             youthData.address =
               normalizePurok(
                 youthData.address
               );
 
-
             if (
               youthData.birthDate
             ) {
-
               const calculatedAge =
                 calculateAge(
                   youthData.birthDate
                 );
 
-
               if (
                 calculatedAge !==
                 null
               ) {
-
                 const youthStatus =
                   getYouthStatus(
                     calculatedAge
                   );
 
-
                 youthData.age =
                   calculatedAge;
-
 
                 youthData.status =
                   youthStatus.status;
 
-
                 youthData.eligibility =
                   youthStatus.eligibility;
-
               }
-
             }
 
-
             return youthData;
-
           }
         );
-
-
-    // =================================================
-    // ADMINS
-    // =================================================
 
     adminList =
       allUsers.filter(
@@ -1045,69 +931,43 @@ async function loadUsersData() {
           user.role === "admin"
       );
 
-
-    // =================================================
-    // RENDER
-    // =================================================
-
     renderStats();
-
     renderTable();
-
     renderReports();
-
     renderAdminAccounts();
-
 
     requestAnimationFrame(
       () => {
-
         renderCharts();
-
       }
     );
 
-
   } catch (error) {
-
     console.error(
       "Users load error:",
       error
     );
 
-
     if (statCards) {
-
       statCards.innerHTML =
         `
           <p class="empty-state">
             Unable to load dashboard data.
           </p>
         `;
-
     }
 
-
     if (tableBody) {
-
       tableBody.innerHTML =
         `
           <tr>
-
-            <td
-              colspan="11"
-              class="empty-state"
-            >
+            <td colspan="11" class="empty-state">
               Unable to load youth records.
             </td>
-
           </tr>
         `;
-
     }
-
   }
-
 }
 
 
@@ -1116,15 +976,12 @@ async function loadUsersData() {
 // =====================================================
 
 function renderStats() {
-
   const activeYouth =
     youthList.filter(
       isActiveYouth
     );
 
-
   const cards = [
-
     {
       label: "Total Active Youth",
       value: activeYouth.length
@@ -1132,7 +989,6 @@ function renderStats() {
 
     {
       label: "Male",
-
       value:
         activeYouth.filter(
           youth =>
@@ -1143,7 +999,6 @@ function renderStats() {
 
     {
       label: "Female",
-
       value:
         activeYouth.filter(
           youth =>
@@ -1154,7 +1009,6 @@ function renderStats() {
 
     {
       label: "Students",
-
       value:
         activeYouth.filter(
           youth =>
@@ -1162,20 +1016,16 @@ function renderStats() {
             "Student"
         ).length
     }
-
   ];
-
 
   const container =
     document.getElementById(
       "statCards"
     );
 
-
   if (!container) {
     return;
   }
-
 
   container.innerHTML =
     cards
@@ -1183,22 +1033,12 @@ function renderStats() {
         card =>
           `
             <div class="panel stat-card">
-
-              <small>
-                ${escapeHtml(
-                  card.label
-                )}
-              </small>
-
-              <strong>
-                ${card.value}
-              </strong>
-
+              <small>${escapeHtml(card.label)}</small>
+              <strong>${card.value}</strong>
             </div>
           `
       )
       .join("");
-
 }
 
 
@@ -1219,47 +1059,37 @@ function drawChart(
       canvasId
     );
 
-
   if (!canvas) {
     return;
   }
 
-
   if (
     charts[canvasId]
   ) {
-
     charts[
       canvasId
     ].destroy();
-
   }
-
 
   const isDoughnut =
     type ===
     "doughnut";
 
-
   const isBar =
     type ===
     "bar";
-
 
   charts[canvasId] =
     new Chart(
       canvas,
       {
-
         type,
 
         data: {
-
           labels,
 
           datasets: [
             {
-
               data,
 
               backgroundColor:
@@ -1294,14 +1124,11 @@ function drawChart(
                 isBar
                   ? 5
                   : 0
-
             }
           ]
-
         },
 
         options: {
-
           responsive:
             true,
 
@@ -1319,48 +1146,35 @@ function drawChart(
               : undefined,
 
           plugins: {
-
             legend: {
-
               display:
                 isDoughnut,
 
               position:
                 "bottom"
-
             }
-
           },
 
           scales:
             isBar
               ? {
-
                   y: {
-
                     beginAtZero:
                       true,
 
                     ticks: {
-
                       precision:
                         0,
 
                       stepSize:
                         1
-
                     }
-
                   }
-
                 }
               : undefined
-
         }
-
       }
     );
-
 }
 
 
@@ -1369,36 +1183,28 @@ function drawChart(
 // =====================================================
 
 function renderRegistrationTrendChart() {
-
   const canvas =
     document.getElementById(
       "registrationTrendChart"
     );
 
-
   if (!canvas) {
     return;
   }
 
-
   if (
     charts.registrationTrendChart
   ) {
-
     charts
       .registrationTrendChart
       .destroy();
-
   }
-
 
   const currentYear =
     new Date()
       .getFullYear();
 
-
   const months = [
-
     "Jan",
     "Feb",
     "Mar",
@@ -1411,14 +1217,11 @@ function renderRegistrationTrendChart() {
     "Oct",
     "Nov",
     "Dec"
-
   ];
-
 
   const monthly =
     new Array(12)
       .fill(0);
-
 
   youthList.forEach(
     youth => {
@@ -1428,43 +1231,35 @@ function renderRegistrationTrendChart() {
           youth.createdAt
         );
 
-
       if (!date) {
         return;
       }
-
 
       if (
         date.getFullYear() ===
         currentYear
       ) {
-
         monthly[
           date.getMonth()
         ]++;
-
       }
 
     }
   );
 
-
   charts.registrationTrendChart =
     new Chart(
       canvas,
       {
-
         type:
           "line",
 
         data: {
-
           labels:
             months,
 
           datasets: [
             {
-
               label:
                 `Youth Registrations ${currentYear}`,
 
@@ -1485,14 +1280,11 @@ function renderRegistrationTrendChart() {
 
               fill:
                 true
-
             }
           ]
-
         },
 
         options: {
-
           responsive:
             true,
 
@@ -1505,31 +1297,22 @@ function renderRegistrationTrendChart() {
           },
 
           scales: {
-
             y: {
-
               beginAtZero:
                 true,
 
               ticks: {
-
                 precision:
                   0,
 
                 stepSize:
                   1
-
               }
-
             }
-
           }
-
         }
-
       }
     );
-
 }
 
 
@@ -1538,16 +1321,10 @@ function renderRegistrationTrendChart() {
 // =====================================================
 
 function renderCharts() {
-
   const activeYouth =
     youthList.filter(
       isActiveYouth
     );
-
-
-  // ===================================================
-  // GENDER
-  // ===================================================
 
   const gender =
     countBy(
@@ -1556,18 +1333,12 @@ function renderCharts() {
         youth.gender
     );
 
-
   drawChart(
     "genderChart",
     "doughnut",
     Object.keys(gender),
     Object.values(gender)
   );
-
-
-  // ===================================================
-  // AGE
-  // ===================================================
 
   const ages =
     countBy(
@@ -1578,18 +1349,12 @@ function renderCharts() {
         )
     );
 
-
   drawChart(
     "ageChart",
     "bar",
     Object.keys(ages),
     Object.values(ages)
   );
-
-
-  // ===================================================
-  // PUROK / AREA
-  // ===================================================
 
   const purok =
     countBy(
@@ -1600,7 +1365,6 @@ function renderCharts() {
         )
     );
 
-
   const sortedPurok =
     Object
       .entries(purok)
@@ -1608,7 +1372,6 @@ function renderCharts() {
         (a, b) =>
           b[1] - a[1]
       );
-
 
   drawChart(
     "purokChart",
@@ -1623,18 +1386,12 @@ function renderCharts() {
     )
   );
 
-
-  // ===================================================
-  // CIVIL STATUS
-  // ===================================================
-
   const civilStatus =
     countBy(
       activeYouth,
       youth =>
         youth.civilStatus
     );
-
 
   drawChart(
     "civilStatusChart",
@@ -1643,18 +1400,12 @@ function renderCharts() {
     Object.values(civilStatus)
   );
 
-
-  // ===================================================
-  // EDUCATION
-  // ===================================================
-
   const education =
     countBy(
       activeYouth,
       youth =>
         youth.education
     );
-
 
   drawChart(
     "educationChart",
@@ -1663,11 +1414,6 @@ function renderCharts() {
     Object.values(education)
   );
 
-
-  // ===================================================
-  // EDUCATION STATUS
-  // ===================================================
-
   const educationStatus =
     countBy(
       activeYouth,
@@ -1675,22 +1421,12 @@ function renderCharts() {
         youth.educationStatus
     );
 
-
   drawChart(
     "educationStatusChart",
     "doughnut",
-    Object.keys(
-      educationStatus
-    ),
-    Object.values(
-      educationStatus
-    )
+    Object.keys(educationStatus),
+    Object.values(educationStatus)
   );
-
-
-  // ===================================================
-  // EMPLOYMENT
-  // ===================================================
 
   const employment =
     countBy(
@@ -1699,18 +1435,12 @@ function renderCharts() {
         youth.employment
     );
 
-
   drawChart(
     "employmentChart",
     "doughnut",
     Object.keys(employment),
     Object.values(employment)
   );
-
-
-  // ===================================================
-  // GENERAL VOTER
-  // ===================================================
 
   const voter =
     countBy(
@@ -1719,18 +1449,12 @@ function renderCharts() {
         youth.voterStatus
     );
 
-
   drawChart(
     "voterChart",
     "doughnut",
     Object.keys(voter),
     Object.values(voter)
   );
-
-
-  // ===================================================
-  // VOTER PARTICIPATION
-  // ===================================================
 
   const voterParticipation =
     countBy(
@@ -1739,22 +1463,12 @@ function renderCharts() {
         youth.voterParticipation
     );
 
-
   drawChart(
     "voterParticipationChart",
     "doughnut",
-    Object.keys(
-      voterParticipation
-    ),
-    Object.values(
-      voterParticipation
-    )
+    Object.keys(voterParticipation),
+    Object.values(voterParticipation)
   );
-
-
-  // ===================================================
-  // NEW VOTER
-  // ===================================================
 
   const newVoter =
     countBy(
@@ -1763,18 +1477,12 @@ function renderCharts() {
         youth.newVoter
     );
 
-
   drawChart(
     "newVoterChart",
     "doughnut",
     Object.keys(newVoter),
     Object.values(newVoter)
   );
-
-
-  // ===================================================
-  // SK VOTER
-  // ===================================================
 
   const skVoter =
     countBy(
@@ -1783,18 +1491,12 @@ function renderCharts() {
         youth.registeredSKVoter
     );
 
-
   drawChart(
     "skVoterChart",
     "doughnut",
     Object.keys(skVoter),
     Object.values(skVoter)
   );
-
-
-  // ===================================================
-  // SK ELECTION
-  // ===================================================
 
   const skElection =
     countBy(
@@ -1803,18 +1505,12 @@ function renderCharts() {
         youth.votedLastSKElection
     );
 
-
   drawChart(
     "skElectionChart",
     "doughnut",
     Object.keys(skElection),
     Object.values(skElection)
   );
-
-
-  // ===================================================
-  // KK ATTENDANCE
-  // ===================================================
 
   const kkAttendance =
     countBy(
@@ -1823,18 +1519,12 @@ function renderCharts() {
         youth.kkAssemblyAttended
     );
 
-
   drawChart(
     "kkAttendanceChart",
     "doughnut",
     Object.keys(kkAttendance),
     Object.values(kkAttendance)
   );
-
-
-  // ===================================================
-  // KK FREQUENCY
-  // ===================================================
 
   const attendedYouth =
     activeYouth.filter(
@@ -1843,14 +1533,12 @@ function renderCharts() {
         "Yes"
     );
 
-
   const kkFrequency =
     countBy(
       attendedYouth,
       youth =>
         youth.kkAttendanceCount
     );
-
 
   drawChart(
     "kkFrequencyChart",
@@ -1859,18 +1547,12 @@ function renderCharts() {
     Object.values(kkFrequency)
   );
 
-
-  // ===================================================
-  // KK REASON
-  // ===================================================
-
   const notAttendedYouth =
     activeYouth.filter(
       youth =>
         youth.kkAssemblyAttended ===
         "No"
     );
-
 
   const kkReason =
     countBy(
@@ -1879,18 +1561,12 @@ function renderCharts() {
         youth.kkNoReason
     );
 
-
   drawChart(
     "kkReasonChart",
     "bar",
     Object.keys(kkReason),
     Object.values(kkReason)
   );
-
-
-  // ===================================================
-  // CIVIC
-  // ===================================================
 
   const civic =
     countBy(
@@ -1899,18 +1575,12 @@ function renderCharts() {
         youth.civic
     );
 
-
   drawChart(
     "civicChart",
     "doughnut",
     Object.keys(civic),
     Object.values(civic)
   );
-
-
-  // ===================================================
-  // SPECIAL NEEDS
-  // ===================================================
 
   const specialNeeds =
     countBy(
@@ -1919,29 +1589,18 @@ function renderCharts() {
         youth.specialNeeds
     );
 
-
   drawChart(
     "specialNeedsChart",
     "doughnut",
-    Object.keys(
-      specialNeeds
-    ),
-    Object.values(
-      specialNeeds
-    )
+    Object.keys(specialNeeds),
+    Object.values(specialNeeds)
   );
-
-
-  // ===================================================
-  // SPORTS
-  // ===================================================
 
   const sports =
     countMultiValueField(
       activeYouth,
       "sports"
     );
-
 
   const topSports =
     Object
@@ -1954,7 +1613,6 @@ function renderCharts() {
         0,
         8
       );
-
 
   drawChart(
     "sportsChart",
@@ -1969,17 +1627,11 @@ function renderCharts() {
     )
   );
 
-
-  // ===================================================
-  // HOBBIES
-  // ===================================================
-
   const hobbies =
     countMultiValueField(
       activeYouth,
       "hobbies"
     );
-
 
   const topHobbies =
     Object
@@ -1992,7 +1644,6 @@ function renderCharts() {
         0,
         8
       );
-
 
   drawChart(
     "hobbiesChart",
@@ -2007,9 +1658,7 @@ function renderCharts() {
     )
   );
 
-
   renderRegistrationTrendChart();
-
 }
 
 
@@ -2022,48 +1671,40 @@ const searchInput =
     "youthSearch"
   );
 
-
 const filterGender =
   document.getElementById(
     "filterGender"
   );
-
 
 const filterPurok =
   document.getElementById(
     "filterPurok"
   );
 
-
 const filterEducation =
   document.getElementById(
     "filterEducation"
   );
-
 
 const filterEmployment =
   document.getElementById(
     "filterEmployment"
   );
 
-
 const filterStatus =
   document.getElementById(
     "filterStatus"
   );
-
 
 const filterSKVoter =
   document.getElementById(
     "filterSKVoter"
   );
 
-
 const filterKKAttendance =
   document.getElementById(
     "filterKKAttendance"
   );
-
 
 const clearFiltersBtn =
   document.getElementById(
@@ -2076,9 +1717,7 @@ const clearFiltersBtn =
 // =====================================================
 
 function populateFilterOptions() {
-
   const eduOptions = [
-
     "Elementary",
     "High School",
     "Senior High School",
@@ -2086,26 +1725,16 @@ function populateFilterOptions() {
     "Vocational",
     "Graduate",
     "Out of School Youth"
-
   ];
 
-
   const empOptions = [
-
     "Student",
     "Employed",
     "Unemployed",
     "Self-employed"
-
   ];
 
-
-  // ===================================================
-  // PUROK
-  // ===================================================
-
   if (filterPurok) {
-
     filterPurok.innerHTML =
       `
         <option value="">
@@ -2122,16 +1751,9 @@ function populateFilterOptions() {
             `
         )
         .join("");
-
   }
 
-
-  // ===================================================
-  // EDUCATION
-  // ===================================================
-
   if (filterEducation) {
-
     filterEducation.innerHTML =
       `
         <option value="">
@@ -2148,16 +1770,9 @@ function populateFilterOptions() {
             `
         )
         .join("");
-
   }
 
-
-  // ===================================================
-  // EMPLOYMENT
-  // ===================================================
-
   if (filterEmployment) {
-
     filterEmployment.innerHTML =
       `
         <option value="">
@@ -2174,9 +1789,7 @@ function populateFilterOptions() {
             `
         )
         .join("");
-
   }
-
 }
 
 
@@ -2185,7 +1798,6 @@ function populateFilterOptions() {
 // =====================================================
 
 function getFilteredYouth() {
-
   const term =
     (
       searchInput?.value ||
@@ -2194,28 +1806,23 @@ function getFilteredYouth() {
       .toLowerCase()
       .trim();
 
-
   return youthList.filter(
     youth => {
 
-
       const matchesSearch =
         !term ||
-
         (
           youth.fullName ||
           ""
         )
           .toLowerCase()
           .includes(term) ||
-
         (
           youth.email ||
           ""
         )
           .toLowerCase()
           .includes(term) ||
-
         (
           youth.address ||
           ""
@@ -2223,12 +1830,10 @@ function getFilteredYouth() {
           .toLowerCase()
           .includes(term);
 
-
       const matchesGender =
         !filterGender?.value ||
         youth.gender ===
           filterGender.value;
-
 
       const matchesPurok =
         !filterPurok?.value ||
@@ -2237,22 +1842,18 @@ function getFilteredYouth() {
         ) ===
           filterPurok.value;
 
-
       const matchesEducation =
         !filterEducation?.value ||
         youth.education ===
           filterEducation.value;
-
 
       const matchesEmployment =
         !filterEmployment?.value ||
         youth.employment ===
           filterEmployment.value;
 
-
       const matchesStatus =
         !filterStatus?.value ||
-
         (
           filterStatus.value ===
             "active" &&
@@ -2260,7 +1861,6 @@ function getFilteredYouth() {
             youth
           )
         ) ||
-
         (
           filterStatus.value ===
             "inactive" &&
@@ -2269,21 +1869,17 @@ function getFilteredYouth() {
           )
         );
 
-
       const matchesSKVoter =
         !filterSKVoter?.value ||
         youth.registeredSKVoter ===
           filterSKVoter.value;
-
 
       const matchesKKAttendance =
         !filterKKAttendance?.value ||
         youth.kkAssemblyAttended ===
           filterKKAttendance.value;
 
-
       return (
-
         matchesSearch &&
         matchesGender &&
         matchesPurok &&
@@ -2292,12 +1888,9 @@ function getFilteredYouth() {
         matchesStatus &&
         matchesSKVoter &&
         matchesKKAttendance
-
       );
-
     }
   );
-
 }
 
 
@@ -2306,195 +1899,95 @@ function getFilteredYouth() {
 // =====================================================
 
 function renderTable() {
-
   const body =
     document.getElementById(
       "youthTableBody"
     );
 
-
   if (!body) {
     return;
   }
 
-
   const filtered =
     getFilteredYouth();
-
 
   if (
     filtered.length ===
     0
   ) {
-
     body.innerHTML =
       `
         <tr>
-
-          <td
-            colspan="11"
-            class="empty-state"
-          >
+          <td colspan="11" class="empty-state">
             No youth records found.
           </td>
-
         </tr>
       `;
-
   } else {
-
     body.innerHTML =
       filtered
         .map(
           youth => {
-
 
             const active =
               isActiveYouth(
                 youth
               );
 
-
             const status =
               active
                 ? "Active"
                 : "Inactive / Archived";
 
-
             return `
               <tr>
+                <td>${escapeHtml(youth.fullName)}</td>
+                <td>${escapeHtml(youth.email)}</td>
+                <td>${escapeHtml(youth.age)}</td>
+                <td>${escapeHtml(youth.gender)}</td>
+                <td>${escapeHtml(youth.civilStatus || "—")}</td>
+                <td>${escapeHtml(youth.education)}</td>
+                <td>${escapeHtml(youth.employment)}</td>
+                <td>${escapeHtml(youth.registeredSKVoter || "—")}</td>
+                <td>${escapeHtml(youth.kkAssemblyAttended || "—")}</td>
 
                 <td>
-                  ${escapeHtml(
-                    youth.fullName
-                  )}
-                </td>
-
-                <td>
-                  ${escapeHtml(
-                    youth.email
-                  )}
-                </td>
-
-                <td>
-                  ${escapeHtml(
-                    youth.age
-                  )}
-                </td>
-
-                <td>
-                  ${escapeHtml(
-                    youth.gender
-                  )}
-                </td>
-
-                <td>
-                  ${escapeHtml(
-                    youth.civilStatus ||
-                    "—"
-                  )}
-                </td>
-
-                <td>
-                  ${escapeHtml(
-                    youth.education
-                  )}
-                </td>
-
-                <td>
-                  ${escapeHtml(
-                    youth.employment
-                  )}
-                </td>
-
-                <td>
-                  ${escapeHtml(
-                    youth.registeredSKVoter ||
-                    "—"
-                  )}
-                </td>
-
-                <td>
-                  ${escapeHtml(
-                    youth.kkAssemblyAttended ||
-                    "—"
-                  )}
-                </td>
-
-                <td>
-
-                  <span
-                    class="status-pill ${
-                      active
-                        ? ""
-                        : "off"
-                    }"
-                  >
+                  <span class="status-pill ${active ? "" : "off"}">
                     ${status}
                   </span>
-
                 </td>
 
                 <td>
-
                   <div class="action-row">
-
-                    <button
-                      class="action-btn edit"
-                      data-edit="${youth.id}"
-                      type="button"
-                      title="Edit"
-                    >
-                      ✎
-                    </button>
-
-                    <button
-                      class="action-btn delete"
-                      data-delete="${youth.id}"
-                      type="button"
-                      title="Delete"
-                    >
-                      🗑
-                    </button>
-
+                    <button class="action-btn edit" data-edit="${youth.id}" type="button" title="Edit">✎</button>
+                    <button class="action-btn delete" data-delete="${youth.id}" type="button" title="Delete">🗑</button>
                   </div>
-
                 </td>
-
               </tr>
             `;
-
           }
         )
         .join("");
-
   }
-
 
   const countText =
     document.getElementById(
       "youthCountText"
     );
 
-
   if (countText) {
-
     const activeCount =
       youthList.filter(
         isActiveYouth
       ).length;
 
-
     const archivedCount =
       youthList.length -
       activeCount;
 
-
     countText.textContent =
       `Showing ${filtered.length} of ${youthList.length} youth records • ${activeCount} Active • ${archivedCount} Archived`;
-
   }
-
 
   document
     .querySelectorAll(
@@ -2502,7 +1995,6 @@ function renderTable() {
     )
     .forEach(
       button => {
-
         button.addEventListener(
           "click",
           () =>
@@ -2510,10 +2002,8 @@ function renderTable() {
               button.dataset.edit
             )
         );
-
       }
     );
-
 
   document
     .querySelectorAll(
@@ -2521,7 +2011,6 @@ function renderTable() {
     )
     .forEach(
       button => {
-
         button.addEventListener(
           "click",
           () =>
@@ -2529,10 +2018,8 @@ function renderTable() {
               button.dataset.delete
             )
         );
-
       }
     );
-
 }
 
 
@@ -2559,7 +2046,6 @@ function renderTable() {
         renderTable
       );
 
-
       element.addEventListener(
         "change",
         renderTable
@@ -2572,7 +2058,6 @@ function renderTable() {
 if (
   clearFiltersBtn
 ) {
-
   clearFiltersBtn.addEventListener(
     "click",
     () => {
@@ -2581,47 +2066,37 @@ if (
         searchInput.value = "";
       }
 
-
       if (filterGender) {
         filterGender.value = "";
       }
-
 
       if (filterPurok) {
         filterPurok.value = "";
       }
 
-
       if (filterEducation) {
         filterEducation.value = "";
       }
-
 
       if (filterEmployment) {
         filterEmployment.value = "";
       }
 
-
       if (filterStatus) {
         filterStatus.value = "";
       }
-
 
       if (filterSKVoter) {
         filterSKVoter.value = "";
       }
 
-
       if (filterKKAttendance) {
         filterKKAttendance.value = "";
       }
 
-
       renderTable();
-
     }
   );
-
 }
 
 
@@ -2634,41 +2109,34 @@ const youthDialog =
     "youthDialog"
   );
 
-
 const youthDialogTitle =
   document.getElementById(
     "youthDialogTitle"
   );
-
 
 const youthFieldsEl =
   document.getElementById(
     "adminYouthFields"
   );
 
-
 const saveYouthBtn =
   document.getElementById(
     "saveYouthAdminBtn"
   );
-
 
 const idInput =
   document.querySelector(
     '#adminYouthForm [name="id"]'
   );
 
-
 const openAddYouthBtn =
   document.getElementById(
     "openAddYouth"
   );
 
-
 if (
   openAddYouthBtn
 ) {
-
   openAddYouthBtn.addEventListener(
     "click",
     () =>
@@ -2676,7 +2144,6 @@ if (
         null
       )
   );
-
 }
 
 
@@ -2684,16 +2151,12 @@ if (
 // BUILD YOUTH FIELDS
 // =====================================================
 
-function buildYouthFields(
-  data = {}
-) {
-
+function buildYouthFields(data = {}) {
   if (
     !youthFieldsEl
   ) {
     return;
   }
-
 
   const normalizedData = {
     ...data,
@@ -2703,27 +2166,22 @@ function buildYouthFields(
       )
   };
 
-
   youthFieldsEl.innerHTML =
     FIELDS
       .map(
         field => {
 
-
           const value =
             normalizedData[field.key] ??
             "";
-
 
           const fieldClass =
             field.full
               ? "field full"
               : "field";
 
-
           let displayStyle =
             "";
-
 
           if (
             field.key ===
@@ -2731,12 +2189,9 @@ function buildYouthFields(
             normalizedData.kkAssemblyAttended !==
               "Yes"
           ) {
-
             displayStyle =
               'style="display:none;"';
-
           }
-
 
           if (
             field.key ===
@@ -2744,148 +2199,73 @@ function buildYouthFields(
             normalizedData.kkAssemblyAttended !==
               "No"
           ) {
-
             displayStyle =
               'style="display:none;"';
-
           }
-
 
           if (
             field.type ===
             "select"
           ) {
-
-
             const options =
               field.options
                 .map(
                   option =>
                     `
-                      <option
-                        value="${escapeHtml(option)}"
-                        ${
-                          option ===
-                          value
-                            ? "selected"
-                            : ""
-                        }
-                      >
+                      <option value="${escapeHtml(option)}" ${option === value ? "selected" : ""}>
                         ${escapeHtml(option)}
                       </option>
                     `
                 )
                 .join("");
 
-
             return `
-              <label
-                class="${fieldClass}"
-                data-field-wrapper="${field.key}"
-                ${displayStyle}
-              >
-
-                <span>
-                  ${escapeHtml(
-                    field.label
-                  )}
-                </span>
-
-                <select
-                  name="${field.key}"
-                >
-
-                  <option value="">
-                    Select
-                  </option>
-
+              <label class="${fieldClass}" data-field-wrapper="${field.key}" ${displayStyle}>
+                <span>${escapeHtml(field.label)}</span>
+                <select name="${field.key}">
+                  <option value="">Select</option>
                   ${options}
-
                 </select>
-
               </label>
             `;
-
           }
-
 
           if (
             field.key ===
             "age"
           ) {
-
             return `
-              <label
-                class="${fieldClass}"
-                data-field-wrapper="${field.key}"
-              >
-
-                <span>
-                  ${escapeHtml(
-                    field.label
-                  )}
-                </span>
-
-                <input
-                  type="number"
-                  name="${field.key}"
-                  value="${escapeHtml(value)}"
-                  readonly
-                />
-
+              <label class="${fieldClass}" data-field-wrapper="${field.key}">
+                <span>${escapeHtml(field.label)}</span>
+                <input type="number" name="${field.key}" value="${escapeHtml(value)}" readonly />
               </label>
             `;
-
           }
 
-
           return `
-            <label
-              class="${fieldClass}"
-              data-field-wrapper="${field.key}"
-            >
-
-              <span>
-                ${escapeHtml(
-                  field.label
-                )}
-              </span>
-
-              <input
-                type="${field.type}"
-                name="${field.key}"
-                value="${escapeHtml(value)}"
-              />
-
+            <label class="${fieldClass}" data-field-wrapper="${field.key}">
+              <span>${escapeHtml(field.label)}</span>
+              <input type="${field.type}" name="${field.key}" value="${escapeHtml(value)}" />
             </label>
           `;
-
         }
       )
       .join("");
-
-
-  // ===================================================
-  // BIRTH DATE / AGE
-  // ===================================================
 
   const birthDateInput =
     youthFieldsEl.querySelector(
       '[name="birthDate"]'
     );
 
-
   const ageInput =
     youthFieldsEl.querySelector(
       '[name="age"]'
     );
 
-
   if (
     birthDateInput &&
     ageInput
   ) {
-
     birthDateInput.addEventListener(
       "change",
       () => {
@@ -2895,7 +2275,6 @@ function buildYouthFields(
             birthDateInput.value
           );
 
-
         ageInput.value =
           age !== null
             ? age
@@ -2903,84 +2282,64 @@ function buildYouthFields(
 
       }
     );
-
   }
-
-
-  // ===================================================
-  // KK CONDITIONAL FIELDS
-  // ===================================================
 
   const kkInput =
     youthFieldsEl.querySelector(
       '[name="kkAssemblyAttended"]'
     );
 
-
   const countWrapper =
     youthFieldsEl.querySelector(
       '[data-field-wrapper="kkAttendanceCount"]'
     );
-
 
   const reasonWrapper =
     youthFieldsEl.querySelector(
       '[data-field-wrapper="kkNoReason"]'
     );
 
-
   const countInput =
     youthFieldsEl.querySelector(
       '[name="kkAttendanceCount"]'
     );
-
 
   const reasonInput =
     youthFieldsEl.querySelector(
       '[name="kkNoReason"]'
     );
 
-
   function updateKKFields() {
-
     if (!kkInput) {
       return;
     }
-
 
     if (
       kkInput.value ===
       "Yes"
     ) {
-
       if (countWrapper) {
         countWrapper.style.display =
           "flex";
       }
-
 
       if (reasonWrapper) {
         reasonWrapper.style.display =
           "none";
       }
 
-
       if (countInput) {
         countInput.required =
           true;
       }
 
-
       if (reasonInput) {
-
         reasonInput.required =
           false;
 
         reasonInput.value =
           "";
-
       }
-
 
     } else if (
       kkInput.value ===
@@ -2992,29 +2351,23 @@ function buildYouthFields(
           "none";
       }
 
-
       if (reasonWrapper) {
         reasonWrapper.style.display =
           "flex";
       }
 
-
       if (countInput) {
-
         countInput.required =
           false;
 
         countInput.value =
           "";
-
       }
-
 
       if (reasonInput) {
         reasonInput.required =
           true;
       }
-
 
     } else {
 
@@ -3023,53 +2376,39 @@ function buildYouthFields(
           "none";
       }
 
-
       if (reasonWrapper) {
         reasonWrapper.style.display =
           "none";
       }
 
-
       if (countInput) {
-
         countInput.required =
           false;
 
         countInput.value =
           "";
-
       }
 
-
       if (reasonInput) {
-
         reasonInput.required =
           false;
 
         reasonInput.value =
           "";
-
       }
-
     }
-
   }
-
 
   if (
     kkInput
   ) {
-
     kkInput.addEventListener(
       "change",
       updateKKFields
     );
 
-
     updateKKFields();
-
   }
-
 }
 
 
@@ -3077,10 +2416,7 @@ function buildYouthFields(
 // OPEN YOUTH DIALOG
 // =====================================================
 
-function openYouthDialog(
-  youthId
-) {
-
+function openYouthDialog(youthId) {
   if (
     !youthDialog ||
     !idInput
@@ -3088,11 +2424,9 @@ function openYouthDialog(
     return;
   }
 
-
   if (
     youthId
   ) {
-
     const existing =
       youthList.find(
         youth =>
@@ -3100,53 +2434,39 @@ function openYouthDialog(
           youthId
       );
 
-
     if (
       youthDialogTitle
     ) {
-
       youthDialogTitle.textContent =
         "Edit Youth Profile";
-
     }
-
 
     idInput.value =
       youthId;
-
 
     buildYouthFields(
       existing ||
       {}
     );
 
-
   } else {
-
 
     if (
       youthDialogTitle
     ) {
-
       youthDialogTitle.textContent =
         "Add Youth Profile";
-
     }
-
 
     idInput.value =
       "";
 
-
     buildYouthFields(
       {}
     );
-
   }
 
-
   youthDialog.showModal();
-
 }
 
 
@@ -3157,23 +2477,18 @@ function openYouthDialog(
 if (
   saveYouthBtn
 ) {
-
   saveYouthBtn.addEventListener(
     "click",
     async () => {
 
-
       saveYouthBtn.disabled =
         true;
-
 
       saveYouthBtn.textContent =
         "Saving...";
 
-
       const payload =
         {};
-
 
       FIELDS.forEach(
         field => {
@@ -3184,13 +2499,11 @@ if (
                 `[name="${field.key}"]`
               );
 
-
           if (
             !input
           ) {
             return;
           }
-
 
           payload[field.key] =
             field.type ===
@@ -3199,158 +2512,116 @@ if (
                   input.value
                 )
               : input.value.trim();
-
         }
       );
-
-
-      // STANDARDIZE PUROK BEFORE SAVE
 
       payload.address =
         normalizePurok(
           payload.address
         );
 
-
       if (
         payload.birthDate
       ) {
-
         const calculatedAge =
           calculateAge(
             payload.birthDate
           );
 
-
         if (
           calculatedAge ===
           null
         ) {
-
           alert(
             "Please enter a valid birth date."
           );
 
-
           saveYouthBtn.disabled =
             false;
-
 
           saveYouthBtn.textContent =
             "Save Profile";
 
-
           return;
-
         }
-
 
         payload.age =
           calculatedAge;
-
       }
-
 
       if (
         payload.kkAssemblyAttended ===
           "Yes" &&
         !payload.kkAttendanceCount
       ) {
-
         alert(
           "Please indicate how many times the youth attended a KK Assembly."
         );
 
-
         saveYouthBtn.disabled =
           false;
-
 
         saveYouthBtn.textContent =
           "Save Profile";
 
-
         return;
-
       }
-
 
       if (
         payload.kkAssemblyAttended ===
           "No" &&
         !payload.kkNoReason
       ) {
-
         alert(
           "Please indicate why the youth has not attended a KK Assembly."
         );
 
-
         saveYouthBtn.disabled =
           false;
-
 
         saveYouthBtn.textContent =
           "Save Profile";
 
-
         return;
-
       }
-
 
       if (
         payload.kkAssemblyAttended ===
         "Yes"
       ) {
-
         payload.kkNoReason =
           "";
-
       }
-
 
       if (
         payload.kkAssemblyAttended ===
         "No"
       ) {
-
         payload.kkAttendanceCount =
           "";
-
       }
-
 
       const youthStatus =
         getYouthStatus(
           payload.age
         );
 
-
       payload.status =
         youthStatus.status;
-
 
       payload.eligibility =
         youthStatus.eligibility;
 
-
       payload.role =
         "youth";
-
 
       payload.updatedAt =
         new Date();
 
-
       try {
-
-
         if (
           idInput.value
         ) {
-
-
           await updateDoc(
             doc(
               db,
@@ -3360,9 +2631,7 @@ if (
             payload
           );
 
-
           safeLogActivity({
-
             email:
               auth.currentUser
                 ?.email,
@@ -3375,16 +2644,12 @@ if (
 
             details:
               `${payload.fullName} • Purok: ${payload.address || "N/A"} • Age ${payload.age} • SK Voter: ${payload.registeredSKVoter || "N/A"} • KK Assembly: ${payload.kkAssemblyAttended || "N/A"}`
-
           });
-
 
         } else {
 
-
           payload.createdAt =
             new Date();
-
 
           await addDoc(
             collection(
@@ -3394,9 +2659,7 @@ if (
             payload
           );
 
-
           safeLogActivity({
-
             email:
               auth.currentUser
                 ?.email,
@@ -3409,52 +2672,39 @@ if (
 
             details:
               `${payload.fullName} • Purok: ${payload.address || "N/A"} • Age ${payload.age}`
-
           });
-
         }
-
 
         youthDialog.close();
 
-
         await loadUsersData();
-
 
         alert(
           "Youth profile saved!"
         );
 
-
       } catch (error) {
-
 
         console.error(
           "Save youth error:",
           error
         );
 
-
         alert(
           "Something went wrong while saving. Please try again."
         );
 
-
       } finally {
-
 
         saveYouthBtn.disabled =
           false;
 
-
         saveYouthBtn.textContent =
           "Save Profile";
-
       }
 
     }
   );
-
 }
 
 
@@ -3462,22 +2712,17 @@ if (
 // DELETE YOUTH
 // =====================================================
 
-async function deleteYouth(
-  youthId
-) {
-
+async function deleteYouth(youthId) {
   const confirmed =
     confirm(
       "Are you sure you want to delete this youth profile? This cannot be undone."
     );
-
 
   if (
     !confirmed
   ) {
     return;
   }
-
 
   const target =
     youthList.find(
@@ -3486,9 +2731,7 @@ async function deleteYouth(
         youthId
     );
 
-
   try {
-
 
     await deleteDoc(
       doc(
@@ -3498,9 +2741,7 @@ async function deleteYouth(
       )
     );
 
-
     safeLogActivity({
-
       email:
         auth.currentUser
           ?.email,
@@ -3514,28 +2755,21 @@ async function deleteYouth(
       details:
         target?.fullName ||
         youthId
-
     });
-
 
     await loadUsersData();
 
-
   } catch (error) {
-
 
     console.error(
       "Delete youth error:",
       error
     );
 
-
     alert(
       "Something went wrong while deleting. Please try again."
     );
-
   }
-
 }
 
 
@@ -3544,12 +2778,10 @@ async function deleteYouth(
 // =====================================================
 
 function renderReports() {
-
   const reportSummary =
     document.getElementById(
       "reportSummary"
     );
-
 
   if (
     !reportSummary
@@ -3557,15 +2789,12 @@ function renderReports() {
     return;
   }
 
-
   const activeYouth =
     youthList.filter(
       isActiveYouth
     );
 
-
   const categories = [
-
     [
       "Youth Status",
 
@@ -3579,11 +2808,6 @@ function renderReports() {
       }
     ],
 
-
-    // =================================================
-    // PUROK / AREA
-    // =================================================
-
     [
       "Youth Distribution by Purok / Area",
 
@@ -3596,7 +2820,6 @@ function renderReports() {
       )
     ],
 
-
     [
       "Gender Breakdown",
 
@@ -3606,7 +2829,6 @@ function renderReports() {
           youth.gender
       )
     ],
-
 
     [
       "Civil Status",
@@ -3618,7 +2840,6 @@ function renderReports() {
       )
     ],
 
-
     [
       "Education Level",
 
@@ -3628,7 +2849,6 @@ function renderReports() {
           youth.education
       )
     ],
-
 
     [
       "Education Status",
@@ -3640,7 +2860,6 @@ function renderReports() {
       )
     ],
 
-
     [
       "Employment Status",
 
@@ -3650,7 +2869,6 @@ function renderReports() {
           youth.employment
       )
     ],
-
 
     [
       "Voter Registration",
@@ -3662,7 +2880,6 @@ function renderReports() {
       )
     ],
 
-
     [
       "Voter Participation",
 
@@ -3672,7 +2889,6 @@ function renderReports() {
           youth.voterParticipation
       )
     ],
-
 
     [
       "New Voter Status",
@@ -3684,7 +2900,6 @@ function renderReports() {
       )
     ],
 
-
     [
       "Registered SK Voter",
 
@@ -3694,7 +2909,6 @@ function renderReports() {
           youth.registeredSKVoter
       )
     ],
-
 
     [
       "Last SK Election Participation",
@@ -3706,7 +2920,6 @@ function renderReports() {
       )
     ],
 
-
     [
       "KK Assembly Attendance",
 
@@ -3716,7 +2929,6 @@ function renderReports() {
           youth.kkAssemblyAttended
       )
     ],
-
 
     [
       "KK Assembly Attendance Frequency",
@@ -3732,7 +2944,6 @@ function renderReports() {
       )
     ],
 
-
     [
       "Reasons for Not Attending KK Assembly",
 
@@ -3747,7 +2958,6 @@ function renderReports() {
       )
     ],
 
-
     [
       "Civic Participation",
 
@@ -3758,7 +2968,6 @@ function renderReports() {
       )
     ],
 
-
     [
       "Special Needs",
 
@@ -3768,9 +2977,7 @@ function renderReports() {
           youth.specialNeeds
       )
     ]
-
   ];
-
 
   reportSummary.innerHTML =
     categories
@@ -3781,7 +2988,6 @@ function renderReports() {
             counts
           ]
         ) => {
-
 
           const items =
             Object
@@ -3797,42 +3003,27 @@ function renderReports() {
                 ) =>
                   `
                     <li>
-
                       ${escapeHtml(key)}:
-
-                      <strong>
-                        ${value}
-                      </strong>
-
+                      <strong>${value}</strong>
                     </li>
                   `
               )
               .join("");
 
-
           return `
             <div class="summary-box">
-
-              <h3>
-                ${escapeHtml(title)}
-              </h3>
-
+              <h3>${escapeHtml(title)}</h3>
               <ul>
-
                 ${
                   items ||
                   "<li>No data yet</li>"
                 }
-
               </ul>
-
             </div>
           `;
-
         }
       )
       .join("");
-
 }
 
 
@@ -3845,18 +3036,14 @@ const printReportBtn =
     "printReportBtn"
   );
 
-
 if (
   printReportBtn
 ) {
-
   printReportBtn.addEventListener(
     "click",
     () => {
 
-
       safeLogActivity({
-
         email:
           auth.currentUser
             ?.email,
@@ -3869,15 +3056,11 @@ if (
 
         details:
           "Print / PDF youth report"
-
       });
 
-
       window.print();
-
     }
   );
-
 }
 
 
@@ -3890,18 +3073,14 @@ const downloadCsvBtn =
     "downloadCsvBtn"
   );
 
-
 if (
   downloadCsvBtn
 ) {
-
   downloadCsvBtn.addEventListener(
     "click",
     () => {
 
-
       const headers = [
-
         "fullName",
         "email",
         "birthDate",
@@ -3928,14 +3107,11 @@ if (
         "assistance",
         "hobbies",
         "sports"
-
       ];
-
 
       const rows =
         youthList.map(
           youth =>
-
             headers
               .map(
                 header =>
@@ -3950,9 +3126,7 @@ if (
                   )}"`
               )
               .join(",")
-
         );
-
 
       const csv =
         [
@@ -3960,7 +3134,6 @@ if (
           ...rows
         ]
           .join("\n");
-
 
       const blob =
         new Blob(
@@ -3973,37 +3146,29 @@ if (
           }
         );
 
-
       const url =
         URL.createObjectURL(
           blob
         );
-
 
       const a =
         document.createElement(
           "a"
         );
 
-
       a.href =
         url;
-
 
       a.download =
         "bukal-youth-data.csv";
 
-
       a.click();
-
 
       URL.revokeObjectURL(
         url
       );
 
-
       safeLogActivity({
-
         email:
           auth.currentUser
             ?.email,
@@ -4016,12 +3181,10 @@ if (
 
         details:
           "Downloaded youth data CSV"
-
       });
 
     }
   );
-
 }
 
 
@@ -4034,18 +3197,15 @@ const announcementDialog =
     "announcementDialog"
   );
 
-
 const announcementDialogTitle =
   document.getElementById(
     "announcementDialogTitle"
   );
 
-
 const announcementForm =
   document.getElementById(
     "announcementForm"
   );
-
 
 const announcementIdInput =
   announcementForm
@@ -4053,13 +3213,11 @@ const announcementIdInput =
       '[name="announcementId"]'
     );
 
-
 const announcementCategoryInput =
   announcementForm
     ?.querySelector(
       '[name="announcementCategory"]'
     );
-
 
 const announcementTitleInput =
   announcementForm
@@ -4067,13 +3225,11 @@ const announcementTitleInput =
       '[name="announcementTitle"]'
     );
 
-
 const announcementMessageInput =
   announcementForm
     ?.querySelector(
       '[name="announcementMessage"]'
     );
-
 
 const announcementExpiryDateInput =
   announcementForm
@@ -4081,12 +3237,16 @@ const announcementExpiryDateInput =
       '[name="announcementExpiryDate"]'
     );
 
+const announcementImageInput =
+  announcementForm
+    ?.querySelector(
+      '[name="announcementImage"]'
+    );
 
 const saveAnnouncementBtn =
   document.getElementById(
     "saveAnnouncementBtn"
   );
-
 
 const openAddAnnouncementBtn =
   document.getElementById(
@@ -4099,12 +3259,10 @@ const openAddAnnouncementBtn =
 // =====================================================
 
 async function loadAnnouncements() {
-
   const body =
     document.getElementById(
       "announcementTableBody"
     );
-
 
   if (
     !body
@@ -4112,24 +3270,16 @@ async function loadAnnouncements() {
     return;
   }
 
-
   body.innerHTML =
     `
       <tr>
-
-        <td
-          colspan="6"
-          class="empty-state"
-        >
+        <td colspan="6" class="empty-state">
           Loading announcements...
         </td>
-
       </tr>
     `;
 
-
   try {
-
 
     const snap =
       await getDocs(
@@ -4139,29 +3289,23 @@ async function loadAnnouncements() {
         )
       );
 
-
     let loadedAnnouncements =
       snap.docs.map(
         documentSnapshot => ({
-
           id:
             documentSnapshot.id,
 
           ...documentSnapshot.data()
-
         })
       );
-
 
     loadedAnnouncements =
       await deleteExpiredAnnouncements(
         loadedAnnouncements
       );
 
-
     announcementList =
       loadedAnnouncements;
-
 
     announcementList.sort(
       (
@@ -4169,18 +3313,15 @@ async function loadAnnouncements() {
         b
       ) => {
 
-
         const aDate =
           getCreatedDate(
             a.createdAt
           );
 
-
         const bDate =
           getCreatedDate(
             b.createdAt
           );
-
 
         return (
           (
@@ -4192,39 +3333,27 @@ async function loadAnnouncements() {
             0
           )
         );
-
       }
     );
 
-
     renderAnnouncementTable();
 
-
   } catch (error) {
-
 
     console.error(
       "Announcement load error:",
       error
     );
 
-
     body.innerHTML =
       `
         <tr>
-
-          <td
-            colspan="6"
-            class="empty-state"
-          >
+          <td colspan="6" class="empty-state">
             Unable to load announcements.
           </td>
-
         </tr>
       `;
-
   }
-
 }
 
 
@@ -4233,70 +3362,52 @@ async function loadAnnouncements() {
 // =====================================================
 
 function renderAnnouncementTable() {
-
   const body =
     document.getElementById(
       "announcementTableBody"
     );
-
 
   const countText =
     document.getElementById(
       "announcementCountText"
     );
 
-
   if (!body) {
     return;
   }
-
 
   if (
     announcementList.length ===
     0
   ) {
-
     body.innerHTML =
       `
         <tr>
-
-          <td
-            colspan="6"
-            class="empty-state"
-          >
+          <td colspan="6" class="empty-state">
             No announcements available.
           </td>
-
         </tr>
       `;
-
 
     if (
       countText
     ) {
-
       countText.textContent =
         "0 announcements";
-
     }
 
-
     return;
-
   }
-
 
   body.innerHTML =
     announcementList
       .map(
         announcement => {
 
-
           const createdDate =
             getCreatedDate(
               announcement.createdAt
             );
-
 
           const formattedDate =
             createdDate
@@ -4315,7 +3426,6 @@ function renderAnnouncementTable() {
                     }
                   )
               : "—";
-
 
           const formattedExpiry =
             announcement.expiryDate
@@ -4337,16 +3447,9 @@ function renderAnnouncementTable() {
                   )
               : "—";
 
-
           return `
             <tr>
-
-              <td>
-                ${escapeHtml(
-                  formattedDate
-                )}
-              </td>
-
+              <td>${escapeHtml(formattedDate)}</td>
 
               <td>
                 ${escapeHtml(
@@ -4355,14 +3458,12 @@ function renderAnnouncementTable() {
                 )}
               </td>
 
-
               <td>
                 ${escapeHtml(
                   announcement.title ||
                   ""
                 )}
               </td>
-
 
               <td>
                 ${escapeHtml(
@@ -4371,66 +3472,33 @@ function renderAnnouncementTable() {
                 )}
               </td>
 
-
               <td>
-
                 <strong>
                   ${escapeHtml(
                     formattedExpiry
                   )}
                 </strong>
 
-                <small
-                  style="
-                    display:block;
-                    margin-top:5px;
-                    color:#71838a;
-                  "
-                >
+                <small style="display:block; margin-top:5px; color:#71838a;">
                   Visible through this date
                 </small>
-
               </td>
-
 
               <td>
-
                 <div class="action-row">
-
-                  <button
-                    class="action-btn edit"
-                    data-edit-announcement="${announcement.id}"
-                    type="button"
-                    title="Edit Announcement"
-                  >
-                    ✎
-                  </button>
-
-                  <button
-                    class="action-btn delete"
-                    data-delete-announcement="${announcement.id}"
-                    type="button"
-                    title="Delete Announcement"
-                  >
-                    🗑
-                  </button>
-
+                  <button class="action-btn edit" data-edit-announcement="${announcement.id}" type="button" title="Edit Announcement">✎</button>
+                  <button class="action-btn delete" data-delete-announcement="${announcement.id}" type="button" title="Delete Announcement">🗑</button>
                 </div>
-
               </td>
-
             </tr>
           `;
-
         }
       )
       .join("");
 
-
   if (
     countText
   ) {
-
     countText.textContent =
       `${announcementList.length} announcement${
         announcementList.length ===
@@ -4438,9 +3506,7 @@ function renderAnnouncementTable() {
           ? ""
           : "s"
       }`;
-
   }
-
 
   document
     .querySelectorAll(
@@ -4448,22 +3514,17 @@ function renderAnnouncementTable() {
     )
     .forEach(
       button => {
-
         button.addEventListener(
           "click",
           () => {
-
             openAnnouncementDialog(
               button.dataset
                 .editAnnouncement
             );
-
           }
         );
-
       }
     );
-
 
   document
     .querySelectorAll(
@@ -4471,22 +3532,17 @@ function renderAnnouncementTable() {
     )
     .forEach(
       button => {
-
         button.addEventListener(
           "click",
           () => {
-
             deleteAnnouncement(
               button.dataset
                 .deleteAnnouncement
             );
-
           }
         );
-
       }
     );
-
 }
 
 
@@ -4509,11 +3565,9 @@ function openAnnouncementDialog(
     return;
   }
 
-
   if (
     announcementId
   ) {
-
 
     const existing =
       announcementList.find(
@@ -4522,85 +3576,71 @@ function openAnnouncementDialog(
           announcementId
       );
 
-
     if (
       !existing
     ) {
       return;
     }
 
-
     announcementIdInput.value =
       existing.id;
-
 
     announcementCategoryInput.value =
       existing.category ||
       "General";
 
-
     announcementTitleInput.value =
       existing.title ||
       "";
-
 
     announcementMessageInput.value =
       existing.message ||
       "";
 
-
     announcementExpiryDateInput.value =
       existing.expiryDate ||
       "";
 
-
     if (
       announcementDialogTitle
     ) {
-
       announcementDialogTitle.textContent =
         "Edit Announcement";
-
     }
 
-
   } else {
-
 
     announcementIdInput.value =
       "";
 
-
     announcementCategoryInput.value =
       "";
-
 
     announcementTitleInput.value =
       "";
 
-
     announcementMessageInput.value =
       "";
-
 
     announcementExpiryDateInput.value =
       getLocalDateString();
 
-
     if (
       announcementDialogTitle
     ) {
-
       announcementDialogTitle.textContent =
         "New Announcement";
-
     }
-
   }
 
+  if (
+    announcementImageInput
+  ) {
+    announcementImageInput.value =
+      "";
+  }
 
   announcementDialog.showModal();
-
 }
 
 
@@ -4611,17 +3651,13 @@ function openAnnouncementDialog(
 if (
   openAddAnnouncementBtn
 ) {
-
   openAddAnnouncementBtn
     .addEventListener(
       "click",
       () => {
-
         openAnnouncementDialog();
-
       }
     );
-
 }
 
 
@@ -4632,11 +3668,9 @@ if (
 if (
   saveAnnouncementBtn
 ) {
-
   saveAnnouncementBtn.addEventListener(
     "click",
     async () => {
-
 
       if (
         !announcementCategoryInput ||
@@ -4647,29 +3681,29 @@ if (
         return;
       }
 
-
       const category =
         announcementCategoryInput
           .value
           .trim();
-
 
       const title =
         announcementTitleInput
           .value
           .trim();
 
-
       const message =
         announcementMessageInput
           .value
           .trim();
 
-
       const expiryDate =
         announcementExpiryDateInput
           .value;
 
+      const selectedImage =
+        announcementImageInput
+          ?.files?.[0] ||
+        null;
 
       if (
         !category ||
@@ -4677,75 +3711,137 @@ if (
         !message ||
         !expiryDate
       ) {
-
         alert(
           "Please complete the category, title, announcement message, and Event / Display Until Date."
         );
 
-
         return;
-
       }
-
 
       const today =
         getLocalDateString();
-
 
       if (
         expiryDate <
         today
       ) {
-
         alert(
           "Event / Display Until Date cannot be earlier than today."
         );
 
-
         return;
-
       }
 
+      if (
+        selectedImage &&
+        !selectedImage.type.startsWith(
+          "image/"
+        )
+      ) {
+        alert(
+          "Please select a valid image file."
+        );
+
+        return;
+      }
+
+      if (
+        selectedImage &&
+        selectedImage.size >
+          5 * 1024 * 1024
+      ) {
+        alert(
+          "Announcement image must not exceed 5 MB."
+        );
+
+        return;
+      }
 
       saveAnnouncementBtn.disabled =
         true;
 
-
       saveAnnouncementBtn.textContent =
-        "Saving...";
+        selectedImage
+          ? "Uploading..."
+          : "Saving...";
 
+      let newlyUploadedImage =
+        null;
 
       try {
 
+        // =================================================
+        // UPDATE EXISTING
+        // =================================================
 
         if (
           announcementIdInput
             ?.value
         ) {
 
+          const announcementId =
+            announcementIdInput.value;
+
+          const existing =
+            announcementList.find(
+              announcement =>
+                announcement.id ===
+                announcementId
+            );
+
+          let imageUrl =
+            existing?.imageUrl ||
+            "";
+
+          let imagePath =
+            existing?.imagePath ||
+            "";
+
+          if (
+            selectedImage
+          ) {
+            newlyUploadedImage =
+              await uploadAnnouncementImage(
+                selectedImage
+              );
+
+            imageUrl =
+              newlyUploadedImage.imageUrl;
+
+            imagePath =
+              newlyUploadedImage.imagePath;
+          }
 
           await updateDoc(
             doc(
               db,
               "announcements",
-              announcementIdInput.value
+              announcementId
             ),
             {
-
               category,
               title,
               message,
               expiryDate,
-
+              imageUrl,
+              imagePath,
               updatedAt:
                 new Date()
-
             }
           );
 
+          if (
+            selectedImage &&
+            existing?.imagePath &&
+            existing.imagePath !==
+              imagePath
+          ) {
+            await deleteAnnouncementImage(
+              existing.imagePath
+            );
+          }
 
           safeLogActivity({
-
             email:
               auth.currentUser
                 ?.email,
@@ -4757,18 +3853,39 @@ if (
               "Updated announcement",
 
             details:
-              `${title} • Display until: ${expiryDate}`
-
+              `${title} • Display until: ${expiryDate}${imageUrl ? " • With image" : ""}`
           });
-
 
           alert(
             "Announcement updated successfully!"
           );
 
-
         } else {
 
+          // =================================================
+          // CREATE NEW
+          // =================================================
+
+          let imageUrl =
+            "";
+
+          let imagePath =
+            "";
+
+          if (
+            selectedImage
+          ) {
+            newlyUploadedImage =
+              await uploadAnnouncementImage(
+                selectedImage
+              );
+
+            imageUrl =
+              newlyUploadedImage.imageUrl;
+
+            imagePath =
+              newlyUploadedImage.imagePath;
+          }
 
           await addDoc(
             collection(
@@ -4776,11 +3893,12 @@ if (
               "announcements"
             ),
             {
-
               category,
               title,
               message,
               expiryDate,
+              imageUrl,
+              imagePath,
 
               createdAt:
                 new Date(),
@@ -4792,13 +3910,10 @@ if (
                 auth.currentUser
                   ?.email ||
                 ""
-
             }
           );
 
-
           safeLogActivity({
-
             email:
               auth.currentUser
                 ?.email,
@@ -4810,54 +3925,60 @@ if (
               "Created announcement",
 
             details:
-              `${title} • Display until: ${expiryDate}`
-
+              `${title} • Display until: ${expiryDate}${imageUrl ? " • With image" : ""}`
           });
-
 
           alert(
             "Announcement created successfully!"
           );
-
         }
-
 
         announcementDialog
           ?.close();
 
-
         await loadAnnouncements();
 
-
       } catch (error) {
-
 
         console.error(
           "Announcement save error:",
           error
         );
 
+        if (
+          newlyUploadedImage?.imagePath
+        ) {
+          await deleteAnnouncementImage(
+            newlyUploadedImage.imagePath
+          );
+        }
 
-        alert(
-          "Something went wrong while saving the announcement. Please check your Firestore permissions."
-        );
-
+        if (
+          error.message ===
+          "Please select a valid image file." ||
+          error.message ===
+          "Announcement image must not exceed 5 MB."
+        ) {
+          alert(
+            error.message
+          );
+        } else {
+          alert(
+            "Something went wrong while saving the announcement. Please check your Firebase Storage and Firestore permissions."
+          );
+        }
 
       } finally {
-
 
         saveAnnouncementBtn.disabled =
           false;
 
-
         saveAnnouncementBtn.textContent =
           "Save Announcement";
-
       }
 
     }
   );
-
 }
 
 
@@ -4876,19 +3997,16 @@ async function deleteAnnouncement(
         announcementId
     );
 
-
   if (
     !target
   ) {
     return;
   }
 
-
   const confirmed =
     confirm(
       `Delete announcement "${target.title}"? This cannot be undone.`
     );
-
 
   if (
     !confirmed
@@ -4896,9 +4014,7 @@ async function deleteAnnouncement(
     return;
   }
 
-
   try {
-
 
     await deleteDoc(
       doc(
@@ -4908,9 +4024,15 @@ async function deleteAnnouncement(
       )
     );
 
+    if (
+      target.imagePath
+    ) {
+      await deleteAnnouncementImage(
+        target.imagePath
+      );
+    }
 
     safeLogActivity({
-
       email:
         auth.currentUser
           ?.email,
@@ -4923,28 +4045,21 @@ async function deleteAnnouncement(
 
       details:
         target.title
-
     });
-
 
     await loadAnnouncements();
 
-
   } catch (error) {
-
 
     console.error(
       "Announcement delete error:",
       error
     );
 
-
     alert(
       "Something went wrong while deleting the announcement."
     );
-
   }
-
 }
 
 
@@ -4953,42 +4068,30 @@ async function deleteAnnouncement(
 // =====================================================
 
 function renderAdminAccounts() {
-
   const body =
     document.getElementById(
       "accountsTableBody"
     );
 
-
   if (!body) {
     return;
   }
-
 
   if (
     adminList.length ===
     0
   ) {
-
     body.innerHTML =
       `
         <tr>
-
-          <td
-            colspan="5"
-            class="empty-state"
-          >
+          <td colspan="5" class="empty-state">
             No admin accounts found.
           </td>
-
         </tr>
       `;
 
-
     return;
-
   }
-
 
   body.innerHTML =
     adminList
@@ -4996,44 +4099,25 @@ function renderAdminAccounts() {
         admin =>
           `
             <tr>
+              <td>${escapeHtml(admin.fullName)}</td>
+              <td>${escapeHtml(admin.email)}</td>
+              <td>Admin</td>
 
               <td>
-                ${escapeHtml(
-                  admin.fullName
-                )}
-              </td>
-
-              <td>
-                ${escapeHtml(
-                  admin.email
-                )}
-              </td>
-
-              <td>
-                Admin
-              </td>
-
-              <td>
-
                 <span class="status-pill">
                   Active
                 </span>
-
               </td>
 
               <td>
-
                 <span class="muted-text">
                   Managed via Firebase Auth
                 </span>
-
               </td>
-
             </tr>
           `
       )
       .join("");
-
 }
 
 
@@ -5042,20 +4126,16 @@ function renderAdminAccounts() {
 // =====================================================
 
 async function loadAuditLogs() {
-
   const tbody =
     document.getElementById(
       "auditTableBody"
     );
 
-
   if (!tbody) {
     return;
   }
 
-
   try {
-
 
     const snap =
       await getDocs(
@@ -5065,26 +4145,21 @@ async function loadAuditLogs() {
         )
       );
 
-
     const logs =
       snap.docs.map(
         documentSnapshot => ({
-
           id:
             documentSnapshot.id,
 
           ...documentSnapshot.data()
-
         })
       );
-
 
     logs.sort(
       (
         a,
         b
       ) => {
-
 
         const aTime =
           a.timestamp?.toDate
@@ -5093,7 +4168,6 @@ async function loadAuditLogs() {
                 a.timestamp
               );
 
-
         const bTime =
           b.timestamp?.toDate
             ? b.timestamp.toDate()
@@ -5101,46 +4175,33 @@ async function loadAuditLogs() {
                 b.timestamp
               );
 
-
         return (
           bTime -
           aTime
         );
-
       }
     );
-
 
     if (
       logs.length ===
       0
     ) {
-
       tbody.innerHTML =
         `
           <tr>
-
-            <td
-              colspan="5"
-              class="empty-state"
-            >
+            <td colspan="5" class="empty-state">
               No activity recorded yet.
             </td>
-
           </tr>
         `;
 
-
       return;
-
     }
-
 
     tbody.innerHTML =
       logs
         .map(
           log => {
-
 
             const time =
               log.timestamp?.toDate
@@ -5149,58 +4210,26 @@ async function loadAuditLogs() {
                     log.timestamp
                   );
 
-
             return `
               <tr>
-
-                <td>
-                  ${escapeHtml(
-                    time.toLocaleString()
-                  )}
-                </td>
-
-                <td>
-                  ${escapeHtml(
-                    log.email
-                  )}
-                </td>
-
-                <td>
-                  ${escapeHtml(
-                    log.role
-                  )}
-                </td>
-
-                <td>
-                  ${escapeHtml(
-                    log.activity
-                  )}
-                </td>
-
-                <td>
-                  ${escapeHtml(
-                    log.details
-                  )}
-                </td>
-
+                <td>${escapeHtml(time.toLocaleString())}</td>
+                <td>${escapeHtml(log.email)}</td>
+                <td>${escapeHtml(log.role)}</td>
+                <td>${escapeHtml(log.activity)}</td>
+                <td>${escapeHtml(log.details)}</td>
               </tr>
             `;
-
           }
         )
         .join("");
 
-
   } catch (error) {
-
 
     console.error(
       "Audit load error:",
       error
     );
-
   }
-
 }
 
 
@@ -5213,21 +4242,17 @@ const clearAuditBtn =
     "clearAuditBtn"
   );
 
-
 if (
   clearAuditBtn
 ) {
-
   clearAuditBtn.addEventListener(
     "click",
     async () => {
-
 
       const confirmed =
         confirm(
           "Clear all audit log entries? This cannot be undone."
         );
-
 
       if (
         !confirmed
@@ -5235,9 +4260,7 @@ if (
         return;
       }
 
-
       try {
-
 
         const snap =
           await getDocs(
@@ -5246,7 +4269,6 @@ if (
               "auditLogs"
             )
           );
-
 
         await Promise.all(
           snap.docs.map(
@@ -5261,28 +4283,22 @@ if (
           )
         );
 
-
         await loadAuditLogs();
 
-
       } catch (error) {
-
 
         console.error(
           "Clear audit error:",
           error
         );
 
-
         alert(
           "Something went wrong while clearing the audit logs."
         );
-
       }
 
     }
   );
-
 }
 
 
@@ -5292,13 +4308,8 @@ if (
 
 populateFilterOptions();
 
-
 Promise.allSettled([
-
   loadUsersData(),
-
   loadAuditLogs(),
-
   loadAnnouncements()
-
 ]);

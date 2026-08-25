@@ -67,32 +67,32 @@ const FIELDS = [
     ]
   },
 
-{
-  key: "address",
-  label: "Purok / Area",
-  type: "select",
-  options: [
-    "BRIONES COMPOUND",
-    "CRDC",
-    "PENINSULA HOMES",
-    "INTERTOWN HOMES 1-6",
-    "KALYE PUTOL / BUKAL 2",
-    "SAN DIEGO VILLAGE",
-    "BERANA COMPOUND",
-    "SITIO PAG-ASA (ITAAS)",
-    "SITIO PAG-ASA (IBABA)",
-    "ENCENAREZ COMPOUND",
-    "BUKAL 1",
-    "GOLDEN MEADOWS",
-    "CIUDAD REMBINO",
-    "HIGHWAY",
-    "KRISANT VILLAGE",
-    "INTERTOWN HOMES PHASE 5",
-    "INTERTOWN HOMES PHASE 6",
-    "INTERTOWN HOMES PHASE 1-4"
-  ],
-  full: true
-},
+  {
+    key: "address",
+    label: "Purok / Area",
+    type: "select",
+    options: [
+      "BRIONES COMPOUND",
+      "CRDC",
+      "PENINSULA HOMES",
+      "INTERTOWN HOMES 1-6",
+      "KALYE PUTOL / BUKAL 2",
+      "SAN DIEGO VILLAGE",
+      "BERANA COMPOUND",
+      "SITIO PAG-ASA (ITAAS)",
+      "SITIO PAG-ASA (IBABA)",
+      "ENCENAREZ COMPOUND",
+      "BUKAL 1",
+      "GOLDEN MEADOWS",
+      "CIUDAD REMBINO",
+      "HIGHWAY",
+      "KRISANT VILLAGE",
+      "INTERTOWN HOMES PHASE 5",
+      "INTERTOWN HOMES PHASE 6",
+      "INTERTOWN HOMES PHASE 1-4"
+    ],
+    full: true
+  },
 
   {
     key: "contact",
@@ -291,191 +291,98 @@ const FIELDS = [
 // ELEMENTS
 // =====================================================
 
-const welcomeEl =
-  document.getElementById(
-    "youthWelcome"
-  );
-
-const profileViewEl =
-  document.getElementById(
-    "youthProfileView"
-  );
-
-const editBtn =
-  document.getElementById(
-    "editProfileBtn"
-  );
-
-const dialog =
-  document.getElementById(
-    "profileDialog"
-  );
-
-const editFieldsEl =
-  document.getElementById(
-    "profileEditFields"
-  );
-
-const saveBtn =
-  document.getElementById(
-    "saveProfileBtn"
-  );
-
-const quickStatsEl =
-  document.getElementById(
-    "youthQuickStats"
-  );
-
-const announcementsEl =
-  document.getElementById(
-    "youthAnnouncements"
-  );
+const welcomeEl = document.getElementById("youthWelcome");
+const profileViewEl = document.getElementById("youthProfileView");
+const editBtn = document.getElementById("editProfileBtn");
+const dialog = document.getElementById("profileDialog");
+const editFieldsEl = document.getElementById("profileEditFields");
+const saveBtn = document.getElementById("saveProfileBtn");
+const quickStatsEl = document.getElementById("youthQuickStats");
+const announcementsEl = document.getElementById("youthAnnouncements");
 
 
 if (profileViewEl) {
-
-  profileViewEl.innerHTML =
-    `
-      <p class="empty-state">
-        Loading your profile...
-      </p>
-    `;
-
+  profileViewEl.innerHTML = `<p class="empty-state">Loading your profile...</p>`;
 }
 
 
-let currentUser =
-  null;
-
-let currentData =
-  null;
+let currentUser = null;
+let currentData = null;
 
 
 // =====================================================
 // HELPERS
 // =====================================================
 
-function escapeHtml(
-  value
-) {
-
-  const div =
-    document.createElement(
-      "div"
-    );
-
-  div.textContent =
-    value ?? "";
-
+function escapeHtml(value) {
+  const div = document.createElement("div");
+  div.textContent = value ?? "";
   return div.innerHTML;
-
 }
 
 
-function calculateAge(
-  birthDateValue
-) {
-
+function calculateAge(birthDateValue) {
   if (!birthDateValue) {
     return null;
   }
 
+  const birthDate = new Date(birthDateValue);
 
-  const birthDate =
-    new Date(
-      birthDateValue
-    );
-
-
-  if (
-    Number.isNaN(
-      birthDate.getTime()
-    )
-  ) {
+  if (Number.isNaN(birthDate.getTime())) {
     return null;
   }
 
-
-  const today =
-    new Date();
-
+  const today = new Date();
 
   let age =
     today.getFullYear() -
     birthDate.getFullYear();
 
-
   const monthDifference =
     today.getMonth() -
     birthDate.getMonth();
-
 
   if (
     monthDifference < 0 ||
     (
       monthDifference === 0 &&
       today.getDate() <
-        birthDate.getDate()
+      birthDate.getDate()
     )
   ) {
     age--;
   }
 
-
   return age;
-
 }
 
 
-function getYouthStatus(
-  age
-) {
-
+function getYouthStatus(age) {
   if (
     age >= 15 &&
     age <= 30
   ) {
-
     return {
-      status:
-        "Active",
-
-      eligibility:
-        "Eligible"
+      status: "Active",
+      eligibility: "Eligible"
     };
-
   }
 
-
   return {
-    status:
-      "Inactive",
-
-    eligibility:
-      "Archived"
+    status: "Inactive",
+    eligibility: "Archived"
   };
-
 }
 
 
-function safeLogActivity(
-  data
-) {
-
-  logActivity(
-    data
-  )
-    .catch(
-      error => {
-
-        console.error(
-          "Audit log error:",
-          error
-        );
-
-      }
-    );
-
+function safeLogActivity(data) {
+  logActivity(data)
+    .catch(error => {
+      console.error(
+        "Audit log error:",
+        error
+      );
+    });
 }
 
 
@@ -483,13 +390,9 @@ function safeLogActivity(
 // LOCAL DATE HELPER
 // =====================================================
 
-function getLocalDateString(
-  date = new Date()
-) {
-
+function getLocalDateString(date = new Date()) {
   const year =
     date.getFullYear();
-
 
   const month =
     String(
@@ -499,7 +402,6 @@ function getLocalDateString(
       "0"
     );
 
-
   const day =
     String(
       date.getDate()
@@ -508,9 +410,7 @@ function getLocalDateString(
       "0"
     );
 
-
   return `${year}-${month}-${day}`;
-
 }
 
 
@@ -518,45 +418,24 @@ function getLocalDateString(
 // ANNOUNCEMENT EXPIRATION CHECK
 // =====================================================
 
-function isAnnouncementExpired(
-  announcement
-) {
-
-  if (
-    !announcement.expiryDate
-  ) {
-
-    /*
-      Existing announcements created before the
-      Event / Display Until Date feature will
-      remain visible.
-    */
-
+function isAnnouncementExpired(announcement) {
+  if (!announcement.expiryDate) {
     return false;
-
   }
-
 
   const today =
     getLocalDateString();
 
-
   /*
     Example:
 
-    Event / Display Until:
-    August 24, 2026
+    expiryDate = 2026-08-24
 
-    August 24 = VISIBLE
-    August 25 = EXPIRED / HIDDEN
+    August 24 = visible
+    August 25 = expired
   */
 
-
-  return (
-    today >
-    announcement.expiryDate
-  );
-
+  return today > announcement.expiryDate;
 }
 
 
@@ -564,48 +443,30 @@ function isAnnouncementExpired(
 // QUICK STATS
 // =====================================================
 
-function renderQuickStats(
-  data
-) {
-
+function renderQuickStats(data) {
   if (!quickStatsEl) {
     return;
   }
 
-
   const stats = [
 
     {
-      label:
-        "Age",
-
-      value:
-        data.age ||
-        "—"
+      label: "Age",
+      value: data.age || "—"
     },
 
     {
-      label:
-        "Status",
-
-      value:
-        data.status ||
-        "—"
+      label: "Status",
+      value: data.status || "—"
     },
 
     {
-      label:
-        "Eligibility",
-
-      value:
-        data.eligibility ||
-        "—"
+      label: "Eligibility",
+      value: data.eligibility || "—"
     },
 
     {
-      label:
-        "Education",
-
+      label: "Education",
       value:
         data.educationStatus ||
         data.education ||
@@ -613,18 +474,14 @@ function renderQuickStats(
     },
 
     {
-      label:
-        "Employment",
-
+      label: "Employment",
       value:
         data.employment ||
         "—"
     },
 
     {
-      label:
-        "SK Voter",
-
+      label: "SK Voter",
       value:
         data.registeredSKVoter ||
         "—"
@@ -632,31 +489,17 @@ function renderQuickStats(
 
   ];
 
-
   quickStatsEl.innerHTML =
     stats
       .map(
-        stat =>
-          `
-            <div class="panel stat-card">
-
-              <small>
-                ${escapeHtml(
-                  stat.label
-                )}
-              </small>
-
-              <strong>
-                ${escapeHtml(
-                  stat.value
-                )}
-              </strong>
-
-            </div>
-          `
+        stat => `
+          <div class="panel stat-card">
+            <small>${escapeHtml(stat.label)}</small>
+            <strong>${escapeHtml(stat.value)}</strong>
+          </div>
+        `
       )
       .join("");
-
 }
 
 
@@ -664,51 +507,33 @@ function renderQuickStats(
 // PROFILE VIEW
 // =====================================================
 
-function renderProfileView(
-  data
-) {
-
+function renderProfileView(data) {
   if (welcomeEl) {
-
     welcomeEl.textContent =
       "Welcome, " +
       (
         data.fullName ||
         "Youth"
       );
-
   }
 
-
-  renderQuickStats(
-    data
-  );
-
+  renderQuickStats(data);
 
   const extraFields = [
 
     {
-      key:
-        "email",
-
-      label:
-        "Email"
+      key: "email",
+      label: "Email"
     },
 
     {
-      key:
-        "status",
-
-      label:
-        "Status"
+      key: "status",
+      label: "Status"
     },
 
     {
-      key:
-        "eligibility",
-
-      label:
-        "Eligibility"
+      key: "eligibility",
+      label: "Eligibility"
     }
 
   ];
@@ -722,30 +547,23 @@ function renderProfileView(
           field.key ===
           "kkAttendanceCount"
         ) {
-
           return (
             data.kkAssemblyAttended ===
             "Yes"
           );
-
         }
-
 
         if (
           field.key ===
           "kkNoReason"
         ) {
-
           return (
             data.kkAssemblyAttended ===
             "No"
           );
-
         }
 
-
         return true;
-
       }
     );
 
@@ -762,44 +580,24 @@ function renderProfileView(
             data[field.key] ||
             "";
 
-
           return `
             <div class="info-item">
-
-              <small>
-                ${escapeHtml(
-                  field.label
-                )}
-              </small>
-
-              <span>
-                ${
-                  escapeHtml(
-                    value
-                  ) ||
-                  "&mdash;"
-                }
-              </span>
-
+              <small>${escapeHtml(field.label)}</small>
+              <span>${escapeHtml(value) || "&mdash;"}</span>
             </div>
           `;
-
         }
       )
       .join("");
 
 
   if (profileViewEl) {
-
-    profileViewEl.innerHTML =
-      `
-        <div class="info-grid">
-          ${rows}
-        </div>
-      `;
-
+    profileViewEl.innerHTML = `
+      <div class="info-grid">
+        ${rows}
+      </div>
+    `;
   }
-
 }
 
 
@@ -807,14 +605,10 @@ function renderProfileView(
 // EDIT FIELDS
 // =====================================================
 
-function buildEditFields(
-  data
-) {
-
+function buildEditFields(data) {
   if (!editFieldsEl) {
     return;
   }
-
 
   editFieldsEl.innerHTML =
     FIELDS
@@ -825,40 +619,31 @@ function buildEditFields(
             data[field.key] ??
             "";
 
-
           const fieldClass =
             field.full
               ? "field full"
               : "field";
 
-
-          let displayStyle =
-            "";
-
+          let displayStyle = "";
 
           if (
             field.key ===
             "kkAttendanceCount" &&
             data.kkAssemblyAttended !==
-              "Yes"
+            "Yes"
           ) {
-
             displayStyle =
               'style="display:none;"';
-
           }
-
 
           if (
             field.key ===
             "kkNoReason" &&
             data.kkAssemblyAttended !==
-              "No"
+            "No"
           ) {
-
             displayStyle =
               'style="display:none;"';
-
           }
 
 
@@ -870,27 +655,20 @@ function buildEditFields(
             const options =
               field.options
                 .map(
-                  option =>
-                    `
-                      <option
-                        value="${escapeHtml(
-                          option
-                        )}"
-                        ${
-                          option ===
-                          value
-                            ? "selected"
-                            : ""
-                        }
-                      >
-                        ${escapeHtml(
-                          option
-                        )}
-                      </option>
-                    `
+                  option => `
+                    <option
+                      value="${escapeHtml(option)}"
+                      ${
+                        option === value
+                          ? "selected"
+                          : ""
+                      }
+                    >
+                      ${escapeHtml(option)}
+                    </option>
+                  `
                 )
                 .join("");
-
 
             return `
               <label
@@ -898,28 +676,16 @@ function buildEditFields(
                 data-field-wrapper="${field.key}"
                 ${displayStyle}
               >
-
                 <span>
-                  ${escapeHtml(
-                    field.label
-                  )}
+                  ${escapeHtml(field.label)}
                 </span>
 
-                <select
-                  name="${field.key}"
-                >
-
-                  <option value="">
-                    Select
-                  </option>
-
+                <select name="${field.key}">
+                  <option value="">Select</option>
                   ${options}
-
                 </select>
-
               </label>
             `;
-
           }
 
 
@@ -927,31 +693,23 @@ function buildEditFields(
             field.key ===
             "age"
           ) {
-
             return `
               <label
                 class="${fieldClass}"
                 data-field-wrapper="${field.key}"
               >
-
                 <span>
-                  ${escapeHtml(
-                    field.label
-                  )}
+                  ${escapeHtml(field.label)}
                 </span>
 
                 <input
                   type="number"
                   name="${field.key}"
-                  value="${escapeHtml(
-                    value
-                  )}"
+                  value="${escapeHtml(value)}"
                   readonly
                 />
-
               </label>
             `;
-
           }
 
 
@@ -960,24 +718,17 @@ function buildEditFields(
               class="${fieldClass}"
               data-field-wrapper="${field.key}"
             >
-
               <span>
-                ${escapeHtml(
-                  field.label
-                )}
+                ${escapeHtml(field.label)}
               </span>
 
               <input
                 type="${field.type}"
                 name="${field.key}"
-                value="${escapeHtml(
-                  value
-                )}"
+                value="${escapeHtml(value)}"
               />
-
             </label>
           `;
-
         }
       )
       .join("");
@@ -991,7 +742,6 @@ function buildEditFields(
     editFieldsEl.querySelector(
       '[name="birthDate"]'
     );
-
 
   const ageInput =
     editFieldsEl.querySelector(
@@ -1013,20 +763,14 @@ function buildEditFields(
             birthDateInput.value
           );
 
-
         if (
           age !== null &&
           !Number.isNaN(age)
         ) {
-
-          ageInput.value =
-            age;
-
+          ageInput.value = age;
         }
-
       }
     );
-
   }
 
 
@@ -1039,24 +783,20 @@ function buildEditFields(
       '[name="kkAssemblyAttended"]'
     );
 
-
   const kkAttendanceWrapper =
     editFieldsEl.querySelector(
       '[data-field-wrapper="kkAttendanceCount"]'
     );
-
 
   const kkReasonWrapper =
     editFieldsEl.querySelector(
       '[data-field-wrapper="kkNoReason"]'
     );
 
-
   const kkAttendanceInput =
     editFieldsEl.querySelector(
       '[name="kkAttendanceCount"]'
     );
-
 
   const kkReasonInput =
     editFieldsEl.querySelector(
@@ -1065,13 +805,9 @@ function buildEditFields(
 
 
   function updateKKConditionalFields() {
-
-    if (
-      !kkAssemblyInput
-    ) {
+    if (!kkAssemblyInput) {
       return;
     }
-
 
     const value =
       kkAssemblyInput.value;
@@ -1082,163 +818,96 @@ function buildEditFields(
       "Yes"
     ) {
 
-      if (
-        kkAttendanceWrapper
-      ) {
-
+      if (kkAttendanceWrapper) {
         kkAttendanceWrapper.style.display =
           "flex";
-
       }
 
-
-      if (
-        kkReasonWrapper
-      ) {
-
+      if (kkReasonWrapper) {
         kkReasonWrapper.style.display =
           "none";
-
       }
 
-
-      if (
-        kkAttendanceInput
-      ) {
-
+      if (kkAttendanceInput) {
         kkAttendanceInput.required =
           true;
-
       }
 
-
-      if (
-        kkReasonInput
-      ) {
-
+      if (kkReasonInput) {
         kkReasonInput.required =
           false;
 
         kkReasonInput.value =
           "";
-
       }
-
 
     } else if (
       value ===
       "No"
     ) {
 
-      if (
-        kkAttendanceWrapper
-      ) {
-
+      if (kkAttendanceWrapper) {
         kkAttendanceWrapper.style.display =
           "none";
-
       }
 
-
-      if (
-        kkReasonWrapper
-      ) {
-
+      if (kkReasonWrapper) {
         kkReasonWrapper.style.display =
           "flex";
-
       }
 
-
-      if (
-        kkAttendanceInput
-      ) {
-
+      if (kkAttendanceInput) {
         kkAttendanceInput.required =
           false;
 
         kkAttendanceInput.value =
           "";
-
       }
 
-
-      if (
-        kkReasonInput
-      ) {
-
+      if (kkReasonInput) {
         kkReasonInput.required =
           true;
-
       }
-
 
     } else {
 
-      if (
-        kkAttendanceWrapper
-      ) {
-
+      if (kkAttendanceWrapper) {
         kkAttendanceWrapper.style.display =
           "none";
-
       }
 
-
-      if (
-        kkReasonWrapper
-      ) {
-
+      if (kkReasonWrapper) {
         kkReasonWrapper.style.display =
           "none";
-
       }
 
-
-      if (
-        kkAttendanceInput
-      ) {
-
+      if (kkAttendanceInput) {
         kkAttendanceInput.required =
           false;
 
         kkAttendanceInput.value =
           "";
-
       }
 
-
-      if (
-        kkReasonInput
-      ) {
-
+      if (kkReasonInput) {
         kkReasonInput.required =
           false;
 
         kkReasonInput.value =
           "";
-
       }
-
     }
-
   }
 
 
-  if (
-    kkAssemblyInput
-  ) {
-
+  if (kkAssemblyInput) {
     kkAssemblyInput.addEventListener(
       "change",
       updateKKConditionalFields
     );
 
-
     updateKKConditionalFields();
-
   }
-
 }
 
 
@@ -1246,31 +915,22 @@ function buildEditFields(
 // OPEN EDIT
 // =====================================================
 
-if (
-  editBtn
-) {
-
+if (editBtn) {
   editBtn.addEventListener(
     "click",
     () => {
 
-      if (
-        !currentData
-      ) {
+      if (!currentData) {
         return;
       }
-
 
       buildEditFields(
         currentData
       );
 
-
       dialog?.showModal();
-
     }
   );
-
 }
 
 
@@ -1278,31 +938,23 @@ if (
 // SAVE PROFILE
 // =====================================================
 
-if (
-  saveBtn
-) {
-
+if (saveBtn) {
   saveBtn.addEventListener(
     "click",
     async () => {
 
-      if (
-        !currentUser
-      ) {
+      if (!currentUser) {
         return;
       }
 
-
       saveBtn.disabled =
         true;
-
 
       saveBtn.textContent =
         "Saving...";
 
 
-      const updated =
-        {};
+      const updated = {};
 
 
       FIELDS.forEach(
@@ -1314,22 +966,15 @@ if (
                 `[name="${field.key}"]`
               );
 
-
-          if (
-            !input
-          ) {
+          if (!input) {
             return;
           }
-
 
           updated[field.key] =
             field.type ===
             "number"
-              ? Number(
-                  input.value
-                )
+              ? Number(input.value)
               : input.value.trim();
-
         }
       );
 
@@ -1338,38 +983,29 @@ if (
       // VALIDATE BIRTH DATE / AGE
       // =================================================
 
-      if (
-        updated.birthDate
-      ) {
+      if (updated.birthDate) {
 
         updated.age =
           calculateAge(
             updated.birthDate
           );
 
-
         if (
           updated.age === null ||
-          Number.isNaN(
-            updated.age
-          )
+          Number.isNaN(updated.age)
         ) {
 
           alert(
             "Please enter a valid birth date."
           );
 
-
           saveBtn.disabled =
             false;
-
 
           saveBtn.textContent =
             "Save Changes";
 
-
           return;
-
         }
 
 
@@ -1378,14 +1014,11 @@ if (
             updated.age
           );
 
-
         updated.status =
           youthStatus.status;
 
-
         updated.eligibility =
           youthStatus.eligibility;
-
       }
 
 
@@ -1395,7 +1028,7 @@ if (
 
       if (
         updated.kkAssemblyAttended ===
-          "Yes" &&
+        "Yes" &&
         !updated.kkAttendanceCount
       ) {
 
@@ -1403,23 +1036,19 @@ if (
           "Please indicate how many times you attended a KK Assembly."
         );
 
-
         saveBtn.disabled =
           false;
-
 
         saveBtn.textContent =
           "Save Changes";
 
-
         return;
-
       }
 
 
       if (
         updated.kkAssemblyAttended ===
-          "No" &&
+        "No" &&
         !updated.kkNoReason
       ) {
 
@@ -1427,17 +1056,13 @@ if (
           "Please indicate why you have not attended a KK Assembly."
         );
 
-
         saveBtn.disabled =
           false;
-
 
         saveBtn.textContent =
           "Save Changes";
 
-
         return;
-
       }
 
 
@@ -1445,10 +1070,7 @@ if (
         updated.kkAssemblyAttended ===
         "Yes"
       ) {
-
-        updated.kkNoReason =
-          "";
-
+        updated.kkNoReason = "";
       }
 
 
@@ -1456,10 +1078,7 @@ if (
         updated.kkAssemblyAttended ===
         "No"
       ) {
-
-        updated.kkAttendanceCount =
-          "";
-
+        updated.kkAttendanceCount = "";
       }
 
 
@@ -1480,11 +1099,8 @@ if (
 
 
         currentData = {
-
           ...currentData,
-
           ...updated
-
         };
 
 
@@ -1525,26 +1141,20 @@ if (
           error
         );
 
-
         alert(
           "Something went wrong while saving your profile. Please try again."
         );
-
 
       } finally {
 
         saveBtn.disabled =
           false;
 
-
         saveBtn.textContent =
           "Save Changes";
-
       }
-
     }
   );
-
 }
 
 
@@ -1552,46 +1162,30 @@ if (
 // ANNOUNCEMENT DATE
 // =====================================================
 
-function getAnnouncementDate(
-  value
-) {
-
-  if (
-    !value
-  ) {
+function getAnnouncementDate(value) {
+  if (!value) {
     return null;
   }
-
 
   if (
     typeof value.toDate ===
     "function"
   ) {
-
     return value.toDate();
-
   }
 
-
   const date =
-    new Date(
-      value
-    );
-
+    new Date(value);
 
   if (
     Number.isNaN(
       date.getTime()
     )
   ) {
-
     return null;
-
   }
 
-
   return date;
-
 }
 
 
@@ -1601,19 +1195,13 @@ function getAnnouncementDate(
 
 async function loadYouthAnnouncements() {
 
-  if (
-    !announcementsEl
-  ) {
+  if (!announcementsEl) {
     return;
   }
 
 
   announcementsEl.innerHTML =
-    `
-      <p class="empty-state">
-        Loading announcements...
-      </p>
-    `;
+    `<p class="empty-state">Loading announcements...</p>`;
 
 
   try {
@@ -1630,12 +1218,10 @@ async function loadYouthAnnouncements() {
     let announcements =
       snap.docs.map(
         documentSnapshot => ({
-
           id:
             documentSnapshot.id,
 
           ...documentSnapshot.data()
-
         })
       );
 
@@ -1669,13 +1255,11 @@ async function loadYouthAnnouncements() {
             a.date
           );
 
-
         const bDate =
           getAnnouncementDate(
             b.createdAt ||
             b.date
           );
-
 
         return (
           (
@@ -1687,7 +1271,6 @@ async function loadYouthAnnouncements() {
             0
           )
         );
-
       }
     );
 
@@ -1702,27 +1285,21 @@ async function loadYouthAnnouncements() {
     ) {
 
       announcementsEl.innerHTML =
-        `
-          <p class="empty-state">
-            No announcements available at this time.
-          </p>
-        `;
-
+        `<p class="empty-state">No announcements available at this time.</p>`;
 
       return;
-
     }
 
 
     // =================================================
     // DISPLAY ANNOUNCEMENTS
+    // IMAGE IS DISPLAYED BESIDE THE TEXT
     // =================================================
 
     announcementsEl.innerHTML =
       announcements
         .map(
           announcement => {
-
 
             const date =
               getAnnouncementDate(
@@ -1787,87 +1364,113 @@ async function loadYouthAnnouncements() {
               "";
 
 
+            // =================================================
+            // ANNOUNCEMENT IMAGE
+            // =================================================
+
+            const imageUrl =
+              announcement.imageUrl ||
+              "";
+
+
             return `
-              <article class="summary-box">
+              <article
+                class="summary-box announcement-display-card ${
+                  imageUrl
+                    ? "has-image"
+                    : "no-image"
+                }"
+              >
 
-                <small
-                  style="
-                    display:inline-block;
-                    margin-bottom:7px;
-                    color:#0a5255;
-                    font-weight:800;
-                    text-transform:uppercase;
-                    font-size:10px;
-                    letter-spacing:.05em;
-                  "
-                >
-                  ${escapeHtml(
-                    category
-                  )}
-                </small>
+                <div class="announcement-text-side">
+
+                  <small
+                    style="
+                      display:inline-block;
+                      margin-bottom:7px;
+                      color:#0a5255;
+                      font-weight:800;
+                      text-transform:uppercase;
+                      font-size:10px;
+                      letter-spacing:.05em;
+                    "
+                  >
+                    ${escapeHtml(category)}
+                  </small>
 
 
-                <h3>
-                  ${escapeHtml(
-                    title
-                  )}
-                </h3>
+                  <h3>
+                    ${escapeHtml(title)}
+                  </h3>
+
+
+                  ${
+                    formattedDate
+                      ? `
+                          <small
+                            style="
+                              display:block;
+                              margin-bottom:5px;
+                              color:#71838a;
+                            "
+                          >
+                            Posted:
+                            ${escapeHtml(formattedDate)}
+                          </small>
+                        `
+                      : ""
+                  }
+
+
+                  ${
+                    formattedExpiry
+                      ? `
+                          <small
+                            style="
+                              display:block;
+                              margin-bottom:10px;
+                              color:#71838a;
+                            "
+                          >
+                            Event / Display Until:
+                            ${escapeHtml(formattedExpiry)}
+                          </small>
+                        `
+                      : ""
+                  }
+
+
+                  <p
+                    style="
+                      margin:0;
+                      white-space:pre-line;
+                    "
+                  >
+                    ${escapeHtml(message)}
+                  </p>
+
+                </div>
 
 
                 ${
-                  formattedDate
+                  imageUrl
                     ? `
-                        <small
-                          style="
-                            display:block;
-                            margin-bottom:5px;
-                            color:#71838a;
-                          "
-                        >
-                          Posted:
-                          ${escapeHtml(
-                            formattedDate
-                          )}
-                        </small>
+                        <div class="announcement-image-side">
+
+                          <img
+                            src="${escapeHtml(imageUrl)}"
+                            alt="${escapeHtml(title)}"
+                            class="announcement-display-image"
+                            loading="lazy"
+                          />
+
+                        </div>
                       `
                     : ""
                 }
-
-
-                ${
-                  formattedExpiry
-                    ? `
-                        <small
-                          style="
-                            display:block;
-                            margin-bottom:10px;
-                            color:#71838a;
-                          "
-                        >
-                          Event / Display Until:
-                          ${escapeHtml(
-                            formattedExpiry
-                          )}
-                        </small>
-                      `
-                    : ""
-                }
-
-
-                <p
-                  style="
-                    margin:0;
-                    white-space:pre-line;
-                  "
-                >
-                  ${escapeHtml(
-                    message
-                  )}
-                </p>
 
               </article>
             `;
-
           }
         )
         .join("");
@@ -1882,14 +1485,8 @@ async function loadYouthAnnouncements() {
 
 
     announcementsEl.innerHTML =
-      `
-        <p class="empty-state">
-          Unable to load announcements at this time.
-        </p>
-      `;
-
+      `<p class="empty-state">Unable to load announcements at this time.</p>`;
   }
-
 }
 
 
@@ -1901,9 +1498,7 @@ onAuthStateChanged(
   auth,
   async user => {
 
-    if (
-      !user
-    ) {
+    if (!user) {
       return;
     }
 
@@ -1915,14 +1510,6 @@ onAuthStateChanged(
     // =================================================
     // LOAD ANNOUNCEMENTS
     // =================================================
-
-    /*
-      Youth does NOT need permission to delete
-      announcements.
-
-      Expired announcements are simply filtered
-      from the Youth Dashboard.
-    */
 
     loadYouthAnnouncements();
 
@@ -1939,33 +1526,19 @@ onAuthStateChanged(
         );
 
 
-      if (
-        !snap.exists()
-      ) {
+      if (!snap.exists()) {
 
-        if (
-          profileViewEl
-        ) {
-
+        if (profileViewEl) {
           profileViewEl.innerHTML =
-            `
-              <p class="empty-state">
-                No profile data found.
-              </p>
-            `;
-
+            `<p class="empty-state">No profile data found.</p>`;
         }
 
-
         return;
-
       }
 
 
       currentData = {
-
         ...snap.data()
-
       };
 
 
@@ -1973,9 +1546,7 @@ onAuthStateChanged(
         false;
 
 
-      if (
-        currentData.birthDate
-      ) {
+      if (currentData.birthDate) {
 
         const calculatedAge =
           calculateAge(
@@ -2002,26 +1573,20 @@ onAuthStateChanged(
             currentData.eligibility !==
               youthStatus.eligibility
           ) {
-
             needsStatusUpdate =
               true;
-
           }
 
 
           currentData.age =
             calculatedAge;
 
-
           currentData.status =
             youthStatus.status;
 
-
           currentData.eligibility =
             youthStatus.eligibility;
-
         }
-
       }
 
 
@@ -2038,9 +1603,7 @@ onAuthStateChanged(
       // UPDATE AGE / STATUS WHEN NECESSARY
       // =================================================
 
-      if (
-        needsStatusUpdate
-      ) {
+      if (needsStatusUpdate) {
 
         updateDoc(
           doc(
@@ -2049,7 +1612,6 @@ onAuthStateChanged(
             user.uid
           ),
           {
-
             age:
               currentData.age,
 
@@ -2058,7 +1620,6 @@ onAuthStateChanged(
 
             eligibility:
               currentData.eligibility
-
           }
         )
           .catch(
@@ -2068,10 +1629,8 @@ onAuthStateChanged(
                 "Background status update error:",
                 error
               );
-
             }
           );
-
       }
 
 
@@ -2083,9 +1642,7 @@ onAuthStateChanged(
       );
 
 
-      if (
-        profileViewEl
-      ) {
+      if (profileViewEl) {
 
         profileViewEl.innerHTML =
           `
@@ -2094,10 +1651,7 @@ onAuthStateChanged(
               Please refresh the page.
             </p>
           `;
-
       }
-
     }
-
   }
 );
