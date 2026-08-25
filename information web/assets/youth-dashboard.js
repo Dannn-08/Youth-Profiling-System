@@ -426,15 +426,6 @@ function isAnnouncementExpired(announcement) {
   const today =
     getLocalDateString();
 
-  /*
-    Example:
-
-    expiryDate = 2026-08-24
-
-    August 24 = visible
-    August 25 = expired
-  */
-
   return today > announcement.expiryDate;
 }
 
@@ -1293,7 +1284,7 @@ async function loadYouthAnnouncements() {
 
     // =================================================
     // DISPLAY ANNOUNCEMENTS
-    // IMAGE IS DISPLAYED BESIDE THE TEXT
+    // IMAGE BESIDE TEXT
     // =================================================
 
     announcementsEl.innerHTML =
@@ -1364,88 +1355,45 @@ async function loadYouthAnnouncements() {
               "";
 
 
-            // =================================================
-            // ANNOUNCEMENT IMAGE
-            // =================================================
-
             const imageUrl =
               announcement.imageUrl ||
               "";
 
 
             return `
-              <article
-                class="summary-box announcement-display-card ${
-                  imageUrl
-                    ? "has-image"
-                    : "no-image"
-                }"
-              >
+              <article class="summary-box announcement-display-card ${imageUrl ? "has-image" : "no-image"}">
 
                 <div class="announcement-text-side">
 
-                  <small
-                    style="
-                      display:inline-block;
-                      margin-bottom:7px;
-                      color:#0a5255;
-                      font-weight:800;
-                      text-transform:uppercase;
-                      font-size:10px;
-                      letter-spacing:.05em;
-                    "
-                  >
+                  <small style="display:inline-block; margin-bottom:7px; color:#0a5255; font-weight:800; text-transform:uppercase; font-size:10px; letter-spacing:.05em;">
                     ${escapeHtml(category)}
                   </small>
-
 
                   <h3>
                     ${escapeHtml(title)}
                   </h3>
 
-
                   ${
                     formattedDate
                       ? `
-                          <small
-                            style="
-                              display:block;
-                              margin-bottom:5px;
-                              color:#71838a;
-                            "
-                          >
-                            Posted:
-                            ${escapeHtml(formattedDate)}
+                          <small style="display:block; margin-bottom:5px; color:#71838a;">
+                            Posted: ${escapeHtml(formattedDate)}
                           </small>
                         `
                       : ""
                   }
-
 
                   ${
                     formattedExpiry
                       ? `
-                          <small
-                            style="
-                              display:block;
-                              margin-bottom:10px;
-                              color:#71838a;
-                            "
-                          >
-                            Event / Display Until:
-                            ${escapeHtml(formattedExpiry)}
+                          <small style="display:block; margin-bottom:10px; color:#71838a;">
+                            Event / Display Until: ${escapeHtml(formattedExpiry)}
                           </small>
                         `
                       : ""
                   }
 
-
-                  <p
-                    style="
-                      margin:0;
-                      white-space:pre-line;
-                    "
-                  >
+                  <p style="margin:0; white-space:pre-line;">
                     ${escapeHtml(message)}
                   </p>
 
@@ -1456,14 +1404,7 @@ async function loadYouthAnnouncements() {
                   imageUrl
                     ? `
                         <div class="announcement-image-side">
-
-                          <img
-                            src="${escapeHtml(imageUrl)}"
-                            alt="${escapeHtml(title)}"
-                            class="announcement-display-image"
-                            loading="lazy"
-                          />
-
+                          <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(title)}" class="announcement-display-image" loading="lazy" />
                         </div>
                       `
                     : ""
@@ -1590,18 +1531,10 @@ onAuthStateChanged(
       }
 
 
-      // =================================================
-      // RENDER PROFILE
-      // =================================================
-
       renderProfileView(
         currentData
       );
 
-
-      // =================================================
-      // UPDATE AGE / STATUS WHEN NECESSARY
-      // =================================================
 
       if (needsStatusUpdate) {
 

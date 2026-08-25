@@ -441,8 +441,14 @@ img {
   font-size: 13px;
 }
 
+.field textarea {
+  height: auto;
+  padding: 11px;
+}
+
 .field input:focus,
 .field select:focus,
+.field textarea:focus,
 .search-field input:focus,
 .filter-row select:focus {
   border-color: var(--primary);
@@ -837,7 +843,7 @@ body[data-page="home"] .hero-actions .btn {
 
 
 /* =========================================
-   ABOUT - MODERN DESIGN
+   ABOUT
 ========================================= */
 
 .about-section {
@@ -1134,7 +1140,7 @@ body[data-page="home"] .hero-actions .btn {
 
 
 /* =========================================
-   FOOTER - MODERN HOME DESIGN
+   FOOTER
 ========================================= */
 
 .site-footer {
@@ -1883,6 +1889,109 @@ body[data-page="home"] .hero-actions .btn {
 
 
 /* =========================================================
+   ANNOUNCEMENTS
+========================================================= */
+
+#youthAnnouncements {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  width: 100%;
+}
+
+#youthAnnouncementSection {
+  width: min(1100px, 100%);
+  margin-inline: auto;
+}
+
+#youthAnnouncementSection .report-summary {
+  grid-template-columns: 1fr;
+}
+
+.announcement-display-card {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 26px;
+  align-items: start;
+  padding: 24px;
+  background: #fafcfc;
+  border: 1px solid #dfe7ea;
+  border-radius: 12px;
+  overflow: visible;
+  transition:
+    box-shadow .2s ease,
+    transform .2s ease;
+}
+
+.announcement-display-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(10,35,45,.07);
+}
+
+.announcement-display-card.has-image {
+  grid-template-columns:
+    minmax(0, 0.95fr)
+    minmax(350px, 1.05fr);
+  align-items: start;
+}
+
+.announcement-display-card.no-image {
+  grid-template-columns: 1fr;
+}
+
+.announcement-text-side {
+  min-width: 0;
+  padding: 5px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.announcement-text-side h3 {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  color: var(--primary-dark);
+  font-size: 21px;
+  line-height: 1.25;
+  font-weight: 600;
+}
+
+.announcement-text-side p {
+  margin-top: 10px;
+  color: #344e57;
+  font-size: 13px;
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+
+.announcement-image-side {
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: visible;
+  background: #eef3f3;
+  border: 1px solid #dde6e7;
+  border-radius: 11px;
+}
+
+.announcement-display-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  object-fit: contain;
+  object-position: center top;
+  border-radius: 10px;
+}
+
+
+/* =========================================================
    SETTINGS
 ========================================================= */
 
@@ -2210,6 +2319,26 @@ body[data-page="home"] .hero-actions .btn {
   .auth-body {
     background-attachment: scroll;
   }
+
+  .announcement-display-card.has-image {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(280px, .85fr);
+
+    gap: 20px;
+  }
+
+  .announcement-image-side {
+    height: auto;
+    max-height: none;
+  }
+
+  .announcement-display-image {
+    width: 100%;
+    height: auto;
+    max-height: none;
+    object-fit: contain;
+  }
 }
 
 
@@ -2528,6 +2657,38 @@ body[data-page="home"] .hero-actions .btn {
   .modal-actions .btn {
     width: 100%;
   }
+
+  .announcement-display-card,
+  .announcement-display-card.has-image {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 16px;
+  }
+
+  .announcement-text-side {
+    padding: 0;
+  }
+
+  .announcement-text-side h3 {
+    font-size: 19px;
+  }
+
+  .announcement-image-side {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .announcement-display-image {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    object-fit: contain;
+    object-position: center top;
+  }
 }
 
 
@@ -2550,7 +2711,8 @@ body[data-page="home"] .hero-actions .btn {
   .feature-card::after,
   .feature-card .icon-badge,
   .about-image-wrap img,
-  .about-highlight-item {
+  .about-highlight-item,
+  .announcement-display-card {
     transition: none;
   }
 }

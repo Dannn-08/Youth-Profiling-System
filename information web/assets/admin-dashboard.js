@@ -1,4 +1,4 @@
-import { auth, db, storage } from "./firebase-config.js";
+import { auth, db } from "./firebase-config.js";
 
 import {
   collection,
@@ -8,13 +8,6 @@ import {
   updateDoc,
   deleteDoc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  deleteObject
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
 import { logActivity } from "./audit-log.js";
 
@@ -304,7 +297,6 @@ let allUsers = [];
 let youthList = [];
 let adminList = [];
 let announcementList = [];
-
 let charts = {};
 
 
@@ -414,24 +406,15 @@ function isActiveYouth(youth) {
 function ageGroup(age) {
   const n = Number(age);
 
-  if (
-    n >= 15 &&
-    n <= 19
-  ) {
+  if (n >= 15 && n <= 19) {
     return "15-19";
   }
 
-  if (
-    n >= 20 &&
-    n <= 24
-  ) {
+  if (n >= 20 && n <= 24) {
     return "20-24";
   }
 
-  if (
-    n >= 25 &&
-    n <= 30
-  ) {
+  if (n >= 25 && n <= 30) {
     return "25-30";
   }
 
@@ -500,8 +483,7 @@ function getCreatedDate(value) {
     return value;
   }
 
-  const date =
-    new Date(value);
+  const date = new Date(value);
 
   if (
     Number.isNaN(
@@ -520,8 +502,7 @@ function getCreatedDate(value) {
 // =====================================================
 
 function getLocalDateString(date = new Date()) {
-  const year =
-    date.getFullYear();
+  const year = date.getFullYear();
 
   const month =
     String(
@@ -580,7 +561,8 @@ function safeLogActivity(data) {
 
 
 // =====================================================
-// ANNOUNCEMENT IMAGE HELPERS
+// ANNOUNCEMENT IMAGE HELPER
+// FIRESTORE BASE64 / WEBP
 // =====================================================
 
 async function uploadAnnouncementImage(file) {
@@ -598,77 +580,114 @@ async function uploadAnnouncementImage(file) {
     );
   }
 
-  const maxSize =
-    5 * 1024 * 1024;
+  const maxOriginalSize =
+    10 * 1024 * 1024;
 
   if (
     file.size >
-    maxSize
+    maxOriginalSize
   ) {
     throw new Error(
-      "Announcement image must not exceed 5 MB."
+      "Announcement image must not exceed 10 MB."
     );
   }
 
-  const safeName =
-    file.name.replace(
-      /[^a-zA-Z0-9._-]/g,
-      "_"
+  const image =
+    await createImageBitmap(
+      file
     );
 
-  const imagePath =
-    `announcements/${Date.now()}_${safeName}`;
+  const maxWidth = 900;
+  const maxHeight = 900;
 
-  const imageRef =
-    ref(
-      storage,
-      imagePath
+  let width = image.width;
+  let height = image.height;
+
+  const scale =
+    Math.min(
+      maxWidth / width,
+      maxHeight / height,
+      1
     );
 
-  await uploadBytes(
-    imageRef,
-    file
+  width =
+    Math.round(
+      width * scale
+    );
+
+  height =
+    Math.round(
+      height * scale
+    );
+
+  const canvas =
+    document.createElement(
+      "canvas"
+    );
+
+  canvas.width = width;
+  canvas.height = height;
+
+  const context =
+    canvas.getContext(
+      "2d"
+    );
+
+  if (!context) {
+    throw new Error(
+      "Your browser could not process the selected image."
+    );
+  }
+
+  context.drawImage(
+    image,
+    0,
+    0,
+    width,
+    height
   );
 
-  const imageUrl =
-    await getDownloadURL(
-      imageRef
+  let quality = 0.72;
+
+  let imageUrl =
+    canvas.toDataURL(
+      "image/webp",
+      quality
     );
+
+  while (
+    imageUrl.length >
+      700000 &&
+    quality >
+      0.30
+  ) {
+    quality -= 0.08;
+
+    imageUrl =
+      canvas.toDataURL(
+        "image/webp",
+        quality
+      );
+  }
+
+  if (
+    image.close
+  ) {
+    image.close();
+  }
+
+  if (
+    imageUrl.length >
+    850000
+  ) {
+    throw new Error(
+      "The image is still too large after compression. Please use a smaller image."
+    );
+  }
 
   return {
-    imageUrl,
-    imagePath
+    imageUrl
   };
-}
-
-
-async function deleteAnnouncementImage(imagePath) {
-  if (!imagePath) {
-    return;
-  }
-
-  try {
-    const imageRef =
-      ref(
-        storage,
-        imagePath
-      );
-
-    await deleteObject(
-      imageRef
-    );
-
-  } catch (error) {
-    if (
-      error.code !==
-      "storage/object-not-found"
-    ) {
-      console.error(
-        "Announcement image delete error:",
-        error
-      );
-    }
-  }
 }
 
 
@@ -693,29 +712,16 @@ async function deleteExpiredAnnouncements(announcements) {
 
   const results =
     await Promise.allSettled(
-
       expired.map(
-        async announcement => {
-
-          await deleteDoc(
+        announcement =>
+          deleteDoc(
             doc(
               db,
               "announcements",
               announcement.id
             )
-          );
-
-          if (
-            announcement.imagePath
-          ) {
-            await deleteAnnouncementImage(
-              announcement.imagePath
-            );
-          }
-
-        }
+          )
       )
-
     );
 
   results.forEach(
@@ -740,22 +746,25 @@ async function deleteExpiredAnnouncements(announcements) {
           email:
             auth.currentUser?.email ||
             "System",
+
           role:
             "admin",
+
           activity:
             "Auto-deleted expired announcement",
+
           details:
             `${announcement.title} • Displayed until: ${announcement.expiryDate}`
         });
 
       } else {
+
         console.error(
           "Could not automatically delete expired announcement:",
           announcement.title,
           result.reason
         );
       }
-
     }
   );
 
@@ -816,7 +825,6 @@ tabButtons.forEach(btn => {
           "active"
         );
       }
-
     }
   );
 });
@@ -879,7 +887,8 @@ async function loadUsersData() {
       allUsers
         .filter(
           user =>
-            user.role === "youth"
+            user.role ===
+            "youth"
         )
         .map(
           user => {
@@ -928,7 +937,8 @@ async function loadUsersData() {
     adminList =
       allUsers.filter(
         user =>
-          user.role === "admin"
+          user.role ===
+          "admin"
       );
 
     renderStats();
@@ -943,6 +953,7 @@ async function loadUsersData() {
     );
 
   } catch (error) {
+
     console.error(
       "Users load error:",
       error
@@ -983,12 +994,17 @@ function renderStats() {
 
   const cards = [
     {
-      label: "Total Active Youth",
-      value: activeYouth.length
+      label:
+        "Total Active Youth",
+
+      value:
+        activeYouth.length
     },
 
     {
-      label: "Male",
+      label:
+        "Male",
+
       value:
         activeYouth.filter(
           youth =>
@@ -998,7 +1014,9 @@ function renderStats() {
     },
 
     {
-      label: "Female",
+      label:
+        "Female",
+
       value:
         activeYouth.filter(
           youth =>
@@ -1008,7 +1026,9 @@ function renderStats() {
     },
 
     {
-      label: "Students",
+      label:
+        "Students",
+
       value:
         activeYouth.filter(
           youth =>
@@ -1243,7 +1263,6 @@ function renderRegistrationTrendChart() {
           date.getMonth()
         ]++;
       }
-
     }
   );
 
@@ -1736,57 +1755,33 @@ function populateFilterOptions() {
 
   if (filterPurok) {
     filterPurok.innerHTML =
-      `
-        <option value="">
-          All Purok / Area
-        </option>
-      ` +
+      `<option value="">All Purok / Area</option>` +
       PUROK_OPTIONS
         .map(
           option =>
-            `
-              <option value="${escapeHtml(option)}">
-                ${escapeHtml(option)}
-              </option>
-            `
+            `<option value="${escapeHtml(option)}">${escapeHtml(option)}</option>`
         )
         .join("");
   }
 
   if (filterEducation) {
     filterEducation.innerHTML =
-      `
-        <option value="">
-          All Education
-        </option>
-      ` +
+      `<option value="">All Education</option>` +
       eduOptions
         .map(
           option =>
-            `
-              <option value="${escapeHtml(option)}">
-                ${escapeHtml(option)}
-              </option>
-            `
+            `<option value="${escapeHtml(option)}">${escapeHtml(option)}</option>`
         )
         .join("");
   }
 
   if (filterEmployment) {
     filterEmployment.innerHTML =
-      `
-        <option value="">
-          All Employment
-        </option>
-      ` +
+      `<option value="">All Employment</option>` +
       empOptions
         .map(
           option =>
-            `
-              <option value="${escapeHtml(option)}">
-                ${escapeHtml(option)}
-              </option>
-            `
+            `<option value="${escapeHtml(option)}">${escapeHtml(option)}</option>`
         )
         .join("");
   }
@@ -1924,6 +1919,7 @@ function renderTable() {
         </tr>
       `;
   } else {
+
     body.innerHTML =
       filtered
         .map(
@@ -2050,7 +2046,6 @@ function renderTable() {
         "change",
         renderTable
       );
-
     }
   );
 
@@ -2211,11 +2206,7 @@ function buildYouthFields(data = {}) {
               field.options
                 .map(
                   option =>
-                    `
-                      <option value="${escapeHtml(option)}" ${option === value ? "selected" : ""}>
-                        ${escapeHtml(option)}
-                      </option>
-                    `
+                    `<option value="${escapeHtml(option)}" ${option === value ? "selected" : ""}>${escapeHtml(option)}</option>`
                 )
                 .join("");
 
@@ -2279,7 +2270,6 @@ function buildYouthFields(data = {}) {
           age !== null
             ? age
             : "";
-
       }
     );
   }
@@ -2619,9 +2609,11 @@ if (
         new Date();
 
       try {
+
         if (
           idInput.value
         ) {
+
           await updateDoc(
             doc(
               db,
@@ -2702,7 +2694,6 @@ if (
         saveYouthBtn.textContent =
           "Save Profile";
       }
-
     }
   );
 }
@@ -2797,7 +2788,6 @@ function renderReports() {
   const categories = [
     [
       "Youth Status",
-
       {
         Active:
           activeYouth.length,
@@ -2822,7 +2812,6 @@ function renderReports() {
 
     [
       "Gender Breakdown",
-
       countBy(
         activeYouth,
         youth =>
@@ -2832,7 +2821,6 @@ function renderReports() {
 
     [
       "Civil Status",
-
       countBy(
         activeYouth,
         youth =>
@@ -2842,7 +2830,6 @@ function renderReports() {
 
     [
       "Education Level",
-
       countBy(
         activeYouth,
         youth =>
@@ -2852,7 +2839,6 @@ function renderReports() {
 
     [
       "Education Status",
-
       countBy(
         activeYouth,
         youth =>
@@ -2862,7 +2848,6 @@ function renderReports() {
 
     [
       "Employment Status",
-
       countBy(
         activeYouth,
         youth =>
@@ -2872,7 +2857,6 @@ function renderReports() {
 
     [
       "Voter Registration",
-
       countBy(
         activeYouth,
         youth =>
@@ -2882,7 +2866,6 @@ function renderReports() {
 
     [
       "Voter Participation",
-
       countBy(
         activeYouth,
         youth =>
@@ -2892,7 +2875,6 @@ function renderReports() {
 
     [
       "New Voter Status",
-
       countBy(
         activeYouth,
         youth =>
@@ -2902,7 +2884,6 @@ function renderReports() {
 
     [
       "Registered SK Voter",
-
       countBy(
         activeYouth,
         youth =>
@@ -2912,7 +2893,6 @@ function renderReports() {
 
     [
       "Last SK Election Participation",
-
       countBy(
         activeYouth,
         youth =>
@@ -2922,7 +2902,6 @@ function renderReports() {
 
     [
       "KK Assembly Attendance",
-
       countBy(
         activeYouth,
         youth =>
@@ -2932,7 +2911,6 @@ function renderReports() {
 
     [
       "KK Assembly Attendance Frequency",
-
       countBy(
         activeYouth.filter(
           youth =>
@@ -2946,7 +2924,6 @@ function renderReports() {
 
     [
       "Reasons for Not Attending KK Assembly",
-
       countBy(
         activeYouth.filter(
           youth =>
@@ -2960,7 +2937,6 @@ function renderReports() {
 
     [
       "Civic Participation",
-
       countBy(
         activeYouth,
         youth =>
@@ -2970,7 +2946,6 @@ function renderReports() {
 
     [
       "Special Needs",
-
       countBy(
         activeYouth,
         youth =>
@@ -3182,7 +3157,6 @@ if (
         details:
           "Downloaded youth data CSV"
       });
-
     }
   );
 }
@@ -3748,10 +3722,10 @@ if (
       if (
         selectedImage &&
         selectedImage.size >
-          5 * 1024 * 1024
+          10 * 1024 * 1024
       ) {
         alert(
-          "Announcement image must not exceed 5 MB."
+          "Announcement image must not exceed 10 MB."
         );
 
         return;
@@ -3762,11 +3736,8 @@ if (
 
       saveAnnouncementBtn.textContent =
         selectedImage
-          ? "Uploading..."
+          ? "Processing Image..."
           : "Saving...";
-
-      let newlyUploadedImage =
-        null;
 
       try {
 
@@ -3793,24 +3764,20 @@ if (
             existing?.imageUrl ||
             "";
 
-          let imagePath =
-            existing?.imagePath ||
-            "";
-
           if (
             selectedImage
           ) {
-            newlyUploadedImage =
+            const processedImage =
               await uploadAnnouncementImage(
                 selectedImage
               );
 
             imageUrl =
-              newlyUploadedImage.imageUrl;
-
-            imagePath =
-              newlyUploadedImage.imagePath;
+              processedImage.imageUrl;
           }
+
+          saveAnnouncementBtn.textContent =
+            "Saving...";
 
           await updateDoc(
             doc(
@@ -3824,22 +3791,10 @@ if (
               message,
               expiryDate,
               imageUrl,
-              imagePath,
               updatedAt:
                 new Date()
             }
           );
-
-          if (
-            selectedImage &&
-            existing?.imagePath &&
-            existing.imagePath !==
-              imagePath
-          ) {
-            await deleteAnnouncementImage(
-              existing.imagePath
-            );
-          }
 
           safeLogActivity({
             email:
@@ -3866,26 +3821,22 @@ if (
           // CREATE NEW
           // =================================================
 
-          let imageUrl =
-            "";
-
-          let imagePath =
-            "";
+          let imageUrl = "";
 
           if (
             selectedImage
           ) {
-            newlyUploadedImage =
+            const processedImage =
               await uploadAnnouncementImage(
                 selectedImage
               );
 
             imageUrl =
-              newlyUploadedImage.imageUrl;
-
-            imagePath =
-              newlyUploadedImage.imagePath;
+              processedImage.imageUrl;
           }
+
+          saveAnnouncementBtn.textContent =
+            "Saving...";
 
           await addDoc(
             collection(
@@ -3898,7 +3849,6 @@ if (
               message,
               expiryDate,
               imageUrl,
-              imagePath,
 
               createdAt:
                 new Date(),
@@ -3945,28 +3895,10 @@ if (
           error
         );
 
-        if (
-          newlyUploadedImage?.imagePath
-        ) {
-          await deleteAnnouncementImage(
-            newlyUploadedImage.imagePath
-          );
-        }
-
-        if (
-          error.message ===
-          "Please select a valid image file." ||
-          error.message ===
-          "Announcement image must not exceed 5 MB."
-        ) {
-          alert(
-            error.message
-          );
-        } else {
-          alert(
-            "Something went wrong while saving the announcement. Please check your Firebase Storage and Firestore permissions."
-          );
-        }
+        alert(
+          error.message ||
+          "Something went wrong while saving the announcement."
+        );
 
       } finally {
 
@@ -3976,7 +3908,6 @@ if (
         saveAnnouncementBtn.textContent =
           "Save Announcement";
       }
-
     }
   );
 }
@@ -4023,14 +3954,6 @@ async function deleteAnnouncement(
         announcementId
       )
     );
-
-    if (
-      target.imagePath
-    ) {
-      await deleteAnnouncementImage(
-        target.imagePath
-      );
-    }
 
     safeLogActivity({
       email:
@@ -4296,7 +4219,6 @@ if (
           "Something went wrong while clearing the audit logs."
         );
       }
-
     }
   );
 }
