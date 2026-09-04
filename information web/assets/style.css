@@ -3197,3 +3197,1162 @@ body[data-page="events"] .site-header { position: absolute; background: rgba(4, 
   .event-filter-btn { transition: none; }
 
 }
+
+/* =========================================================
+   MODERN YOUTH REGISTRATION WIZARD
+   PAGE-SPECIFIC ONLY
+========================================================= */
+
+body[data-page="youth-register"] .auth-body { align-items:flex-start; min-height:100vh; padding-top:98px; padding-bottom:55px; background:linear-gradient(115deg, rgba(3,39,45,.82), rgba(4,72,77,.64)), url("brgy hall.png"); background-size:cover; background-position:center; background-attachment:fixed; }
+
+body[data-page="youth-register"] .registration-shell { width:min(860px, calc(100% - 34px)); margin:0 auto; padding:14px 0 45px; }
+
+body[data-page="youth-register"] .registration-back { margin-bottom:14px; padding:9px 14px; border-radius:8px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.26); box-shadow:0 5px 16px rgba(0,0,0,.08); }
+
+body[data-page="youth-register"] .modern-registration-card { padding:0; overflow:hidden; background:rgba(247,250,249,.97); border:1px solid rgba(255,255,255,.48); border-top:0; border-radius:19px; box-shadow:0 25px 70px rgba(1,27,31,.32); backdrop-filter:blur(22px); -webkit-backdrop-filter:blur(22px); }
+
+body[data-page="youth-register"] .modern-registration-card::before { content:""; display:block; width:100%; height:5px; background:linear-gradient(90deg, var(--primary), var(--accent), var(--primary)); }
+
+
+/* =========================================================
+   REGISTRATION HEADER
+========================================================= */
+
+body[data-page="youth-register"] .registration-heading { padding:30px 35px 25px; text-align:center; background:linear-gradient(180deg, #ffffff 0%, #f8fbfa 100%); border-bottom:1px solid #e2eaea; }
+
+body[data-page="youth-register"] .registration-logos { display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:13px; }
+
+body[data-page="youth-register"] .registration-logo-item { width:54px; height:54px; display:flex; align-items:center; justify-content:center; }
+
+body[data-page="youth-register"] .registration-logo-item img { width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 3px 7px rgba(8,45,52,.12)); }
+
+body[data-page="youth-register"] .registration-logo-divider { width:1px; height:36px; background:#d7e2e3; }
+
+body[data-page="youth-register"] .registration-eyebrow { display:block; margin-bottom:7px; color:var(--primary); font-size:9px; line-height:1; font-weight:850; letter-spacing:.14em; }
+
+body[data-page="youth-register"] .registration-heading h1 { margin:0; color:var(--primary-dark); font-family:var(--font-display); font-size:31px; line-height:1.15; font-weight:600; }
+
+body[data-page="youth-register"] .registration-heading p { margin:7px auto 0; max-width:540px; color:#63777e; font-size:12px; line-height:1.65; }
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+body[data-page="youth-register"] .registration-progress { display:grid; grid-template-columns:auto 1fr auto 1fr auto; align-items:center; gap:12px; padding:22px 35px; background:#fff; border-bottom:1px solid #e4ebec; }
+
+body[data-page="youth-register"] .progress-item { display:flex; align-items:center; gap:9px; opacity:.47; transition:.25s ease; }
+
+body[data-page="youth-register"] .progress-item.active, body[data-page="youth-register"] .progress-item.completed { opacity:1; }
+
+body[data-page="youth-register"] .progress-circle { width:34px; height:34px; display:flex; align-items:center; justify-content:center; flex-shrink:0; border:2px solid #ccd9da; border-radius:50%; background:#fff; color:#718288; font-size:11px; font-weight:850; transition:.25s ease; }
+
+body[data-page="youth-register"] .progress-item.active .progress-circle { border-color:var(--primary); background:var(--primary); color:#fff; box-shadow:0 0 0 5px rgba(10,82,85,.08); }
+
+body[data-page="youth-register"] .progress-item.completed .progress-circle { border-color:var(--primary); background:#e9f3f2; color:var(--primary); }
+
+body[data-page="youth-register"] .progress-item.completed .progress-circle::before { content:"✓"; }
+
+body[data-page="youth-register"] .progress-item.completed .progress-circle { font-size:0; }
+
+body[data-page="youth-register"] .progress-item.completed .progress-circle::before { font-size:13px; }
+
+body[data-page="youth-register"] .progress-text { display:flex; flex-direction:column; min-width:0; }
+
+body[data-page="youth-register"] .progress-text strong { color:var(--primary-dark); font-size:11px; line-height:1.2; }
+
+body[data-page="youth-register"] .progress-text small { margin-top:2px; color:#7b8c91; font-size:8px; line-height:1.2; white-space:nowrap; }
+
+body[data-page="youth-register"] .progress-line { height:2px; width:100%; min-width:30px; border-radius:999px; background:#dce5e6; transition:.25s ease; }
+
+body[data-page="youth-register"] .progress-line.completed { background:var(--primary); }
+
+
+/* =========================================================
+   WIZARD STEPS
+========================================================= */
+
+body[data-page="youth-register"] .modern-register-form { display:block; }
+
+body[data-page="youth-register"] .registration-step { display:none; padding:31px 35px 34px; animation:registrationStepIn .28s ease; }
+
+body[data-page="youth-register"] .registration-step.active { display:block; }
+
+@keyframes registrationStepIn {
+  from { opacity:0; transform:translateY(6px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+
+/* =========================================================
+   STEP HEADING
+========================================================= */
+
+body[data-page="youth-register"] .step-heading { display:flex; align-items:flex-start; gap:13px; margin-bottom:25px; }
+
+body[data-page="youth-register"] .step-number { width:42px; height:42px; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; border-radius:11px; background:var(--primary-soft); border:1px solid rgba(10,82,85,.12); color:var(--primary); font-family:var(--font-display); font-size:14px; font-weight:700; }
+
+body[data-page="youth-register"] .step-heading h2 { margin:0; color:var(--primary-dark); font-family:var(--font-display); font-size:22px; line-height:1.2; font-weight:600; }
+
+body[data-page="youth-register"] .step-heading p { margin:4px 0 0; color:#718187; font-size:11px; line-height:1.5; }
+
+
+/* =========================================================
+   REGISTRATION FORM FIELDS
+========================================================= */
+
+body[data-page="youth-register"] .registration-grid { gap:17px 18px; }
+
+body[data-page="youth-register"] .registration-grid .field { gap:7px; }
+
+body[data-page="youth-register"] .registration-grid .field span { color:#274047; font-size:11px; font-weight:750; }
+
+body[data-page="youth-register"] .registration-grid .field span b { color:#b84c4c; font-weight:800; }
+
+body[data-page="youth-register"] .registration-grid .field input, body[data-page="youth-register"] .registration-grid .field select, body[data-page="youth-register"] .registration-grid .field textarea { height:44px; padding:0 13px; background:#fff; border:1px solid #d6e1e2; border-radius:9px; color:#16353c; font-size:12px; box-shadow:0 2px 4px rgba(8,45,52,.018); transition:border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
+
+body[data-page="youth-register"] .registration-grid .field input:hover, body[data-page="youth-register"] .registration-grid .field select:hover { border-color:#b9cccc; }
+
+body[data-page="youth-register"] .registration-grid .field input:focus, body[data-page="youth-register"] .registration-grid .field select:focus, body[data-page="youth-register"] .registration-grid .field textarea:focus { border-color:var(--primary); box-shadow:0 0 0 4px rgba(10,82,85,.08); }
+
+body[data-page="youth-register"] .registration-grid .field input::placeholder { color:#97a5a9; }
+
+
+/* =========================================================
+   SUBSECTIONS
+========================================================= */
+
+body[data-page="youth-register"] .registration-subsection { margin-top:21px; padding:22px; background:#fff; border:1px solid #e0e8e9; border-radius:13px; }
+
+body[data-page="youth-register"] .registration-subsection:first-of-type { margin-top:0; }
+
+body[data-page="youth-register"] .subsection-heading { margin-bottom:17px; padding-bottom:14px; border-bottom:1px solid #edf1f2; }
+
+body[data-page="youth-register"] .subsection-heading h3 { margin:0; color:var(--primary-dark); font-family:var(--font-display); font-size:16px; line-height:1.25; font-weight:600; }
+
+body[data-page="youth-register"] .subsection-heading p { margin:4px 0 0; color:#7a8a8f; font-size:10px; line-height:1.45; }
+
+body[data-page="youth-register"] .conditional-field { padding:14px; background:#f4f8f7; border:1px dashed rgba(10,82,85,.22); border-radius:10px; }
+
+
+/* =========================================================
+   PASSWORD NOTE
+========================================================= */
+
+body[data-page="youth-register"] .password-note { display:flex; align-items:flex-start; gap:10px; margin-top:16px; padding:11px 13px; border-radius:8px; background:#edf5f4; border:1px solid rgba(10,82,85,.09); }
+
+body[data-page="youth-register"] .password-note span { font-size:14px; }
+
+body[data-page="youth-register"] .password-note p { margin:0; color:#587078; font-size:9px; line-height:1.55; }
+
+
+/* =========================================================
+   REVIEW
+========================================================= */
+
+body[data-page="youth-register"] .review-section { margin-top:22px; padding:22px; background:#fff; border:1px solid #dfe8e9; border-radius:13px; }
+
+body[data-page="youth-register"] .review-heading { display:flex; align-items:center; justify-content:space-between; gap:18px; margin-bottom:17px; padding-bottom:14px; border-bottom:1px solid #edf1f2; }
+
+body[data-page="youth-register"] .review-heading h3 { margin:0; color:var(--primary-dark); font-family:var(--font-display); font-size:17px; font-weight:600; }
+
+body[data-page="youth-register"] .review-heading p { margin:4px 0 0; color:#7a8b90; font-size:10px; }
+
+body[data-page="youth-register"] .review-edit-btn { flex-shrink:0; border:1px solid #d8e3e4; border-radius:7px; background:#f6f9f9; color:var(--primary); min-height:34px; padding:0 12px; font:inherit; font-size:9px; font-weight:800; cursor:pointer; }
+
+body[data-page="youth-register"] .review-edit-btn:hover { border-color:var(--primary); background:var(--primary-soft); }
+
+body[data-page="youth-register"] .review-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); border:1px solid #e5ebec; border-radius:10px; overflow:hidden; }
+
+body[data-page="youth-register"] .review-item { min-width:0; padding:13px 15px; border-bottom:1px solid #e8eeee; }
+
+body[data-page="youth-register"] .review-item:nth-child(odd) { border-right:1px solid #e8eeee; }
+
+body[data-page="youth-register"] .review-item small { display:block; margin-bottom:3px; color:#75868b; font-size:8px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; }
+
+body[data-page="youth-register"] .review-item strong { display:block; color:#18373e; font-size:10px; line-height:1.45; font-weight:650; overflow-wrap:anywhere; }
+
+
+/* =========================================================
+   CONSENT
+========================================================= */
+
+body[data-page="youth-register"] .registration-consent { display:flex; align-items:flex-start; gap:12px; margin-top:20px; padding:15px; border-radius:11px; background:#edf6f1; border:1px solid #d5e8dd; }
+
+body[data-page="youth-register"] .consent-icon { width:27px; height:27px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border-radius:50%; background:#d7ebdf; color:#167044; font-size:11px; font-weight:900; }
+
+body[data-page="youth-register"] .registration-consent strong { display:block; color:#22543b; font-size:10px; }
+
+body[data-page="youth-register"] .registration-consent p { margin:3px 0 0; color:#577064; font-size:9px; line-height:1.6; }
+
+
+/* =========================================================
+   WIZARD BUTTONS
+========================================================= */
+
+body[data-page="youth-register"] .wizard-actions { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:27px; padding-top:20px; border-top:1px solid #e5ebec; }
+
+body[data-page="youth-register"] .wizard-actions-end { justify-content:flex-end; }
+
+body[data-page="youth-register"] .wizard-actions .btn { min-height:42px; padding-inline:21px; border-radius:8px; }
+
+body[data-page="youth-register"] .wizard-prev { background:#edf2f2; color:var(--primary-dark); border:1px solid #d8e2e3; }
+
+body[data-page="youth-register"] .wizard-prev:hover { background:#e5eded; }
+
+body[data-page="youth-register"] .wizard-next, body[data-page="youth-register"] .register-submit-btn { min-width:195px; background:linear-gradient(135deg, var(--primary), #0d6265); box-shadow:0 7px 18px rgba(10,82,85,.18); }
+
+body[data-page="youth-register"] .register-submit-btn { min-width:210px; }
+
+body[data-page="youth-register"] .registration-login { margin-top:18px; text-align:center; }
+
+body[data-page="youth-register"] .registration-login p { margin:0; color:#697d83; font-size:10px; }
+
+body[data-page="youth-register"] .registration-login a { color:var(--primary); }
+
+
+/* =========================================================
+   REGISTRATION TABLET
+========================================================= */
+
+@media (max-width:900px) {
+
+  body[data-page="youth-register"] .registration-shell { width:min(760px, calc(100% - 28px)); }
+
+  body[data-page="youth-register"] .registration-progress { padding:20px 25px; }
+
+  body[data-page="youth-register"] .registration-step { padding:28px; }
+
+  body[data-page="youth-register"] .progress-text small { display:none; }
+
+}
+
+
+/* =========================================================
+   REGISTRATION MOBILE
+========================================================= */
+
+@media (max-width:620px) {
+
+  body[data-page="youth-register"] .auth-body { padding-top:82px; padding-bottom:24px; background-attachment:scroll; }
+
+  body[data-page="youth-register"] .registration-shell { width:min(calc(100% - 18px), 560px); padding-top:8px; }
+
+  body[data-page="youth-register"] .registration-back { margin-bottom:10px; }
+
+  body[data-page="youth-register"] .modern-registration-card { border-radius:14px; }
+
+  body[data-page="youth-register"] .registration-heading { padding:25px 18px 21px; }
+
+  body[data-page="youth-register"] .registration-logo-item { width:46px; height:46px; }
+
+  body[data-page="youth-register"] .registration-heading h1 { font-size:27px; }
+
+  body[data-page="youth-register"] .registration-heading p { font-size:10px; }
+
+  body[data-page="youth-register"] .registration-progress { grid-template-columns:1fr 24px 1fr 24px 1fr; gap:5px; padding:17px 12px; }
+
+  body[data-page="youth-register"] .progress-item { justify-content:center; gap:5px; }
+
+  body[data-page="youth-register"] .progress-circle { width:29px; height:29px; font-size:9px; }
+
+  body[data-page="youth-register"] .progress-text small { display:none; }
+
+  body[data-page="youth-register"] .progress-text strong { font-size:8px; }
+
+  body[data-page="youth-register"] .registration-step { padding:24px 17px 25px; }
+
+  body[data-page="youth-register"] .step-heading { margin-bottom:20px; }
+
+  body[data-page="youth-register"] .step-heading h2 { font-size:20px; }
+
+  body[data-page="youth-register"] .step-heading p { font-size:10px; }
+
+  body[data-page="youth-register"] .step-number { width:38px; height:38px; }
+
+  body[data-page="youth-register"] .registration-grid { grid-template-columns:1fr; gap:14px; }
+
+  body[data-page="youth-register"] .registration-grid .field, body[data-page="youth-register"] .registration-grid .field.full { grid-column:1; }
+
+  body[data-page="youth-register"] .registration-subsection { padding:17px; margin-top:16px; }
+
+  body[data-page="youth-register"] .review-heading { align-items:flex-start; flex-direction:column; }
+
+  body[data-page="youth-register"] .review-edit-btn { width:100%; }
+
+  body[data-page="youth-register"] .review-grid { grid-template-columns:1fr; }
+
+  body[data-page="youth-register"] .review-item { border-right:0 !important; }
+
+  body[data-page="youth-register"] .wizard-actions, body[data-page="youth-register"] .wizard-actions-end { flex-direction:column-reverse; align-items:stretch; }
+
+  body[data-page="youth-register"] .wizard-actions .btn { width:100%; min-width:0; }
+
+  body[data-page="youth-register"] .wizard-actions-end .wizard-next { order:1; }
+
+}
+
+/* =========================================================
+   BUKAL CIVIC ACCESS PORTAL
+   LOGIN PAGE ONLY
+========================================================= */
+
+body[data-page="login"] .login-portal-body { min-height:100vh; position:relative; overflow:hidden; padding:102px 24px 48px; display:flex; align-items:center; justify-content:center; background:linear-gradient(115deg,rgba(2,34,40,.82),rgba(4,69,75,.65)),url("brgy hall.png"); background-size:cover; background-position:center; background-attachment:fixed; }
+
+body[data-page="login"] .login-portal-body::before { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 48%,rgba(27,163,166,.12),transparent 28%),linear-gradient(180deg,rgba(255,255,255,.015),rgba(1,25,30,.18)); }
+
+body[data-page="login"] .login-portal-body::after { content:""; position:absolute; left:50%; bottom:-190px; width:820px; height:390px; transform:translateX(-50%) perspective(500px) rotateX(62deg); border:1px solid rgba(216,173,118,.15); border-radius:50%; box-shadow:0 0 0 45px rgba(10,82,85,.035),0 0 0 90px rgba(10,82,85,.025),0 0 70px rgba(7,111,116,.12); pointer-events:none; }
+
+
+/* =========================================================
+   SIDE CIVIC TEXT
+========================================================= */
+
+body[data-page="login"] .login-decor { position:absolute; z-index:2; color:rgba(255,255,255,.40); font-size:10px; font-weight:700; letter-spacing:.34em; text-transform:uppercase; pointer-events:none; }
+
+body[data-page="login"] .login-decor-left { left:44px; top:50%; display:flex; flex-direction:column; gap:13px; transform:translateY(-45%); }
+
+body[data-page="login"] .login-decor-left::after { content:""; width:38px; height:2px; margin-top:5px; background:var(--accent); }
+
+body[data-page="login"] .login-decor-right { right:28px; top:50%; display:flex; align-items:center; gap:12px; writing-mode:vertical-rl; transform:translateY(-50%); }
+
+body[data-page="login"] .login-decor-right::before, body[data-page="login"] .login-decor-right::after { content:""; width:2px; height:55px; background:linear-gradient(180deg,transparent,var(--accent),transparent); }
+
+body[data-page="login"] .decor-dot { width:4px; height:4px; border-radius:50%; background:var(--accent); }
+
+
+/* =========================================================
+   SHELL
+========================================================= */
+
+body[data-page="login"] .civic-login-shell { position:relative; z-index:4; width:min(510px,calc(100% - 20px)); margin:0; padding:0; }
+
+body[data-page="login"] .civic-back-link { display:inline-flex; align-items:center; margin-bottom:12px; color:rgba(255,255,255,.76); font-size:10px; font-weight:700; letter-spacing:.03em; transition:.2s ease; }
+
+body[data-page="login"] .civic-back-link:hover { color:#fff; transform:translateX(-3px); }
+
+
+/* =========================================================
+   MAIN PORTAL CARD
+========================================================= */
+
+body[data-page="login"] .civic-access-card { position:relative; isolation:isolate; overflow:hidden; padding:31px 34px 27px; background:linear-gradient(155deg,rgba(7,67,73,.90),rgba(3,44,50,.94)); border:1px solid rgba(216,173,118,.64); clip-path:polygon(24px 0,calc(100% - 24px) 0,100% 24px,100% calc(100% - 24px),calc(100% - 24px) 100%,24px 100%,0 calc(100% - 24px),0 24px); box-shadow:0 30px 80px rgba(0,0,0,.38),0 0 35px rgba(13,116,121,.09); backdrop-filter:blur(25px); -webkit-backdrop-filter:blur(25px); }
+
+body[data-page="login"] .civic-access-card::before { content:""; position:absolute; inset:12px; z-index:-2; pointer-events:none; border:1px solid rgba(255,255,255,.08); clip-path:polygon(17px 0,calc(100% - 17px) 0,100% 17px,100% calc(100% - 17px),calc(100% - 17px) 100%,17px 100%,0 calc(100% - 17px),0 17px); }
+
+body[data-page="login"] .civic-access-card::after { content:"BUKAL"; position:absolute; z-index:-3; right:-12px; top:33%; color:rgba(255,255,255,.025); font-family:var(--font-display); font-size:104px; line-height:1; letter-spacing:.06em; transform:rotate(-90deg); pointer-events:none; }
+
+
+/* =========================================================
+   CORNERS
+========================================================= */
+
+body[data-page="login"] .portal-corner { position:absolute; z-index:4; width:34px; height:34px; pointer-events:none; }
+
+body[data-page="login"] .corner-top-left { top:0; left:0; border-top:2px solid var(--accent); border-left:2px solid var(--accent); }
+
+body[data-page="login"] .corner-top-right { top:0; right:0; border-top:2px solid var(--accent); border-right:2px solid var(--accent); }
+
+body[data-page="login"] .corner-bottom-left { bottom:0; left:0; border-bottom:2px solid var(--accent); border-left:2px solid var(--accent); }
+
+body[data-page="login"] .corner-bottom-right { bottom:0; right:0; border-bottom:2px solid var(--accent); border-right:2px solid var(--accent); }
+
+body[data-page="login"] .portal-side-line { position:absolute; z-index:4; top:50%; width:3px; height:72px; transform:translateY(-50%); background:linear-gradient(180deg,transparent,var(--accent),transparent); opacity:.72; pointer-events:none; }
+
+body[data-page="login"] .left-line { left:0; }
+
+body[data-page="login"] .right-line { right:0; }
+
+
+/* =========================================================
+   SCANNING DETAIL
+========================================================= */
+
+body[data-page="login"] .portal-scan-line { position:absolute; z-index:-1; left:6%; right:6%; top:0; height:1px; opacity:.45; background:linear-gradient(90deg,transparent,rgba(127,237,232,.95),transparent); box-shadow:0 0 15px rgba(92,225,220,.35); animation:portalScan 6.5s linear infinite; pointer-events:none; }
+
+@keyframes portalScan {
+  0% { top:7%; opacity:0; }
+  10% { opacity:.45; }
+  90% { opacity:.28; }
+  100% { top:94%; opacity:0; }
+}
+
+
+/* =========================================================
+   PORTAL BRAND
+========================================================= */
+
+body[data-page="login"] .portal-brand { text-align:center; }
+
+body[data-page="login"] .portal-logos { display:flex; align-items:center; justify-content:center; gap:13px; margin-bottom:13px; }
+
+body[data-page="login"] .portal-logo-wrap { width:58px; height:58px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14); box-shadow:0 8px 20px rgba(0,0,0,.14); }
+
+body[data-page="login"] .portal-logo-wrap img { width:49px; height:49px; object-fit:contain; }
+
+body[data-page="login"] .portal-logo-divider { width:1px; height:36px; background:linear-gradient(180deg,transparent,rgba(216,173,118,.80),transparent); }
+
+body[data-page="login"] .portal-eyebrow { display:block; margin-bottom:6px; color:rgba(255,255,255,.60); font-size:7px; font-weight:800; letter-spacing:.23em; }
+
+body[data-page="login"] .portal-brand h1 { margin:0; color:#fff; font-family:var(--font-display); font-size:30px; line-height:1.1; font-weight:600; text-shadow:0 3px 14px rgba(0,0,0,.16); }
+
+body[data-page="login"] .portal-title-line { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:12px; margin:13px 15px 0; }
+
+body[data-page="login"] .portal-title-line span { height:1px; background:linear-gradient(90deg,transparent,var(--accent)); }
+
+body[data-page="login"] .portal-title-line span:last-child { background:linear-gradient(90deg,var(--accent),transparent); }
+
+body[data-page="login"] .portal-title-line strong { color:#e4bd84; font-size:8px; line-height:1; font-weight:850; letter-spacing:.27em; white-space:nowrap; }
+
+
+/* =========================================================
+   WELCOME
+========================================================= */
+
+body[data-page="login"] .portal-welcome { position:relative; margin:23px -34px 22px; padding:21px 34px 0; text-align:center; border-top:1px solid rgba(255,255,255,.09); }
+
+body[data-page="login"] .portal-symbol { position:absolute; top:-7px; left:50%; transform:translateX(-50%); padding:0 8px; background:#07464c; color:var(--accent); font-size:10px; }
+
+body[data-page="login"] .portal-welcome h2 { margin:0; color:#fff; font-family:var(--font-display); font-size:26px; line-height:1.15; font-weight:600; }
+
+body[data-page="login"] .portal-welcome p { margin:5px auto 0; max-width:350px; color:rgba(255,255,255,.67); font-size:10px; line-height:1.6; }
+
+
+/* =========================================================
+   LOGIN FIELDS
+========================================================= */
+
+body[data-page="login"] .portal-login-form { display:grid; gap:14px; }
+
+body[data-page="login"] .portal-field { display:grid; gap:6px; }
+
+body[data-page="login"] .portal-field-label { padding-left:2px; color:rgba(255,255,255,.82); font-size:9px; font-weight:750; }
+
+body[data-page="login"] .portal-input-wrap { position:relative; display:flex; align-items:center; min-height:52px; overflow:hidden; border:1px solid rgba(255,255,255,.23); border-radius:9px; background:rgba(255,255,255,.06); transition:.22s ease; }
+
+body[data-page="login"] .portal-input-wrap:focus-within { border-color:rgba(216,173,118,.80); background:rgba(255,255,255,.09); box-shadow:0 0 0 3px rgba(216,173,118,.07),0 8px 20px rgba(0,0,0,.08); transform:translateY(-1px); }
+
+body[data-page="login"] .portal-input-icon { width:45px; min-width:45px; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.67); }
+
+body[data-page="login"] .portal-input-icon svg { width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+
+body[data-page="login"] .portal-input-wrap input { width:100%; min-width:0; height:50px; border:0 !important; outline:0 !important; padding:0 44px 0 2px; background:transparent !important; color:#fff !important; font:inherit; font-size:11px; box-shadow:none !important; }
+
+body[data-page="login"] .portal-input-wrap input::placeholder { color:rgba(255,255,255,.40); }
+
+body[data-page="login"] .password-toggle { position:absolute; right:8px; width:35px; height:35px; display:flex; align-items:center; justify-content:center; border:0; border-radius:7px; background:transparent; color:rgba(255,255,255,.57); cursor:pointer; transition:.2s ease; }
+
+body[data-page="login"] .password-toggle:hover { background:rgba(255,255,255,.08); color:#fff; }
+
+body[data-page="login"] .password-toggle svg { width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+
+body[data-page="login"] .password-toggle .eye-closed { display:none; }
+
+body[data-page="login"] .password-toggle.showing .eye-open { display:none; }
+
+body[data-page="login"] .password-toggle.showing .eye-closed { display:block; }
+
+
+/* =========================================================
+   SECURITY ROW
+========================================================= */
+
+body[data-page="login"] .portal-security-row { display:flex; align-items:center; justify-content:flex-end; gap:6px; margin-top:-3px; color:rgba(255,255,255,.47); font-size:8px; }
+
+body[data-page="login"] .security-dot { width:6px; height:6px; border-radius:50%; background:#78dca0; box-shadow:0 0 0 3px rgba(120,220,160,.08),0 0 9px rgba(120,220,160,.34); }
+
+
+/* =========================================================
+   ACCESS BUTTON
+========================================================= */
+
+body[data-page="login"] .portal-access-btn { position:relative; overflow:hidden; width:100%; min-height:47px; margin-top:2px; display:flex; align-items:center; justify-content:center; gap:10px; border:1px solid rgba(128,236,230,.62); border-radius:9px; background:linear-gradient(135deg,#0c6c70,#119093); color:#fff; font:inherit; font-size:10px; font-weight:850; letter-spacing:.20em; text-transform:uppercase; cursor:pointer; box-shadow:0 9px 22px rgba(2,44,48,.24); transition:.22s ease; }
+
+body[data-page="login"] .portal-access-btn::before { content:""; position:absolute; top:0; left:-120%; width:70%; height:100%; transform:skewX(-20deg); background:linear-gradient(90deg,transparent,rgba(255,255,255,.17),transparent); transition:left .55s ease; }
+
+body[data-page="login"] .portal-access-btn:hover:not(:disabled) { transform:translateY(-2px); filter:brightness(1.06); box-shadow:0 13px 28px rgba(2,44,48,.30),0 0 20px rgba(44,193,190,.10); }
+
+body[data-page="login"] .portal-access-btn:hover::before { left:145%; }
+
+body[data-page="login"] .portal-access-btn:disabled { opacity:.66; cursor:wait; transform:none; }
+
+body[data-page="login"] .access-icon { display:flex; align-items:center; justify-content:center; }
+
+body[data-page="login"] .access-icon svg { width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+body[data-page="login"] .portal-divider { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:11px; margin:20px 0 15px; }
+
+body[data-page="login"] .portal-divider span { height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,.22)); }
+
+body[data-page="login"] .portal-divider span:last-child { background:linear-gradient(90deg,rgba(255,255,255,.22),transparent); }
+
+body[data-page="login"] .portal-divider small { color:rgba(255,255,255,.40); font-size:6px; font-weight:800; letter-spacing:.18em; }
+
+
+/* =========================================================
+   REGISTER BUTTON
+========================================================= */
+
+body[data-page="login"] .portal-register-btn { display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:12px; min-height:55px; padding:9px 13px; border:1px solid rgba(255,255,255,.25); border-radius:9px; background:rgba(255,255,255,.025); color:#fff; transition:.22s ease; }
+
+body[data-page="login"] .portal-register-btn:hover { transform:translateY(-2px); background:rgba(255,255,255,.07); border-color:rgba(216,173,118,.55); }
+
+body[data-page="login"] .register-icon { width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:7px; background:rgba(255,255,255,.07); color:#e7c28b; }
+
+body[data-page="login"] .register-icon svg { width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+
+body[data-page="login"] .portal-register-btn strong { display:block; color:#fff; font-size:10px; }
+
+body[data-page="login"] .portal-register-btn small { display:block; margin-top:2px; color:rgba(255,255,255,.45); font-size:7px; font-weight:500; }
+
+body[data-page="login"] .register-arrow { color:var(--accent); font-size:16px; transition:.2s ease; }
+
+body[data-page="login"] .portal-register-btn:hover .register-arrow { transform:translateX(3px); }
+
+
+/* =========================================================
+   PORTAL FOOTER
+========================================================= */
+
+body[data-page="login"] .portal-footer-status { display:flex; align-items:center; justify-content:center; gap:9px; margin-top:18px; padding-top:16px; border-top:1px solid rgba(255,255,255,.08); }
+
+body[data-page="login"] .portal-shield { width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,.07); color:#cddbd8; }
+
+body[data-page="login"] .portal-shield svg { width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+
+body[data-page="login"] .portal-footer-status strong { display:block; color:rgba(255,255,255,.66); font-size:8px; font-weight:700; }
+
+body[data-page="login"] .portal-footer-status small { display:block; margin-top:1px; color:rgba(255,255,255,.35); font-size:6px; font-weight:500; }
+
+body[data-page="login"] .portal-bottom-text { margin:18px auto 0; text-align:center; color:rgba(255,255,255,.35); font-size:7px; font-weight:750; letter-spacing:.24em; text-transform:uppercase; }
+
+
+/* =========================================================
+   LOGIN TABLET
+========================================================= */
+
+@media (max-width:900px) {
+
+  body[data-page="login"] .login-decor { display:none; }
+
+  body[data-page="login"] .login-portal-body { padding-inline:18px; }
+
+}
+
+
+/* =========================================================
+   LOGIN MOBILE
+========================================================= */
+
+@media (max-width:620px) {
+
+  body[data-page="login"] .login-portal-body { align-items:flex-start; min-height:100vh; padding:86px 9px 25px; background-attachment:scroll; }
+
+  body[data-page="login"] .civic-login-shell { width:min(100%,460px); }
+
+  body[data-page="login"] .civic-back-link { margin-left:5px; }
+
+  body[data-page="login"] .civic-access-card { padding:25px 18px 22px; clip-path:polygon(18px 0,calc(100% - 18px) 0,100% 18px,100% calc(100% - 18px),calc(100% - 18px) 100%,18px 100%,0 calc(100% - 18px),0 18px); }
+
+  body[data-page="login"] .civic-access-card::before { inset:8px; }
+
+  body[data-page="login"] .civic-access-card::after { font-size:75px; }
+
+  body[data-page="login"] .portal-logo-wrap { width:50px; height:50px; }
+
+  body[data-page="login"] .portal-logo-wrap img { width:43px; height:43px; }
+
+  body[data-page="login"] .portal-brand h1 { font-size:26px; }
+
+  body[data-page="login"] .portal-title-line { margin-inline:0; gap:8px; }
+
+  body[data-page="login"] .portal-title-line strong { font-size:6px; letter-spacing:.18em; }
+
+  body[data-page="login"] .portal-welcome { margin:20px -18px 20px; padding:19px 18px 0; }
+
+  body[data-page="login"] .portal-welcome h2 { font-size:24px; }
+
+  body[data-page="login"] .portal-input-wrap { min-height:50px; }
+
+  body[data-page="login"] .portal-divider small { font-size:5.5px; }
+
+  body[data-page="login"] .portal-bottom-text { letter-spacing:.13em; font-size:6px; }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion:reduce) {
+
+  body[data-page="login"] .portal-scan-line { animation:none; }
+
+  body[data-page="login"] .portal-access-btn::before { display:none; }
+
+}
+/* =========================================================
+   BUKAL CIVIC REGISTRATION PORTAL
+   SAME FAMILY AS LOGIN PORTAL
+   TRANSPARENT / BACKGROUND VISIBLE
+========================================================= */
+
+body[data-page="youth-register"] .auth-body { position:relative; min-height:100vh; align-items:flex-start; justify-content:center; padding-top:102px; padding-bottom:60px; overflow:hidden; background:linear-gradient(115deg,rgba(2,34,40,.66),rgba(4,69,75,.50)),url("brgy hall.png"); background-size:cover; background-position:center; background-repeat:no-repeat; background-attachment:fixed; }
+
+body[data-page="youth-register"] .auth-body::before { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 42%,rgba(24,156,158,.10),transparent 30%),linear-gradient(180deg,rgba(255,255,255,.01),rgba(0,25,30,.10)); }
+
+body[data-page="youth-register"] .auth-body::after { content:""; position:absolute; left:50%; bottom:-190px; width:900px; height:400px; transform:translateX(-50%) perspective(520px) rotateX(64deg); border:1px solid rgba(216,173,118,.13); border-radius:50%; box-shadow:0 0 0 45px rgba(10,82,85,.025),0 0 0 90px rgba(10,82,85,.018),0 0 65px rgba(10,110,115,.08); pointer-events:none; }
+
+
+/* =========================================================
+   SHELL
+========================================================= */
+
+body[data-page="youth-register"] .registration-shell { position:relative; z-index:3; width:min(900px,calc(100% - 34px)); margin:0 auto; padding:0 0 45px; }
+
+body[data-page="youth-register"] .registration-back { display:inline-flex; align-items:center; margin:0 0 12px; padding:9px 13px; border:1px solid rgba(255,255,255,.25); border-radius:8px; background:rgba(3,53,59,.28); color:rgba(255,255,255,.86); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); box-shadow:0 6px 18px rgba(0,0,0,.08); }
+
+body[data-page="youth-register"] .registration-back:hover { background:rgba(255,255,255,.10); color:#fff; }
+
+
+/* =========================================================
+   MAIN REGISTRATION CARD
+========================================================= */
+
+body[data-page="youth-register"] .modern-registration-card { position:relative; isolation:isolate; overflow:hidden; padding:0; background:linear-gradient(155deg,rgba(8,78,84,.72),rgba(4,48,54,.78)); border:1px solid rgba(216,173,118,.70); border-top:1px solid rgba(216,173,118,.70); border-radius:0; clip-path:polygon(26px 0,calc(100% - 26px) 0,100% 26px,100% calc(100% - 26px),calc(100% - 26px) 100%,26px 100%,0 calc(100% - 26px),0 26px); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); box-shadow:0 30px 85px rgba(0,0,0,.34),0 0 38px rgba(14,119,124,.08); }
+
+body[data-page="youth-register"] .modern-registration-card::before { content:""; position:absolute; inset:12px; width:auto; height:auto; z-index:-1; border:1px solid rgba(255,255,255,.07); background:none; pointer-events:none; clip-path:polygon(18px 0,calc(100% - 18px) 0,100% 18px,100% calc(100% - 18px),calc(100% - 18px) 100%,18px 100%,0 calc(100% - 18px),0 18px); }
+
+body[data-page="youth-register"] .modern-registration-card::after { content:"BUKAL"; position:absolute; z-index:-2; right:-15px; top:35%; color:rgba(255,255,255,.018); font-family:var(--font-display); font-size:130px; line-height:1; letter-spacing:.05em; transform:rotate(-90deg); pointer-events:none; }
+
+
+/* =========================================================
+   TOP ACCENT
+========================================================= */
+
+body[data-page="youth-register"] .registration-heading::before { content:""; position:absolute; left:50%; top:0; width:170px; height:2px; transform:translateX(-50%); background:linear-gradient(90deg,transparent,var(--accent),transparent); box-shadow:0 0 14px rgba(216,173,118,.38); }
+
+
+/* =========================================================
+   REGISTRATION HEADER
+========================================================= */
+
+body[data-page="youth-register"] .registration-heading { position:relative; padding:29px 35px 24px; background:rgba(3,60,66,.18); border-bottom:1px solid rgba(255,255,255,.09); text-align:center; }
+
+body[data-page="youth-register"] .registration-logos { margin-bottom:12px; }
+
+body[data-page="youth-register"] .registration-logo-item { width:58px; height:58px; padding:4px; border-radius:50%; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.13); box-shadow:0 7px 18px rgba(0,0,0,.12); }
+
+body[data-page="youth-register"] .registration-logo-item img { width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 3px 8px rgba(0,0,0,.12)); }
+
+body[data-page="youth-register"] .registration-logo-divider { height:37px; background:linear-gradient(180deg,transparent,rgba(216,173,118,.85),transparent); }
+
+body[data-page="youth-register"] .registration-eyebrow { color:rgba(255,255,255,.62); font-size:8px; letter-spacing:.20em; }
+
+body[data-page="youth-register"] .registration-heading h1 { color:#fff; font-size:32px; text-shadow:0 3px 14px rgba(0,0,0,.16); }
+
+body[data-page="youth-register"] .registration-heading p { color:#e5bd83; font-size:9px; font-weight:750; letter-spacing:.12em; text-transform:uppercase; }
+
+
+/* =========================================================
+   PROGRESS BAR
+========================================================= */
+
+body[data-page="youth-register"] .registration-progress { padding:20px 34px; background:rgba(2,52,58,.20); border-bottom:1px solid rgba(255,255,255,.08); }
+
+body[data-page="youth-register"] .progress-item { opacity:.48; }
+
+body[data-page="youth-register"] .progress-item.active, body[data-page="youth-register"] .progress-item.completed { opacity:1; }
+
+body[data-page="youth-register"] .progress-circle { width:38px; height:38px; border:1px solid rgba(255,255,255,.30); background:rgba(255,255,255,.05); color:rgba(255,255,255,.72); }
+
+body[data-page="youth-register"] .progress-item.active .progress-circle { border-color:#53e3df; background:rgba(12,117,120,.55); color:#fff; box-shadow:0 0 0 5px rgba(25,213,207,.06),0 0 17px rgba(31,227,221,.28); }
+
+body[data-page="youth-register"] .progress-item.completed .progress-circle { border-color:rgba(216,173,118,.70); background:rgba(216,173,118,.12); color:#f0cc96; }
+
+body[data-page="youth-register"] .progress-text strong { color:#fff; }
+
+body[data-page="youth-register"] .progress-text small { color:rgba(255,255,255,.46); }
+
+body[data-page="youth-register"] .progress-line { background:rgba(255,255,255,.17); }
+
+body[data-page="youth-register"] .progress-line.completed { background:linear-gradient(90deg,#36c9c5,var(--accent)); }
+
+
+/* =========================================================
+   STEPS
+========================================================= */
+
+body[data-page="youth-register"] .registration-step { padding:31px 35px 34px; background:transparent; }
+
+body[data-page="youth-register"] .step-heading { margin-bottom:24px; }
+
+body[data-page="youth-register"] .step-number { width:44px; height:44px; border-radius:10px; background:linear-gradient(145deg,rgba(16,158,160,.72),rgba(7,102,107,.76)); border:1px solid rgba(108,235,230,.50); color:#fff; box-shadow:0 6px 18px rgba(0,0,0,.10); }
+
+body[data-page="youth-register"] .step-heading h2 { color:#fff; font-size:22px; }
+
+body[data-page="youth-register"] .step-heading p { color:rgba(255,255,255,.55); }
+
+
+/* =========================================================
+   FIELDS
+========================================================= */
+
+body[data-page="youth-register"] .registration-grid .field span { color:rgba(255,255,255,.86); font-size:10px; }
+
+body[data-page="youth-register"] .registration-grid .field span b { color:#f4a597; }
+
+body[data-page="youth-register"] .registration-grid .field input,
+body[data-page="youth-register"] .registration-grid .field select,
+body[data-page="youth-register"] .registration-grid .field textarea { height:46px; border:1px solid rgba(255,255,255,.23); border-radius:8px; background:rgba(255,255,255,.06); color:#fff; box-shadow:none; }
+
+body[data-page="youth-register"] .registration-grid .field input::placeholder { color:rgba(255,255,255,.38); }
+
+body[data-page="youth-register"] .registration-grid .field select option { color:#1c363d; background:#fff; }
+
+body[data-page="youth-register"] .registration-grid .field input:hover,
+body[data-page="youth-register"] .registration-grid .field select:hover { border-color:rgba(216,173,118,.45); }
+
+body[data-page="youth-register"] .registration-grid .field input:focus,
+body[data-page="youth-register"] .registration-grid .field select:focus,
+body[data-page="youth-register"] .registration-grid .field textarea:focus { border-color:rgba(87,227,222,.78); background:rgba(255,255,255,.09); box-shadow:0 0 0 3px rgba(31,215,210,.06),0 7px 20px rgba(0,0,0,.06); }
+
+
+/* =========================================================
+   SECTION CARDS
+========================================================= */
+
+body[data-page="youth-register"] .registration-subsection { margin-top:19px; padding:21px; background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.13); border-radius:10px; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
+
+body[data-page="youth-register"] .subsection-heading { border-bottom:1px solid rgba(255,255,255,.09); }
+
+body[data-page="youth-register"] .subsection-heading h3 { color:#fff; }
+
+body[data-page="youth-register"] .subsection-heading p { color:rgba(255,255,255,.45); }
+
+body[data-page="youth-register"] .conditional-field { background:rgba(9,101,106,.15); border:1px dashed rgba(216,173,118,.36); }
+
+
+/* =========================================================
+   REVIEW SECTION
+========================================================= */
+
+body[data-page="youth-register"] .review-section { background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.13); }
+
+body[data-page="youth-register"] .review-heading { border-bottom:1px solid rgba(255,255,255,.09); }
+
+body[data-page="youth-register"] .review-heading h3 { color:#fff; }
+
+body[data-page="youth-register"] .review-heading p { color:rgba(255,255,255,.46); }
+
+body[data-page="youth-register"] .review-edit-btn { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.18); color:#e8c18a; }
+
+body[data-page="youth-register"] .review-edit-btn:hover { background:rgba(216,173,118,.10); border-color:rgba(216,173,118,.50); }
+
+body[data-page="youth-register"] .review-grid { border:1px solid rgba(255,255,255,.12); }
+
+body[data-page="youth-register"] .review-item { border-bottom:1px solid rgba(255,255,255,.08); }
+
+body[data-page="youth-register"] .review-item:nth-child(odd) { border-right:1px solid rgba(255,255,255,.08); }
+
+body[data-page="youth-register"] .review-item small { color:rgba(255,255,255,.42); }
+
+body[data-page="youth-register"] .review-item strong { color:#fff; }
+
+
+/* =========================================================
+   PASSWORD / CONSENT
+========================================================= */
+
+body[data-page="youth-register"] .password-note { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); }
+
+body[data-page="youth-register"] .password-note p { color:rgba(255,255,255,.53); }
+
+body[data-page="youth-register"] .registration-consent { background:rgba(40,149,104,.10); border:1px solid rgba(104,215,160,.20); }
+
+body[data-page="youth-register"] .consent-icon { background:rgba(74,193,130,.15); color:#8ce3b1; }
+
+body[data-page="youth-register"] .registration-consent strong { color:#bdebd0; }
+
+body[data-page="youth-register"] .registration-consent p { color:rgba(255,255,255,.52); }
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+body[data-page="youth-register"] .wizard-actions { border-top:1px solid rgba(255,255,255,.10); }
+
+body[data-page="youth-register"] .wizard-prev { background:rgba(255,255,255,.045); color:#fff; border:1px solid rgba(255,255,255,.22); }
+
+body[data-page="youth-register"] .wizard-prev:hover { background:rgba(255,255,255,.09); }
+
+body[data-page="youth-register"] .wizard-next,
+body[data-page="youth-register"] .register-submit-btn { position:relative; overflow:hidden; background:linear-gradient(135deg,#08767a,#13a2a4); border:1px solid rgba(108,237,230,.56); color:#fff; box-shadow:0 8px 22px rgba(0,0,0,.16),0 0 18px rgba(31,220,214,.06); }
+
+body[data-page="youth-register"] .wizard-next:hover,
+body[data-page="youth-register"] .register-submit-btn:hover { transform:translateY(-2px); filter:brightness(1.06); }
+
+body[data-page="youth-register"] .registration-login p { color:rgba(255,255,255,.48); }
+
+body[data-page="youth-register"] .registration-login a { color:#efc78f; }
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width:620px) {
+
+  body[data-page="youth-register"] .auth-body { padding-top:85px; padding-bottom:26px; background-attachment:scroll; }
+
+  body[data-page="youth-register"] .registration-shell { width:min(calc(100% - 16px),560px); }
+
+  body[data-page="youth-register"] .modern-registration-card { clip-path:polygon(18px 0,calc(100% - 18px) 0,100% 18px,100% calc(100% - 18px),calc(100% - 18px) 100%,18px 100%,0 calc(100% - 18px),0 18px); }
+
+  body[data-page="youth-register"] .registration-heading { padding:24px 17px 20px; }
+
+  body[data-page="youth-register"] .registration-step { padding:23px 17px 25px; }
+
+  body[data-page="youth-register"] .registration-progress { padding:17px 12px; }
+
+  body[data-page="youth-register"] .registration-logo-item { width:49px; height:49px; }
+
+  body[data-page="youth-register"] .registration-heading h1 { font-size:27px; }
+
+  body[data-page="youth-register"] .registration-heading p { font-size:7px; letter-spacing:.08em; }
+
+}
+
+/* =========================================================
+   FINAL BUKAL CIVIC REGISTRATION PORTAL
+   MATCHES LOGIN PORTAL
+========================================================= */
+
+body[data-page="youth-register"] .register-portal-body { position:relative; min-height:100vh; width:100%; padding:100px 24px 55px; display:flex; align-items:flex-start; justify-content:center; overflow:hidden; background:linear-gradient(115deg,rgba(2,34,40,.62),rgba(4,69,75,.46)),url("brgy hall.png"); background-size:cover; background-position:center; background-repeat:no-repeat; background-attachment:fixed; }
+
+body[data-page="youth-register"] .register-portal-body::before { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 42%,rgba(27,163,166,.10),transparent 30%),linear-gradient(180deg,rgba(255,255,255,.01),rgba(1,25,30,.12)); }
+
+body[data-page="youth-register"] .register-portal-body::after { content:""; position:absolute; left:50%; bottom:-200px; width:1000px; height:420px; transform:translateX(-50%) perspective(520px) rotateX(63deg); border:1px solid rgba(216,173,118,.13); border-radius:50%; box-shadow:0 0 0 50px rgba(10,82,85,.025),0 0 0 100px rgba(10,82,85,.016),0 0 70px rgba(7,111,116,.10); pointer-events:none; }
+
+
+/* SIDE DECOR */
+
+body[data-page="youth-register"] .register-decor { position:absolute; z-index:2; color:rgba(255,255,255,.38); font-size:10px; font-weight:700; letter-spacing:.34em; text-transform:uppercase; pointer-events:none; }
+
+body[data-page="youth-register"] .register-decor-left { left:44px; top:50%; display:flex; flex-direction:column; gap:13px; transform:translateY(-45%); }
+
+body[data-page="youth-register"] .register-decor-left::after { content:""; width:38px; height:2px; margin-top:5px; background:var(--accent); }
+
+body[data-page="youth-register"] .register-decor-right { right:28px; top:50%; display:flex; align-items:center; gap:12px; writing-mode:vertical-rl; transform:translateY(-50%); }
+
+body[data-page="youth-register"] .register-decor-right::before,
+body[data-page="youth-register"] .register-decor-right::after { content:""; width:2px; height:55px; background:linear-gradient(180deg,transparent,var(--accent),transparent); }
+
+
+/* SHELL */
+
+body[data-page="youth-register"] .registration-shell { position:relative; z-index:4; width:min(900px,calc(100% - 28px)); margin:0 auto; padding:0 0 40px; }
+
+body[data-page="youth-register"] .civic-back-link { display:inline-flex; align-items:center; margin:0 0 12px; padding:0; background:none; border:0; color:rgba(255,255,255,.76); font-size:10px; font-weight:700; letter-spacing:.03em; backdrop-filter:none; box-shadow:none; transition:.2s ease; }
+
+body[data-page="youth-register"] .civic-back-link:hover { color:#fff; transform:translateX(-3px); }
+
+
+/* CARD */
+
+body[data-page="youth-register"] .civic-register-card { position:relative; isolation:isolate; overflow:hidden; padding:0; background:linear-gradient(155deg,rgba(7,67,73,.76),rgba(3,44,50,.84)); border:1px solid rgba(216,173,118,.65); border-radius:0; clip-path:polygon(26px 0,calc(100% - 26px) 0,100% 26px,100% calc(100% - 26px),calc(100% - 26px) 100%,26px 100%,0 calc(100% - 26px),0 26px); box-shadow:0 30px 85px rgba(0,0,0,.35),0 0 38px rgba(13,116,121,.08); backdrop-filter:blur(11px); -webkit-backdrop-filter:blur(11px); }
+
+body[data-page="youth-register"] .civic-register-card::before { content:""; position:absolute; inset:12px; z-index:-2; width:auto; height:auto; background:none; border:1px solid rgba(255,255,255,.07); pointer-events:none; clip-path:polygon(18px 0,calc(100% - 18px) 0,100% 18px,100% calc(100% - 18px),calc(100% - 18px) 100%,18px 100%,0 calc(100% - 18px),0 18px); }
+
+body[data-page="youth-register"] .civic-register-card::after { content:"BUKAL"; position:absolute; z-index:-3; right:-35px; top:37%; color:rgba(255,255,255,.018); font-family:var(--font-display); font-size:150px; letter-spacing:.05em; transform:rotate(-90deg); pointer-events:none; }
+
+
+/* GOLD CORNERS */
+
+body[data-page="youth-register"] .register-corner { position:absolute; z-index:5; width:38px; height:38px; pointer-events:none; }
+
+body[data-page="youth-register"] .register-corner-tl { top:0; left:0; border-top:2px solid var(--accent); border-left:2px solid var(--accent); }
+
+body[data-page="youth-register"] .register-corner-tr { top:0; right:0; border-top:2px solid var(--accent); border-right:2px solid var(--accent); }
+
+body[data-page="youth-register"] .register-corner-bl { bottom:0; left:0; border-bottom:2px solid var(--accent); border-left:2px solid var(--accent); }
+
+body[data-page="youth-register"] .register-corner-br { bottom:0; right:0; border-bottom:2px solid var(--accent); border-right:2px solid var(--accent); }
+
+body[data-page="youth-register"] .register-side-line { position:absolute; z-index:5; top:50%; width:3px; height:85px; transform:translateY(-50%); background:linear-gradient(180deg,transparent,var(--accent),transparent); opacity:.65; pointer-events:none; }
+
+body[data-page="youth-register"] .register-line-left { left:0; }
+
+body[data-page="youth-register"] .register-line-right { right:0; }
+
+
+/* SCAN */
+
+body[data-page="youth-register"] .register-scan-line { position:absolute; z-index:-1; left:5%; right:5%; top:0; height:1px; opacity:.38; background:linear-gradient(90deg,transparent,rgba(127,237,232,.95),transparent); box-shadow:0 0 15px rgba(92,225,220,.35); animation:registerPortalScan 7s linear infinite; pointer-events:none; }
+
+@keyframes registerPortalScan {
+  0% { top:5%; opacity:0; }
+  10% { opacity:.38; }
+  90% { opacity:.25; }
+  100% { top:95%; opacity:0; }
+}
+
+
+/* HEADER */
+
+body[data-page="youth-register"] .civic-register-heading { position:relative; padding:29px 35px 23px; text-align:center; background:rgba(3,60,66,.12); border-bottom:1px solid rgba(255,255,255,.08); }
+
+body[data-page="youth-register"] .registration-logo-item { width:58px; height:58px; padding:4px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.13); box-shadow:0 8px 20px rgba(0,0,0,.13); }
+
+body[data-page="youth-register"] .registration-logo-item img { width:100%; height:100%; object-fit:contain; }
+
+body[data-page="youth-register"] .registration-logo-divider { width:1px; height:38px; background:linear-gradient(180deg,transparent,rgba(216,173,118,.82),transparent); }
+
+body[data-page="youth-register"] .registration-eyebrow { display:block; margin-bottom:6px; color:rgba(255,255,255,.58); font-size:7px; font-weight:800; letter-spacing:.23em; }
+
+body[data-page="youth-register"] .civic-register-heading h1 { margin:0; color:#fff; font-family:var(--font-display); font-size:31px; font-weight:600; text-shadow:0 3px 14px rgba(0,0,0,.18); }
+
+body[data-page="youth-register"] .register-title-line { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:12px; margin:12px auto 0; max-width:620px; }
+
+body[data-page="youth-register"] .register-title-line span { height:1px; background:linear-gradient(90deg,transparent,var(--accent)); }
+
+body[data-page="youth-register"] .register-title-line span:last-child { background:linear-gradient(90deg,var(--accent),transparent); }
+
+body[data-page="youth-register"] .register-title-line strong { color:#e5bd83; font-size:7px; font-weight:850; letter-spacing:.20em; white-space:nowrap; }
+
+body[data-page="youth-register"] .civic-register-heading p { margin:9px auto 0; color:rgba(255,255,255,.48); font-size:9px; line-height:1.6; }
+
+
+/* PROGRESS */
+
+body[data-page="youth-register"] .civic-progress { padding:19px 36px; background:rgba(3,48,54,.18); border-bottom:1px solid rgba(255,255,255,.08); }
+
+body[data-page="youth-register"] .progress-circle { width:38px; height:38px; border:1px solid rgba(255,255,255,.28); background:rgba(255,255,255,.04); color:rgba(255,255,255,.65); }
+
+body[data-page="youth-register"] .progress-item.active .progress-circle { border-color:#55e2df; background:rgba(12,117,120,.52); color:#fff; box-shadow:0 0 0 5px rgba(25,213,207,.05),0 0 17px rgba(31,227,221,.23); }
+
+body[data-page="youth-register"] .progress-item.completed .progress-circle { border-color:rgba(216,173,118,.72); background:rgba(216,173,118,.10); color:#efca91; }
+
+body[data-page="youth-register"] .progress-text strong { color:#fff; }
+
+body[data-page="youth-register"] .progress-text small { color:rgba(255,255,255,.40); }
+
+body[data-page="youth-register"] .progress-line { background:rgba(255,255,255,.15); }
+
+body[data-page="youth-register"] .progress-line.completed { background:linear-gradient(90deg,#36c9c5,var(--accent)); }
+
+
+/* STEP */
+
+body[data-page="youth-register"] .registration-step { padding:30px 36px 32px; background:transparent; }
+
+body[data-page="youth-register"] .step-number { width:45px; height:45px; background:linear-gradient(145deg,rgba(16,158,160,.70),rgba(7,102,107,.75)); border:1px solid rgba(108,235,230,.48); border-radius:10px; color:#fff; }
+
+body[data-page="youth-register"] .step-eyebrow { display:block; margin-bottom:3px; color:#e0b77d; font-size:7px; font-weight:850; letter-spacing:.17em; }
+
+body[data-page="youth-register"] .step-heading h2 { color:#fff; }
+
+body[data-page="youth-register"] .step-heading p { color:rgba(255,255,255,.45); }
+
+
+/* FIELDS */
+
+body[data-page="youth-register"] .registration-grid .field span { color:rgba(255,255,255,.82); font-size:10px; }
+
+body[data-page="youth-register"] .registration-grid .field span b { color:#f0a08e; }
+
+body[data-page="youth-register"] .registration-grid .field input,
+body[data-page="youth-register"] .registration-grid .field select,
+body[data-page="youth-register"] .registration-grid .field textarea { height:47px; border:1px solid rgba(255,255,255,.22); border-radius:8px; background:rgba(255,255,255,.055); color:#fff; padding-inline:13px; box-shadow:none; transition:.2s ease; }
+
+body[data-page="youth-register"] .registration-grid .field input::placeholder { color:rgba(255,255,255,.35); }
+
+body[data-page="youth-register"] .registration-grid .field select option { background:#fff; color:#18343b; }
+
+body[data-page="youth-register"] .registration-grid .field input:hover,
+body[data-page="youth-register"] .registration-grid .field select:hover { border-color:rgba(216,173,118,.45); }
+
+body[data-page="youth-register"] .registration-grid .field input:focus,
+body[data-page="youth-register"] .registration-grid .field select:focus,
+body[data-page="youth-register"] .registration-grid .field textarea:focus { border-color:rgba(87,227,222,.78); background:rgba(255,255,255,.085); box-shadow:0 0 0 3px rgba(31,215,210,.055); }
+
+
+/* SUBSECTIONS */
+
+body[data-page="youth-register"] .registration-subsection { margin-top:19px; padding:21px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.12); border-radius:10px; backdrop-filter:blur(5px); }
+
+body[data-page="youth-register"] .subsection-heading { border-bottom:1px solid rgba(255,255,255,.08); }
+
+body[data-page="youth-register"] .subsection-heading h3 { color:#fff; }
+
+body[data-page="youth-register"] .subsection-heading p { color:rgba(255,255,255,.40); }
+
+body[data-page="youth-register"] .conditional-field { background:rgba(9,101,106,.14); border:1px dashed rgba(216,173,118,.34); }
+
+
+/* PASSWORD */
+
+body[data-page="youth-register"] .register-password-wrap { position:relative; }
+
+body[data-page="youth-register"] .register-password-wrap input { padding-right:45px !important; }
+
+body[data-page="youth-register"] .register-password-toggle { position:absolute; right:7px; top:50%; width:35px; height:35px; transform:translateY(-50%); display:flex; align-items:center; justify-content:center; border:0; border-radius:7px; background:transparent; color:rgba(255,255,255,.55); cursor:pointer; }
+
+body[data-page="youth-register"] .register-password-toggle:hover { background:rgba(255,255,255,.07); color:#fff; }
+
+body[data-page="youth-register"] .register-password-toggle svg { width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+
+body[data-page="youth-register"] .register-eye-closed { display:none; }
+
+body[data-page="youth-register"] .register-password-toggle.showing .register-eye-open { display:none; }
+
+body[data-page="youth-register"] .register-password-toggle.showing .register-eye-closed { display:block; }
+
+body[data-page="youth-register"] .civic-password-note { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); }
+
+body[data-page="youth-register"] .civic-password-note p { color:rgba(255,255,255,.45); }
+
+
+/* REVIEW */
+
+body[data-page="youth-register"] .civic-review-section { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.12); }
+
+body[data-page="youth-register"] .review-heading { border-bottom:1px solid rgba(255,255,255,.08); }
+
+body[data-page="youth-register"] .review-heading h3 { color:#fff; }
+
+body[data-page="youth-register"] .review-heading p { color:rgba(255,255,255,.40); }
+
+body[data-page="youth-register"] .review-edit-btn { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.17); color:#e5bd83; }
+
+body[data-page="youth-register"] .review-grid { border:1px solid rgba(255,255,255,.10); }
+
+body[data-page="youth-register"] .review-item { border-bottom:1px solid rgba(255,255,255,.07); }
+
+body[data-page="youth-register"] .review-item:nth-child(odd) { border-right:1px solid rgba(255,255,255,.07); }
+
+body[data-page="youth-register"] .review-item small { color:rgba(255,255,255,.34); }
+
+body[data-page="youth-register"] .review-item strong { color:#fff; }
+
+
+/* CONSENT */
+
+body[data-page="youth-register"] .civic-consent { background:rgba(47,160,111,.08); border:1px solid rgba(103,213,159,.18); }
+
+body[data-page="youth-register"] .civic-consent .consent-icon { background:rgba(74,193,130,.13); color:#91e4b5; }
+
+body[data-page="youth-register"] .civic-consent strong { color:#bdebd0; }
+
+body[data-page="youth-register"] .civic-consent p { color:rgba(255,255,255,.43); }
+
+
+/* BUTTONS */
+
+body[data-page="youth-register"] .wizard-actions { border-top:1px solid rgba(255,255,255,.08); }
+
+body[data-page="youth-register"] .civic-prev-btn { background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.20); color:#fff; }
+
+body[data-page="youth-register"] .civic-prev-btn:hover { background:rgba(255,255,255,.08); }
+
+body[data-page="youth-register"] .civic-next-btn,
+body[data-page="youth-register"] .civic-submit-btn { min-width:200px; background:linear-gradient(135deg,#0c6c70,#119093); border:1px solid rgba(128,236,230,.58); color:#fff; box-shadow:0 9px 22px rgba(2,44,48,.22); }
+
+body[data-page="youth-register"] .civic-next-btn:hover,
+body[data-page="youth-register"] .civic-submit-btn:hover { transform:translateY(-2px); filter:brightness(1.06); }
+
+
+/* LOGIN LINK */
+
+body[data-page="youth-register"] .registration-login p { color:rgba(255,255,255,.40); }
+
+body[data-page="youth-register"] .registration-login a { color:#e5bd83; }
+
+
+/* SECURITY FOOTER */
+
+body[data-page="youth-register"] .register-security-footer { display:flex; align-items:center; justify-content:center; gap:9px; margin:0 35px; padding:17px 0 23px; border-top:1px solid rgba(255,255,255,.08); }
+
+body[data-page="youth-register"] .register-shield { width:29px; height:29px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,.06); color:#cadbd7; }
+
+body[data-page="youth-register"] .register-shield svg { width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+
+body[data-page="youth-register"] .register-security-footer strong { display:block; color:rgba(255,255,255,.65); font-size:8px; }
+
+body[data-page="youth-register"] .register-security-footer small { display:block; margin-top:2px; color:rgba(255,255,255,.32); font-size:6px; }
+
+
+/* BOTTOM MESSAGE */
+
+body[data-page="youth-register"] .register-bottom-message { margin:17px auto 0; text-align:center; color:rgba(255,255,255,.33); font-size:7px; font-weight:750; letter-spacing:.23em; text-transform:uppercase; }
+
+
+/* TABLET */
+
+@media (max-width:900px) {
+
+  body[data-page="youth-register"] .register-decor { display:none; }
+
+  body[data-page="youth-register"] .registration-shell { width:min(760px,calc(100% - 24px)); }
+
+}
+
+
+/* MOBILE */
+
+@media (max-width:620px) {
+
+  body[data-page="youth-register"] .register-portal-body { min-height:100vh; padding:84px 8px 25px; background-attachment:scroll; }
+
+  body[data-page="youth-register"] .registration-shell { width:min(100%,560px); }
+
+  body[data-page="youth-register"] .civic-register-card { clip-path:polygon(18px 0,calc(100% - 18px) 0,100% 18px,100% calc(100% - 18px),calc(100% - 18px) 100%,18px 100%,0 calc(100% - 18px),0 18px); }
+
+  body[data-page="youth-register"] .civic-register-heading { padding:24px 17px 20px; }
+
+  body[data-page="youth-register"] .registration-logo-item { width:49px; height:49px; }
+
+  body[data-page="youth-register"] .civic-register-heading h1 { font-size:27px; }
+
+  body[data-page="youth-register"] .register-title-line { gap:7px; }
+
+  body[data-page="youth-register"] .register-title-line strong { font-size:5.5px; letter-spacing:.12em; }
+
+  body[data-page="youth-register"] .civic-progress { padding:17px 11px; }
+
+  body[data-page="youth-register"] .registration-step { padding:23px 17px 25px; }
+
+  body[data-page="youth-register"] .registration-grid { grid-template-columns:1fr; }
+
+  body[data-page="youth-register"] .registration-grid .field,
+  body[data-page="youth-register"] .registration-grid .field.full { grid-column:1; }
+
+  body[data-page="youth-register"] .registration-subsection { padding:16px; }
+
+  body[data-page="youth-register"] .review-grid { grid-template-columns:1fr; }
+
+  body[data-page="youth-register"] .review-item { border-right:0 !important; }
+
+  body[data-page="youth-register"] .wizard-actions { flex-direction:column-reverse; }
+
+  body[data-page="youth-register"] .wizard-actions .btn { width:100%; min-width:0; }
+
+  body[data-page="youth-register"] .register-security-footer { margin-inline:18px; }
+
+}
+
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion:reduce) {
+
+  body[data-page="youth-register"] .register-scan-line { animation:none; }
+
+}

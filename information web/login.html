@@ -16,71 +16,241 @@
 
   <!-- HEADER -->
   <header class="site-header">
-
     <div class="container nav-wrap">
       <a class="brand" href="index.html" aria-label="Bukal Youth Data Home">
-        <img src="assets/logo.png" alt="Bukal Youth Data logo" />
-        <img src="assets/logosk.png" alt="Second logo" style="height:35px;" />
+        <img src="assets/logo.png" alt="Barangay Bukal logo" />
+        <img src="assets/logosk.png" alt="Sangguniang Kabataan logo" style="height:35px;" />
         <span><strong>Bukal Youth Data</strong><small>Pagbilao, Quezon</small></span>
       </a>
     </div>
-
   </header>
 
 
-  <!-- LOGIN -->
-  <div class="auth-body">
+  <!-- LOGIN PORTAL -->
+  <div class="auth-body login-portal-body">
 
-    <main class="auth-shell">
+    <div class="login-decor login-decor-left">
+      <span>DATA</span>
+      <span>YOUTH</span>
+      <span>PROGRESS</span>
+      <span>BUKAL</span>
+    </div>
 
-      <section class="auth-card">
+    <div class="login-decor login-decor-right">
+      <span>BARANGAY BUKAL</span>
+      <span class="decor-dot"></span>
+      <span>PAGBILAO, QUEZON</span>
+    </div>
 
-        <div class="auth-title center">
+    <main class="auth-shell civic-login-shell">
 
-          <span class="icon-badge">
-            <svg class="auth-svg-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="8" r="4"></circle>
-              <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"></path>
-            </svg>
-          </span>
+      <a class="civic-back-link" href="index.html">← Return to Home</a>
 
-          <h1>Login</h1>
-          <p>Access your account</p>
+      <section class="civic-access-card">
+
+        <span class="portal-corner corner-top-left"></span>
+        <span class="portal-corner corner-top-right"></span>
+        <span class="portal-corner corner-bottom-left"></span>
+        <span class="portal-corner corner-bottom-right"></span>
+
+        <span class="portal-side-line left-line"></span>
+        <span class="portal-side-line right-line"></span>
+
+        <div class="portal-scan-line"></div>
+
+        <!-- BRAND -->
+        <div class="portal-brand">
+
+          <div class="portal-logos">
+            <div class="portal-logo-wrap">
+              <img src="assets/logo.png" alt="Barangay Bukal">
+            </div>
+
+            <span class="portal-logo-divider"></span>
+
+            <div class="portal-logo-wrap">
+              <img src="assets/logosk.png" alt="Sangguniang Kabataan">
+            </div>
+          </div>
+
+          <span class="portal-eyebrow">BARANGAY BUKAL • PAGBILAO, QUEZON</span>
+
+          <h1>Bukal Youth Data</h1>
+
+          <div class="portal-title-line">
+            <span></span>
+            <strong>YOUTH INFORMATION PORTAL</strong>
+            <span></span>
+          </div>
+
+        </div>
+
+
+        <!-- ACCESS INTRO -->
+        <div class="portal-welcome">
+
+          <span class="portal-symbol">◆</span>
+
+          <h2>Welcome Back</h2>
+
+          <p>Access your community profile and youth information dashboard.</p>
 
         </div>
 
 
         <!-- LOGIN FORM -->
-        <form id="loginForm" class="form-grid single">
+        <form id="loginForm" class="portal-login-form">
 
-          <label class="field full">
-            <span>Email</span>
-            <input type="email" id="email" placeholder="Enter your email" required />
+          <label class="portal-field">
+
+            <span class="portal-field-label">Email Address</span>
+
+            <div class="portal-input-wrap">
+
+              <span class="portal-input-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M4 6h16v12H4z"></path>
+                  <path d="m4 7 8 6 8-6"></path>
+                </svg>
+              </span>
+
+              <input type="email" id="email" placeholder="Enter your email" autocomplete="email" required />
+
+            </div>
+
           </label>
 
-          <label class="field full">
-            <span>Password</span>
-            <input type="password" id="password" placeholder="Enter your password" required />
+
+          <label class="portal-field">
+
+            <span class="portal-field-label">Password</span>
+
+            <div class="portal-input-wrap">
+
+              <span class="portal-input-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <rect x="5" y="10" width="14" height="10" rx="2"></rect>
+                  <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+                </svg>
+              </span>
+
+              <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required />
+
+              <button type="button" class="password-toggle" id="passwordToggle" aria-label="Show password">
+                <svg class="eye-open" viewBox="0 0 24 24">
+                  <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+
+                <svg class="eye-closed" viewBox="0 0 24 24">
+                  <path d="m3 3 18 18"></path>
+                  <path d="M10.6 6.2A9.9 9.9 0 0 1 12 6c6 0 9.5 6 9.5 6a15.4 15.4 0 0 1-2.1 2.8"></path>
+                  <path d="M6.6 6.6C4 8.4 2.5 12 2.5 12s3.5 6 9.5 6a9.3 9.3 0 0 0 3.4-.6"></path>
+                </svg>
+              </button>
+
+            </div>
+
           </label>
 
-          <button type="submit" class="btn btn-primary full-btn">Login</button>
+
+          <div class="portal-security-row">
+            <span class="security-dot"></span>
+            <span>Secure account verification</span>
+          </div>
+
+
+          <button type="submit" class="portal-access-btn">
+            <span class="access-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M9 18l6-6-6-6"></path>
+                <path d="M15 12H3"></path>
+                <path d="M15 4h5v16h-5"></path>
+              </svg>
+            </span>
+
+            <span>Access Portal</span>
+          </button>
 
         </form>
 
 
-        <!-- REGISTER LINK -->
-        <p class="center small-text">Don't have an account?</p>
-        <p class="center small-text"><a href="youth-register.html">Register as Youth</a></p>
+        <!-- DIVIDER -->
+        <div class="portal-divider">
+          <span></span>
+          <small>NEW TO BUKAL YOUTH DATA?</small>
+          <span></span>
+        </div>
+
+
+        <!-- REGISTER -->
+        <a class="portal-register-btn" href="youth-register.html">
+
+          <span class="register-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M2 21c0-4 3-7 7-7 2 0 3.7.7 5 1.8"></path>
+              <path d="M18 14v6"></path>
+              <path d="M15 17h6"></path>
+            </svg>
+          </span>
+
+          <span>
+            <strong>Register as Youth</strong>
+            <small>Create your Bukal youth profile</small>
+          </span>
+
+          <span class="register-arrow">→</span>
+
+        </a>
+
+
+        <!-- FOOTER STATUS -->
+        <div class="portal-footer-status">
+
+          <span class="portal-shield">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3 19 6v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"></path>
+              <path d="m9 12 2 2 4-4"></path>
+            </svg>
+          </span>
+
+          <div>
+            <strong>Protected Youth Information Access</strong>
+            <small>Authorized accounts only</small>
+          </div>
+
+        </div>
 
       </section>
+
+
+      <p class="portal-bottom-text">
+        Sama-sama para sa mas maunlad na kabataang Bukal
+      </p>
 
     </main>
 
   </div>
 
 
-  <!-- JAVASCRIPT -->
+  <!-- EXISTING LOGIN SCRIPT -->
   <script type="module" src="assets/login.js"></script>
+
+
+  <!-- PASSWORD VISIBILITY -->
+  <script>
+    const passwordInput = document.getElementById("password");
+    const passwordToggle = document.getElementById("passwordToggle");
+
+    passwordToggle.addEventListener("click", () => {
+      const isHidden = passwordInput.type === "password";
+
+      passwordInput.type = isHidden ? "text" : "password";
+      passwordToggle.classList.toggle("showing", isHidden);
+      passwordToggle.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+    });
+  </script>
 
 </body>
 </html>

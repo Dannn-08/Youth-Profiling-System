@@ -18,150 +18,922 @@
   <header class="site-header">
     <div class="container nav-wrap">
       <a class="brand" href="index.html" aria-label="Bukal Youth Data Home">
-        <img src="assets/logo.png" alt="Bukal Youth Data logo" />
-        <img src="assets/logosk.png" alt="Second logo" style="height:35px;" />
+        <img src="assets/logo.png" alt="Barangay Bukal logo" />
+        <img src="assets/logosk.png" alt="Sangguniang Kabataan logo" style="height:35px;" />
         <span><strong>Bukal Youth Data</strong><small>Pagbilao, Quezon</small></span>
       </a>
     </div>
   </header>
 
-  <div class="auth-body">
+  <div class="auth-body register-portal-body">
 
-    <main class="auth-shell wide-auth">
+    <!-- SIDE DECORATIONS -->
+    <div class="register-decor register-decor-left">
+      <span>DATA</span>
+      <span>YOUTH</span>
+      <span>PROGRESS</span>
+      <span>BUKAL</span>
+    </div>
 
-      <a class="back-link" href="index.html">← Back to Home</a>
+    <div class="register-decor register-decor-right">
+      <span>BARANGAY BUKAL</span>
+      <span class="decor-dot"></span>
+      <span>PAGBILAO, QUEZON</span>
+    </div>
 
-      <section class="auth-card registration-card">
 
-        <div class="auth-title center">
-          <span class="icon-badge"><span class="icon people"></span></span>
+    <main class="auth-shell registration-shell">
+
+      <a class="registration-back civic-back-link" href="index.html">← Back to Home</a>
+
+      <section class="modern-registration-card civic-register-card">
+
+        <!-- FRAME DETAILS -->
+        <span class="register-corner register-corner-tl"></span>
+        <span class="register-corner register-corner-tr"></span>
+        <span class="register-corner register-corner-bl"></span>
+        <span class="register-corner register-corner-br"></span>
+
+        <span class="register-side-line register-line-left"></span>
+        <span class="register-side-line register-line-right"></span>
+
+        <div class="register-scan-line"></div>
+
+
+        <!-- HEADER -->
+        <div class="registration-heading civic-register-heading">
+
+          <div class="registration-logos">
+            <div class="registration-logo-item">
+              <img src="assets/logo.png" alt="Barangay Bukal">
+            </div>
+
+            <span class="registration-logo-divider"></span>
+
+            <div class="registration-logo-item">
+              <img src="assets/logosk.png" alt="Sangguniang Kabataan">
+            </div>
+          </div>
+
+          <span class="registration-eyebrow">BARANGAY BUKAL • PAGBILAO, QUEZON</span>
+
           <h1>Youth Registration</h1>
-          <p>Create your profile to join the Bukal youth database</p>
+
+          <div class="register-title-line">
+            <span></span>
+            <strong>KATIPUNAN NG KABATAAN YOUTH PROFILING</strong>
+            <span></span>
+          </div>
+
+          <p>Create your Bukal Youth Data profile and community information account.</p>
+
         </div>
 
-        <form id="youthRegisterForm" class="form-grid">
 
-          <!-- ACCOUNT INFORMATION -->
-          <h2>Account Information</h2>
+        <!-- PROGRESS -->
+        <div class="registration-progress civic-progress">
 
-          <label class="field full"><span>Full Name</span><input type="text" name="fullName" placeholder="Juan Dela Cruz" required /></label>
-
-          <label class="field"><span>Email</span><input type="email" id="email" name="email" placeholder="your.email@example.com" required /></label>
-
-          <label class="field"><span>Password</span><input type="password" id="password" name="password" placeholder="Minimum 8 characters" minlength="8" required /></label>
-
-          <label class="field"><span>Birth Date</span><input type="date" name="birthDate" required /></label>
-
-          <label class="field"><span>Gender</span><select name="gender" required><option value="">Select</option><option>Male</option><option>Female</option><option>Prefer not to say</option></select></label>
-
-          <label class="field"><span>Civil Status</span><select name="civilStatus" required><option value="">Select</option><option>Single</option><option>Married</option><option>Widowed</option><option>Divorced</option><option>Separated</option><option>Annulled</option><option>Live-in</option><option>Unknown</option></select></label>
-
-          <label class="field full"><span>Purok / Area</span><select name="address" required><option value="">Select Purok / Area</option><option value="BRIONES COMPOUND">BRIONES COMPOUND</option><option value="CRDC">CRDC</option><option value="PENINSULA HOMES">PENINSULA HOMES</option><option value="INTERTOWN HOMES 1-6">INTERTOWN HOMES 1-6</option><option value="KALYE PUTOL/ BUKAL 2">KALYE PUTOL / BUKAL 2</option><option value="SAN DIEGO VILLAGE">SAN DIEGO VILLAGE</option><option value="BERANA COMPOUND">BERANA COMPOUND</option><option value="SITIO PAG-ASA (ITAAS)">SITIO PAG-ASA (ITAAS)</option><option value="SITIO PAG-ASA (IBABA)">SITIO PAG-ASA (IBABA)</option><option value="ENCENAREZ COMPOUND">ENCENAREZ COMPOUND</option><option value="BUKAL1">BUKAL 1</option><option value="GOLDEN MEADOWS">GOLDEN MEADOWS</option><option value="CIUDAD REMBINO">CIUDAD REMBINO</option><option value="HIGHWAY">HIGHWAY</option><option value="KRISANT VILLAGE">KRISANT VILLAGE</option><option value="INTERTOWN HOMES PHASE 5">INTERTOWN HOMES PHASE 5</option><option value="INTERTOWN HOMES PHASE 6">INTERTOWN HOMES PHASE 6</option><option value="INTERTOWN HOMES PHASE 1-4">INTERTOWN HOMES PHASE 1-4</option></select></label>
-
-          <label class="field full"><span>Contact Number</span><input type="tel" name="contact" placeholder="09XX XXX XXXX" required /></label>
-
-
-          <!-- EDUCATION AND EMPLOYMENT -->
-          <h2>Education and Employment</h2>
-
-          <label class="field"><span>Educational Attainment</span><select name="education" required><option value="">Select</option><option>Elementary</option><option>High School</option><option>Senior High School</option><option>College</option><option>Vocational</option><option>Graduate</option><option>Out of School Youth</option></select></label>
-
-          <label class="field"><span>Current Education Status</span><select name="educationStatus" required><option value="">Select</option><option>Currently Studying</option><option>Not Studying</option><option>Graduated</option></select></label>
-
-          <label class="field"><span>Employment Status</span><select name="employment" required><option value="">Select</option><option>Student</option><option>Employed</option><option>Unemployed</option><option>Self-employed</option></select></label>
-
-          <label class="field"><span>Civic Participation</span><select name="civic" required><option value="">Select</option><option>Active</option><option>Occasional</option><option>Not Active</option></select></label>
-
-
-          <!-- VOTER AND SUPPORT INFORMATION -->
-          <h2>Voter and Support Information</h2>
-
-          <label class="field"><span>Voter Registration Status</span><select name="voterStatus" required><option value="">Select</option><option>Registered Voter</option><option>Not Registered</option></select></label>
-
-          <label class="field"><span>New Voter Status</span><select name="newVoter" required><option value="">Select</option><option>New Voter</option><option>Existing Voter</option><option>Not Applicable</option></select></label>
-
-          <label class="field"><span>Voter Participation</span><select name="voterParticipation" required><option value="">Select</option><option>Participated</option><option>Not Participated</option><option>Not Applicable</option></select></label>
-
-          <label class="field"><span>Special Needs</span><select name="specialNeeds" required><option value="">Select</option><option>No</option><option>Yes</option></select></label>
-
-          <label class="field full"><span>Specific Assistance Needed</span><input type="text" name="assistance" placeholder="Type N/A if none" /></label>
-
-
-          <!-- SK / KK INFORMATION -->
-          <h2>SK / KK Information</h2>
-
-          <label class="field"><span>Registered SK Voter?</span><select name="registeredSKVoter" required><option value="">Select</option><option>Yes</option><option>No</option></select></label>
-
-          <label class="field"><span>Did you vote in the last SK Election?</span><select name="votedLastSKElection" required><option value="">Select</option><option>Yes</option><option>No</option></select></label>
-
-          <label class="field full"><span>Have you already attended a KK Assembly?</span><select name="kkAssemblyAttended" id="kkAssemblyAttended" required><option value="">Select</option><option>Yes</option><option>No</option></select></label>
-
-          <label class="field full" id="kkAttendanceCountField" style="display:none;"><span>If yes, how many times?</span><select name="kkAttendanceCount" id="kkAttendanceCount"><option value="">Select</option><option>1-2 Times</option><option>3-4 Times</option><option>5 and Above</option></select></label>
-
-          <label class="field full" id="kkNoReasonField" style="display:none;"><span>If no, why?</span><select name="kkNoReason" id="kkNoReason"><option value="">Select</option><option>There was no KK Assembly Meeting</option><option>Not Interested to Attend</option></select></label>
-
-
-          <!-- SKILLS AND INTERESTS -->
-          <h2>Skills and Interests</h2>
-
-          <label class="field full"><span>Hobbies / Skills</span><input type="text" name="hobbies" placeholder="Example: Dancing, music, drawing, coding" required /></label>
-
-          <label class="field full"><span>Sports Interests</span><input type="text" name="sports" placeholder="Example: Basketball, volleyball, badminton" required /></label>
-
-
-          <!-- ACTIONS -->
-          <div class="form-actions full">
-            <button class="btn btn-primary full-btn" type="submit">Register</button>
-            <p>Already have an account? <a href="login.html">Login here</a></p>
+          <div class="progress-item active" data-progress="1">
+            <div class="progress-circle">1</div>
+            <div class="progress-text">
+              <strong>Personal</strong>
+              <small>Basic Information</small>
+            </div>
           </div>
+
+          <div class="progress-line"></div>
+
+          <div class="progress-item" data-progress="2">
+            <div class="progress-circle">2</div>
+            <div class="progress-text">
+              <strong>Youth Profile</strong>
+              <small>Community Profile</small>
+            </div>
+          </div>
+
+          <div class="progress-line"></div>
+
+          <div class="progress-item" data-progress="3">
+            <div class="progress-circle">3</div>
+            <div class="progress-text">
+              <strong>Review</strong>
+              <small>Account & Submit</small>
+            </div>
+          </div>
+
+        </div>
+
+
+        <form id="youthRegisterForm" class="modern-register-form">
+
+
+          <!-- =====================================================
+               STEP 1
+          ====================================================== -->
+          <section class="registration-step active" data-step="1">
+
+            <div class="step-heading">
+              <span class="step-number">01</span>
+
+              <div>
+                <span class="step-eyebrow">REGISTRATION STEP</span>
+                <h2>Personal Information</h2>
+                <p>Tell us some basic information about yourself.</p>
+              </div>
+            </div>
+
+
+            <div class="form-grid registration-grid">
+
+              <label class="field full">
+                <span>Full Name <b>*</b></span>
+                <input type="text" name="fullName" placeholder="Juan Dela Cruz" autocomplete="name" required />
+              </label>
+
+              <label class="field">
+                <span>Birth Date <b>*</b></span>
+                <input type="date" name="birthDate" required />
+              </label>
+
+              <label class="field">
+                <span>Gender <b>*</b></span>
+                <select name="gender" required>
+                  <option value="">Select Gender</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Prefer not to say</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Civil Status <b>*</b></span>
+                <select name="civilStatus" required>
+                  <option value="">Select Civil Status</option>
+                  <option>Single</option>
+                  <option>Married</option>
+                  <option>Widowed</option>
+                  <option>Divorced</option>
+                  <option>Separated</option>
+                  <option>Annulled</option>
+                  <option>Live-in</option>
+                  <option>Unknown</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Contact Number <b>*</b></span>
+                <input type="tel" name="contact" placeholder="09XX XXX XXXX" autocomplete="tel" required />
+              </label>
+
+              <label class="field full">
+                <span>Purok / Area <b>*</b></span>
+
+                <select name="address" required>
+                  <option value="">Select Purok / Area</option>
+                  <option value="BRIONES COMPOUND">BRIONES COMPOUND</option>
+                  <option value="CRDC">CRDC</option>
+                  <option value="PENINSULA HOMES">PENINSULA HOMES</option>
+                  <option value="INTERTOWN HOMES 1-6">INTERTOWN HOMES 1-6</option>
+                  <option value="KALYE PUTOL/ BUKAL 2">KALYE PUTOL / BUKAL 2</option>
+                  <option value="SAN DIEGO VILLAGE">SAN DIEGO VILLAGE</option>
+                  <option value="BERANA COMPOUND">BERANA COMPOUND</option>
+                  <option value="SITIO PAG-ASA (ITAAS)">SITIO PAG-ASA (ITAAS)</option>
+                  <option value="SITIO PAG-ASA (IBABA)">SITIO PAG-ASA (IBABA)</option>
+                  <option value="ENCENAREZ COMPOUND">ENCENAREZ COMPOUND</option>
+                  <option value="BUKAL1">BUKAL 1</option>
+                  <option value="GOLDEN MEADOWS">GOLDEN MEADOWS</option>
+                  <option value="CIUDAD REMBINO">CIUDAD REMBINO</option>
+                  <option value="HIGHWAY">HIGHWAY</option>
+                  <option value="KRISANT VILLAGE">KRISANT VILLAGE</option>
+                  <option value="INTERTOWN HOMES PHASE 5">INTERTOWN HOMES PHASE 5</option>
+                  <option value="INTERTOWN HOMES PHASE 6">INTERTOWN HOMES PHASE 6</option>
+                  <option value="INTERTOWN HOMES PHASE 1-4">INTERTOWN HOMES PHASE 1-4</option>
+                </select>
+
+              </label>
+
+            </div>
+
+
+            <div class="wizard-actions wizard-actions-end">
+              <button class="btn btn-primary wizard-next civic-next-btn" type="button" data-next="2">
+                Continue
+                <span>→</span>
+              </button>
+            </div>
+
+          </section>
+
+
+          <!-- =====================================================
+               STEP 2
+          ====================================================== -->
+          <section class="registration-step" data-step="2">
+
+            <div class="step-heading">
+              <span class="step-number">02</span>
+
+              <div>
+                <span class="step-eyebrow">REGISTRATION STEP</span>
+                <h2>Youth Profile</h2>
+                <p>Provide your education, participation, voter, KK, skills and interests.</p>
+              </div>
+            </div>
+
+
+            <!-- EDUCATION -->
+            <div class="registration-subsection">
+
+              <div class="subsection-heading">
+                <h3>Education & Employment</h3>
+                <p>Your current educational and employment information.</p>
+              </div>
+
+              <div class="form-grid registration-grid">
+
+                <label class="field">
+                  <span>Educational Attainment <b>*</b></span>
+                  <select name="education" required>
+                    <option value="">Select</option>
+                    <option>Elementary</option>
+                    <option>High School</option>
+                    <option>Senior High School</option>
+                    <option>College</option>
+                    <option>Vocational</option>
+                    <option>Graduate</option>
+                    <option>Out of School Youth</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span>Current Education Status <b>*</b></span>
+                  <select name="educationStatus" required>
+                    <option value="">Select</option>
+                    <option>Currently Studying</option>
+                    <option>Not Studying</option>
+                    <option>Graduated</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span>Employment Status <b>*</b></span>
+                  <select name="employment" required>
+                    <option value="">Select</option>
+                    <option>Student</option>
+                    <option>Employed</option>
+                    <option>Unemployed</option>
+                    <option>Self-employed</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span>Civic Participation <b>*</b></span>
+                  <select name="civic" required>
+                    <option value="">Select</option>
+                    <option>Active</option>
+                    <option>Occasional</option>
+                    <option>Not Active</option>
+                  </select>
+                </label>
+
+              </div>
+
+            </div>
+
+
+            <!-- VOTER -->
+            <div class="registration-subsection">
+
+              <div class="subsection-heading">
+                <h3>Voter Information</h3>
+                <p>Information related to your voter registration and participation.</p>
+              </div>
+
+              <div class="form-grid registration-grid">
+
+                <label class="field">
+                  <span>Voter Registration Status <b>*</b></span>
+                  <select name="voterStatus" required>
+                    <option value="">Select</option>
+                    <option>Registered Voter</option>
+                    <option>Not Registered</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span>New Voter Status <b>*</b></span>
+                  <select name="newVoter" required>
+                    <option value="">Select</option>
+                    <option>New Voter</option>
+                    <option>Existing Voter</option>
+                    <option>Not Applicable</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span>Voter Participation <b>*</b></span>
+                  <select name="voterParticipation" required>
+                    <option value="">Select</option>
+                    <option>Participated</option>
+                    <option>Not Participated</option>
+                    <option>Not Applicable</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span>Registered SK Voter? <b>*</b></span>
+                  <select name="registeredSKVoter" required>
+                    <option value="">Select</option>
+                    <option>Yes</option>
+                    <option>No</option>
+                  </select>
+                </label>
+
+                <label class="field full">
+                  <span>Did you vote in the last SK Election? <b>*</b></span>
+                  <select name="votedLastSKElection" required>
+                    <option value="">Select</option>
+                    <option>Yes</option>
+                    <option>No</option>
+                  </select>
+                </label>
+
+              </div>
+
+            </div>
+
+
+            <!-- KK -->
+            <div class="registration-subsection">
+
+              <div class="subsection-heading">
+                <h3>Katipunan ng Kabataan</h3>
+                <p>Information about your participation in KK Assemblies.</p>
+              </div>
+
+              <div class="form-grid registration-grid">
+
+                <label class="field full">
+                  <span>Have you already attended a KK Assembly? <b>*</b></span>
+
+                  <select name="kkAssemblyAttended" id="kkAssemblyAttended" required>
+                    <option value="">Select</option>
+                    <option>Yes</option>
+                    <option>No</option>
+                  </select>
+
+                </label>
+
+                <label class="field full conditional-field" id="kkAttendanceCountField" style="display:none;">
+                  <span>If yes, how many times? <b>*</b></span>
+
+                  <select name="kkAttendanceCount" id="kkAttendanceCount">
+                    <option value="">Select</option>
+                    <option>1-2 Times</option>
+                    <option>3-4 Times</option>
+                    <option>5 and Above</option>
+                  </select>
+
+                </label>
+
+                <label class="field full conditional-field" id="kkNoReasonField" style="display:none;">
+                  <span>If no, why? <b>*</b></span>
+
+                  <select name="kkNoReason" id="kkNoReason">
+                    <option value="">Select</option>
+                    <option>There was no KK Assembly Meeting</option>
+                    <option>Not Interested to Attend</option>
+                  </select>
+
+                </label>
+
+              </div>
+
+            </div>
+
+
+            <!-- SUPPORT -->
+            <div class="registration-subsection">
+
+              <div class="subsection-heading">
+                <h3>Support, Skills & Interests</h3>
+                <p>Help Barangay Bukal understand youth needs, talents and interests.</p>
+              </div>
+
+              <div class="form-grid registration-grid">
+
+                <label class="field">
+                  <span>Special Needs <b>*</b></span>
+                  <select name="specialNeeds" required>
+                    <option value="">Select</option>
+                    <option>No</option>
+                    <option>Yes</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span>Specific Assistance Needed</span>
+                  <input type="text" name="assistance" placeholder="Type N/A if none" />
+                </label>
+
+                <label class="field full">
+                  <span>Hobbies / Skills <b>*</b></span>
+                  <input type="text" name="hobbies" placeholder="Example: Dancing, music, drawing, coding" required />
+                </label>
+
+                <label class="field full">
+                  <span>Sports Interests <b>*</b></span>
+                  <input type="text" name="sports" placeholder="Example: Basketball, volleyball, badminton" required />
+                </label>
+
+              </div>
+
+            </div>
+
+
+            <div class="wizard-actions">
+
+              <button class="btn wizard-prev civic-prev-btn" type="button" data-prev="1">
+                ← Previous
+              </button>
+
+              <button class="btn btn-primary wizard-next civic-next-btn" type="button" data-next="3">
+                Review Information
+                <span>→</span>
+              </button>
+
+            </div>
+
+          </section>
+
+
+          <!-- =====================================================
+               STEP 3
+          ====================================================== -->
+          <section class="registration-step" data-step="3">
+
+            <div class="step-heading">
+              <span class="step-number">03</span>
+
+              <div>
+                <span class="step-eyebrow">FINAL STEP</span>
+                <h2>Account & Review</h2>
+                <p>Create your login credentials and review your information before submission.</p>
+              </div>
+            </div>
+
+
+            <!-- ACCOUNT -->
+            <div class="registration-subsection">
+
+              <div class="subsection-heading">
+                <h3>Account Information</h3>
+                <p>You will use these credentials to access your Youth Dashboard.</p>
+              </div>
+
+              <div class="form-grid registration-grid">
+
+                <label class="field">
+                  <span>Email Address <b>*</b></span>
+                  <input type="email" id="email" name="email" placeholder="your.email@example.com" autocomplete="email" required />
+                </label>
+
+                <label class="field">
+                  <span>Password <b>*</b></span>
+
+                  <div class="register-password-wrap">
+                    <input type="password" id="password" name="password" placeholder="Minimum 8 characters" minlength="8" autocomplete="new-password" required />
+
+                    <button type="button" id="registerPasswordToggle" class="register-password-toggle" aria-label="Show password">
+                      <svg class="register-eye-open" viewBox="0 0 24 24">
+                        <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                      </svg>
+
+                      <svg class="register-eye-closed" viewBox="0 0 24 24">
+                        <path d="m3 3 18 18"></path>
+                        <path d="M10.6 6.2A9.9 9.9 0 0 1 12 6c6 0 9.5 6 9.5 6a15.4 15.4 0 0 1-2.1 2.8"></path>
+                        <path d="M6.6 6.6C4 8.4 2.5 12 2.5 12s3.5 6 9.5 6a9.3 9.3 0 0 0 3.4-.6"></path>
+                      </svg>
+                    </button>
+                  </div>
+
+                </label>
+
+              </div>
+
+
+              <div class="password-note civic-password-note">
+                <span>◆</span>
+                <p>Password must contain at least 8 characters. Keep your login credentials private.</p>
+              </div>
+
+            </div>
+
+
+            <!-- REVIEW -->
+            <div class="review-section civic-review-section">
+
+              <div class="review-heading">
+                <div>
+                  <h3>Review Your Information</h3>
+                  <p>Please verify your information before completing registration.</p>
+                </div>
+
+                <button type="button" class="review-edit-btn" data-prev="1">
+                  Edit Personal Info
+                </button>
+              </div>
+
+              <div id="registrationReview" class="review-grid"></div>
+
+            </div>
+
+
+            <!-- CONSENT -->
+            <div class="registration-consent civic-consent">
+
+              <div class="consent-icon">✓</div>
+
+              <div>
+                <strong>Information Confirmation</strong>
+                <p>By registering, you confirm that the information provided is accurate and may be used for Barangay Bukal youth profiling and related SK programs.</p>
+              </div>
+
+            </div>
+
+
+            <div class="wizard-actions">
+
+              <button class="btn wizard-prev civic-prev-btn" type="button" data-prev="2">
+                ← Previous
+              </button>
+
+              <button class="btn btn-primary register-submit-btn civic-submit-btn" type="submit">
+                Complete Registration
+              </button>
+
+            </div>
+
+
+            <div class="registration-login">
+              <p>Already have an account? <a href="login.html">Access the Login Portal</a></p>
+            </div>
+
+          </section>
 
         </form>
 
+
+        <!-- SECURITY FOOTER -->
+        <div class="register-security-footer">
+
+          <span class="register-shield">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3 19 6v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"></path>
+              <path d="m9 12 2 2 4-4"></path>
+            </svg>
+          </span>
+
+          <div>
+            <strong>Secure & Accurate Youth Information</strong>
+            <small>For a stronger, more empowered Bukal youth community</small>
+          </div>
+
+        </div>
+
       </section>
+
+
+      <p class="register-bottom-message">
+        Sama-sama para sa mas maunlad na kabataang Bukal
+      </p>
 
     </main>
 
   </div>
 
 
-  <!-- JAVASCRIPT -->
+  <!-- EXISTING SYSTEM SCRIPTS -->
   <script type="module" src="assets/app.js"></script>
   <script type="module" src="assets/youth-register.js"></script>
 
 
-  <!-- KK ASSEMBLY CONDITIONAL FIELDS -->
+  <!-- WIZARD -->
   <script>
-    const kkAssemblyAttended = document.getElementById("kkAssemblyAttended");
-    const kkAttendanceCountField = document.getElementById("kkAttendanceCountField");
-    const kkNoReasonField = document.getElementById("kkNoReasonField");
-    const kkAttendanceCount = document.getElementById("kkAttendanceCount");
-    const kkNoReason = document.getElementById("kkNoReason");
+    const registerForm = document.getElementById("youthRegisterForm");
+    const registrationSteps = document.querySelectorAll(".registration-step");
+    const progressItems = document.querySelectorAll(".progress-item");
+    const progressLines = document.querySelectorAll(".progress-line");
 
-    kkAssemblyAttended.addEventListener("change", () => {
-      const value = kkAssemblyAttended.value;
+    function getStep(stepNumber) {
+      return document.querySelector(`.registration-step[data-step="${stepNumber}"]`);
+    }
 
-      if (value === "Yes") {
-        kkAttendanceCountField.style.display = "flex";
-        kkNoReasonField.style.display = "none";
-        kkAttendanceCount.required = true;
-        kkNoReason.required = false;
-        kkNoReason.value = "";
-      } else if (value === "No") {
-        kkAttendanceCountField.style.display = "none";
-        kkNoReasonField.style.display = "flex";
-        kkAttendanceCount.required = false;
-        kkNoReason.required = true;
-        kkAttendanceCount.value = "";
-      } else {
-        kkAttendanceCountField.style.display = "none";
-        kkNoReasonField.style.display = "none";
-        kkAttendanceCount.required = false;
-        kkNoReason.required = false;
-        kkAttendanceCount.value = "";
-        kkNoReason.value = "";
+    function validateStep(stepNumber) {
+      const step = getStep(stepNumber);
+
+      if (!step) return true;
+
+      const fields = [...step.querySelectorAll("input, select, textarea")];
+
+      for (const field of fields) {
+        if (field.offsetParent === null) continue;
+
+        if (!field.checkValidity()) {
+          field.reportValidity();
+          field.focus();
+          return false;
+        }
       }
+
+      return true;
+    }
+
+    function showStep(stepNumber) {
+
+      registrationSteps.forEach(step => {
+        step.classList.toggle(
+          "active",
+          Number(step.dataset.step) === Number(stepNumber)
+        );
+      });
+
+      progressItems.forEach(item => {
+        const itemStep = Number(item.dataset.progress);
+
+        item.classList.toggle(
+          "active",
+          itemStep === Number(stepNumber)
+        );
+
+        item.classList.toggle(
+          "completed",
+          itemStep < Number(stepNumber)
+        );
+      });
+
+      progressLines.forEach((line, index) => {
+        line.classList.toggle(
+          "completed",
+          index + 1 < Number(stepNumber)
+        );
+      });
+
+      if (Number(stepNumber) === 3) {
+        updateRegistrationReview();
+      }
+
+      const card = document.querySelector(".civic-register-card");
+
+      if (card) {
+        const top =
+          card.getBoundingClientRect().top +
+          window.scrollY -
+          85;
+
+        window.scrollTo({
+          top,
+          behavior: "smooth"
+        });
+      }
+    }
+
+    document.querySelectorAll(".wizard-next").forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        const currentStep =
+          Number(
+            button
+              .closest(".registration-step")
+              .dataset.step
+          );
+
+        if (!validateStep(currentStep)) return;
+
+        showStep(
+          Number(button.dataset.next)
+        );
+
+      });
+
     });
+
+    document.querySelectorAll("[data-prev]").forEach(button => {
+
+      button.addEventListener("click", () => {
+        showStep(
+          Number(button.dataset.prev)
+        );
+      });
+
+    });
+
+
+    function formatReviewValue(value) {
+      if (!value || String(value).trim() === "") {
+        return "Not provided";
+      }
+
+      return value;
+    }
+
+    function getFormValue(name) {
+      const field =
+        registerForm.elements[name];
+
+      return field
+        ? formatReviewValue(field.value)
+        : "Not provided";
+    }
+
+    function updateRegistrationReview() {
+
+      const review =
+        document.getElementById(
+          "registrationReview"
+        );
+
+      if (!review) return;
+
+      const reviewFields = [
+        ["Full Name", getFormValue("fullName")],
+        ["Birth Date", getFormValue("birthDate")],
+        ["Gender", getFormValue("gender")],
+        ["Civil Status", getFormValue("civilStatus")],
+        ["Purok / Area", getFormValue("address")],
+        ["Contact Number", getFormValue("contact")],
+        ["Education", getFormValue("education")],
+        ["Education Status", getFormValue("educationStatus")],
+        ["Employment", getFormValue("employment")],
+        ["Civic Participation", getFormValue("civic")],
+        ["Voter Status", getFormValue("voterStatus")],
+        ["New Voter Status", getFormValue("newVoter")],
+        ["Voter Participation", getFormValue("voterParticipation")],
+        ["Registered SK Voter", getFormValue("registeredSKVoter")],
+        ["Voted Last SK Election", getFormValue("votedLastSKElection")],
+        ["KK Assembly Attended", getFormValue("kkAssemblyAttended")],
+        ["KK Attendance Count", getFormValue("kkAttendanceCount")],
+        ["KK Non-Attendance Reason", getFormValue("kkNoReason")],
+        ["Special Needs", getFormValue("specialNeeds")],
+        ["Assistance Needed", getFormValue("assistance")],
+        ["Hobbies / Skills", getFormValue("hobbies")],
+        ["Sports Interests", getFormValue("sports")]
+      ];
+
+      review.innerHTML =
+        reviewFields
+          .map(([label, value]) => `
+            <div class="review-item">
+              <small>${label}</small>
+              <strong>${value}</strong>
+            </div>
+          `)
+          .join("");
+
+    }
+
+
+    /* KK CONDITIONAL FIELDS */
+
+    const kkAssemblyAttended =
+      document.getElementById(
+        "kkAssemblyAttended"
+      );
+
+    const kkAttendanceCountField =
+      document.getElementById(
+        "kkAttendanceCountField"
+      );
+
+    const kkNoReasonField =
+      document.getElementById(
+        "kkNoReasonField"
+      );
+
+    const kkAttendanceCount =
+      document.getElementById(
+        "kkAttendanceCount"
+      );
+
+    const kkNoReason =
+      document.getElementById(
+        "kkNoReason"
+      );
+
+    kkAssemblyAttended.addEventListener(
+      "change",
+      () => {
+
+        const value =
+          kkAssemblyAttended.value;
+
+        if (value === "Yes") {
+
+          kkAttendanceCountField.style.display =
+            "flex";
+
+          kkNoReasonField.style.display =
+            "none";
+
+          kkAttendanceCount.required =
+            true;
+
+          kkNoReason.required =
+            false;
+
+          kkNoReason.value =
+            "";
+
+        }
+
+        else if (value === "No") {
+
+          kkAttendanceCountField.style.display =
+            "none";
+
+          kkNoReasonField.style.display =
+            "flex";
+
+          kkAttendanceCount.required =
+            false;
+
+          kkNoReason.required =
+            true;
+
+          kkAttendanceCount.value =
+            "";
+
+        }
+
+        else {
+
+          kkAttendanceCountField.style.display =
+            "none";
+
+          kkNoReasonField.style.display =
+            "none";
+
+          kkAttendanceCount.required =
+            false;
+
+          kkNoReason.required =
+            false;
+
+          kkAttendanceCount.value =
+            "";
+
+          kkNoReason.value =
+            "";
+
+        }
+
+      }
+    );
+
+
+    /* PASSWORD VISIBILITY */
+
+    const registerPassword =
+      document.getElementById(
+        "password"
+      );
+
+    const registerPasswordToggle =
+      document.getElementById(
+        "registerPasswordToggle"
+      );
+
+    registerPasswordToggle.addEventListener(
+      "click",
+      () => {
+
+        const hidden =
+          registerPassword.type ===
+          "password";
+
+        registerPassword.type =
+          hidden
+            ? "text"
+            : "password";
+
+        registerPasswordToggle.classList.toggle(
+          "showing",
+          hidden
+        );
+
+        registerPasswordToggle.setAttribute(
+          "aria-label",
+          hidden
+            ? "Hide password"
+            : "Show password"
+        );
+
+      }
+    );
   </script>
 
 </body>
+
 </html>
