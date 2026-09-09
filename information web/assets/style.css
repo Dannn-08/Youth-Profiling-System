@@ -6937,3 +6937,1136 @@ body[data-page="home"] .modern-footer::before {
   }
 
 }
+/* =========================================================
+   HOME HERO — LARGER TEXT / BETTER READABILITY
+========================================================= */
+
+body[data-page="home"] .home-portal-badge {
+  font-size:12px !important;
+  padding:10px 16px !important;
+  letter-spacing:.16em !important;
+}
+
+body[data-page="home"] .civic-home-brand .hero-brand-text strong {
+  font-size:26px !important;
+}
+
+body[data-page="home"] .civic-home-brand .hero-brand-text small {
+  font-size:11px !important;
+  letter-spacing:.12em !important;
+}
+
+body[data-page="home"] .home-title-accent small {
+  font-size:11px !important;
+  letter-spacing:.18em !important;
+}
+
+body[data-page="home"] .home-title-wrap h1 {
+  font-size:clamp(62px,5.5vw,88px) !important;
+  line-height:1 !important;
+}
+
+body[data-page="home"] .home-title-wrap h1 span {
+  font-size:.78em !important;
+}
+
+body[data-page="home"] .home-hero-description {
+  max-width:850px !important;
+  font-size:18px !important;
+  line-height:1.65 !important;
+  color:rgba(255,255,255,.86) !important;
+}
+
+
+/* BUTTON TEXT */
+
+body[data-page="home"] .home-primary-btn,
+body[data-page="home"] .home-secondary-btn {
+  min-height:82px !important;
+}
+
+body[data-page="home"] .home-primary-btn small,
+body[data-page="home"] .home-secondary-btn small {
+  font-size:10px !important;
+  letter-spacing:.12em !important;
+}
+
+body[data-page="home"] .home-primary-btn strong,
+body[data-page="home"] .home-secondary-btn strong {
+  font-size:16px !important;
+}
+
+body[data-page="home"] .home-btn-icon {
+  width:48px !important;
+  height:48px !important;
+}
+
+body[data-page="home"] .home-btn-icon svg {
+  width:22px !important;
+  height:22px !important;
+}
+
+
+/* EXPLORE */
+
+body[data-page="home"] .home-explore-link {
+  font-size:11px !important;
+  letter-spacing:.14em !important;
+}
+
+body[data-page="home"] .home-explore-arrow {
+  width:34px !important;
+  height:34px !important;
+  font-size:15px !important;
+}
+
+
+/* LEFT / RIGHT SIDE TEXT */
+
+body[data-page="home"] .home-side-decor {
+  font-size:12px !important;
+  letter-spacing:.24em !important;
+}
+
+
+/* =========================================================
+   BOTTOM STRIP — LARGER
+========================================================= */
+
+body[data-page="home"] .portal-strip-item {
+  min-height:76px !important;
+  padding:15px 20px !important;
+}
+
+body[data-page="home"] .portal-strip-item > span {
+  font-size:27px !important;
+}
+
+body[data-page="home"] .portal-strip-item strong {
+  font-size:13px !important;
+}
+
+body[data-page="home"] .portal-strip-item small {
+  font-size:9px !important;
+  margin-top:3px !important;
+}
+
+
+/* =========================================================
+   LAPTOP
+========================================================= */
+
+@media(max-width:1200px) {
+
+  body[data-page="home"] .home-title-wrap h1 {
+    font-size:clamp(54px,5vw,72px) !important;
+  }
+
+  body[data-page="home"] .home-hero-description {
+    font-size:16px !important;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:700px) {
+
+  body[data-page="home"] .home-title-wrap h1 {
+    font-size:44px !important;
+  }
+
+  body[data-page="home"] .home-hero-description {
+    font-size:14px !important;
+  }
+
+  body[data-page="home"] .home-primary-btn strong,
+  body[data-page="home"] .home-secondary-btn strong {
+    font-size:15px !important;
+  }
+
+  body[data-page="home"] .portal-strip-item strong {
+    font-size:11px !important;
+  }
+
+  body[data-page="home"] .portal-strip-item small {
+    font-size:8px !important;
+  }
+
+}
+/* =========================================================
+   FINAL HOME PAGE TYPOGRAPHY + SPACING SYSTEM
+   APPLIES TO INDEX.HTML ONLY
+========================================================= */
+
+body[data-page="home"] {
+  --home-title-xl: clamp(58px, 5.4vw, 86px);
+  --home-title-lg: 50px;
+  --home-title-md: 30px;
+  --home-body-lg: 17px;
+  --home-body-md: 15px;
+  --home-body-sm: 13px;
+  --home-label: 11px;
+  --home-gold: #d7a761;
+  --home-teal: #07555b;
+  --home-text: #61777f;
+}
+
+
+/* =========================================================
+   GENERAL SECTION HEADINGS
+========================================================= */
+
+body[data-page="home"] .section-eyebrow,
+body[data-page="home"] .features-kicker small,
+body[data-page="home"] .sk-heading-kicker small,
+body[data-page="home"] .event-category {
+  font-size: var(--home-label) !important;
+  letter-spacing: .16em !important;
+  font-weight: 800 !important;
+}
+
+body[data-page="home"] .features h2,
+body[data-page="home"] .civic-features-heading h2,
+body[data-page="home"] .civic-sk-heading h2,
+body[data-page="home"] .events-section-heading h2,
+body[data-page="home"] .about-copy h2 {
+  font-family: var(--font-display);
+  font-size: var(--home-title-lg) !important;
+  line-height: 1.08 !important;
+  color: #07494e;
+}
+
+body[data-page="home"] .features .center > p,
+body[data-page="home"] .civic-features-heading p,
+body[data-page="home"] .civic-sk-heading p,
+body[data-page="home"] .events-section-heading p,
+body[data-page="home"] .about-copy p {
+  font-size: var(--home-body-md) !important;
+  line-height: 1.7 !important;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+body[data-page="home"] .civic-home-content {
+  width: min(1080px, calc(100% - 70px));
+}
+
+body[data-page="home"] .home-portal-badge {
+  font-size: 12px !important;
+}
+
+body[data-page="home"] .civic-home-brand .hero-brand-text strong {
+  font-size: 25px !important;
+}
+
+body[data-page="home"] .civic-home-brand .hero-brand-text small {
+  font-size: 11px !important;
+}
+
+body[data-page="home"] .home-title-accent small {
+  font-size: 11px !important;
+}
+
+body[data-page="home"] .home-title-wrap h1 {
+  font-size: var(--home-title-xl) !important;
+  line-height: 1 !important;
+}
+
+body[data-page="home"] .home-hero-description {
+  max-width: 850px !important;
+  font-size: var(--home-body-lg) !important;
+  line-height: 1.65 !important;
+}
+
+body[data-page="home"] .home-primary-btn strong,
+body[data-page="home"] .home-secondary-btn strong {
+  font-size: 16px !important;
+}
+
+body[data-page="home"] .home-primary-btn small,
+body[data-page="home"] .home-secondary-btn small {
+  font-size: 10px !important;
+}
+
+body[data-page="home"] .home-explore-link {
+  font-size: 11px !important;
+}
+
+body[data-page="home"] .home-side-decor {
+  font-size: 11px !important;
+}
+
+
+/* =========================================================
+   HOME BOTTOM PORTAL STRIP
+========================================================= */
+
+body[data-page="home"] .portal-strip-item > span {
+  font-size: 27px !important;
+}
+
+body[data-page="home"] .portal-strip-item strong {
+  font-size: 13px !important;
+}
+
+body[data-page="home"] .portal-strip-item small {
+  font-size: 9px !important;
+}
+
+
+/* =========================================================
+   SYSTEM FEATURES
+========================================================= */
+
+body[data-page="home"] .civic-features-section {
+  padding: 80px 0 90px !important;
+}
+
+body[data-page="home"] .civic-features-heading {
+  max-width: 900px !important;
+  margin-bottom: 40px !important;
+}
+
+body[data-page="home"] .civic-capability-grid {
+  max-width: 1220px !important;
+}
+
+body[data-page="home"] .capability-label {
+  font-size: 10px !important;
+}
+
+body[data-page="home"] .capability-content h3 {
+  font-size: 28px !important;
+  line-height: 1.14 !important;
+}
+
+body[data-page="home"] .capability-main .capability-content h3 {
+  font-size: 42px !important;
+}
+
+body[data-page="home"] .capability-content p {
+  font-size: 14px !important;
+  line-height: 1.65 !important;
+}
+
+body[data-page="home"] .capability-main .capability-content p {
+  font-size: 15px !important;
+}
+
+body[data-page="home"] .capability-action {
+  font-size: 13px !important;
+}
+
+
+/* =========================================================
+   SK OFFICIALS
+========================================================= */
+
+body[data-page="home"] .civic-sk-section {
+  padding: 85px 0 95px !important;
+}
+
+body[data-page="home"] .sk-leadership-copy h3 {
+  font-size: 44px !important;
+}
+
+body[data-page="home"] .sk-leadership-copy > p {
+  font-size: 15px !important;
+}
+
+body[data-page="home"] .sk-feature-label,
+body[data-page="home"] .sk-council-position {
+  font-size: 10px !important;
+}
+
+body[data-page="home"] .sk-council-info h3 {
+  font-size: 22px !important;
+}
+
+body[data-page="home"] .sk-council-title strong {
+  font-size: 19px !important;
+}
+
+body[data-page="home"] .sk-council-title small {
+  font-size: 10px !important;
+}
+
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+body[data-page="home"] .sk-events-section {
+  padding-top: 85px;
+  padding-bottom: 90px;
+}
+
+body[data-page="home"] .sk-event-content h3 {
+  font-size: 23px !important;
+  line-height: 1.18 !important;
+}
+
+body[data-page="home"] .sk-event-content p {
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+}
+
+body[data-page="home"] .event-read-more {
+  font-size: 12px !important;
+}
+
+
+/* =========================================================
+   ABOUT
+========================================================= */
+
+body[data-page="home"] .about-section {
+  padding-top: 85px;
+  padding-bottom: 90px;
+}
+
+body[data-page="home"] .about-lead {
+  font-size: 17px !important;
+}
+
+body[data-page="home"] .about-highlight-item strong {
+  font-size: 15px !important;
+}
+
+body[data-page="home"] .about-highlight-item small {
+  font-size: 12px !important;
+}
+
+body[data-page="home"] .about-login-link {
+  font-size: 13px !important;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+body[data-page="home"] .modern-footer {
+  padding-top: 24px !important;
+}
+
+body[data-page="home"] .footer-main-grid {
+  gap: 34px !important;
+  padding-bottom: 18px !important;
+}
+
+body[data-page="home"] .footer-brand-row strong {
+  font-size: 23px !important;
+}
+
+body[data-page="home"] .footer-brand-row small {
+  font-size: 11px !important;
+}
+
+body[data-page="home"] .footer-brand-block > p {
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+body[data-page="home"] .footer-column h3 {
+  font-size: 16px !important;
+}
+
+body[data-page="home"] .footer-column a,
+body[data-page="home"] .footer-column > span,
+body[data-page="home"] .footer-location p {
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+}
+
+body[data-page="home"] .footer-status {
+  font-size: 12px !important;
+}
+
+body[data-page="home"] .footer-bottom small {
+  font-size: 11px !important;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+  body[data-page="home"] {
+    --home-title-lg: 42px;
+    --home-body-lg: 16px;
+    --home-body-md: 14px;
+  }
+
+  body[data-page="home"] .home-title-wrap h1 {
+    font-size: 58px !important;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 620px) {
+
+  body[data-page="home"] {
+    --home-title-lg: 35px;
+    --home-body-lg: 14px;
+    --home-body-md: 13px;
+  }
+
+  body[data-page="home"] .home-title-wrap h1 {
+    font-size: 40px !important;
+  }
+
+  body[data-page="home"] .capability-content h3 {
+    font-size: 24px !important;
+  }
+
+  body[data-page="home"] .capability-main .capability-content h3 {
+    font-size: 34px !important;
+  }
+
+  body[data-page="home"] .sk-leadership-copy h3 {
+    font-size: 32px !important;
+  }
+
+  body[data-page="home"] .sk-council-info h3 {
+    font-size: 20px !important;
+  }
+
+}
+
+/* =========================================================
+   FINAL REGISTER TYPOGRAPHY — DEFENSE READY
+   LARGER, READABLE, SAME LAYOUT
+========================================================= */
+
+body[data-page="youth-register"] {
+  --reg-title: 38px;
+  --reg-section-title: 28px;
+  --reg-body: 15px;
+  --reg-label: 13px;
+  --reg-small: 11px;
+  --reg-tiny: 10px;
+}
+
+
+/* =========================================================
+   BACK TO HOME
+========================================================= */
+
+body[data-page="youth-register"] .civic-back-link {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+
+
+/* =========================================================
+   TOP HEADER INSIDE REGISTRATION CARD
+========================================================= */
+
+body[data-page="youth-register"] .registration-eyebrow {
+  font-size: 10px !important;
+  letter-spacing: .16em !important;
+}
+
+body[data-page="youth-register"] .civic-register-heading h1 {
+  font-size: var(--reg-title) !important;
+  line-height: 1.05 !important;
+}
+
+body[data-page="youth-register"] .register-title-line strong {
+  font-size: 9px !important;
+  letter-spacing: .15em !important;
+}
+
+body[data-page="youth-register"] .civic-register-heading p {
+  font-size: 12px !important;
+  line-height: 1.6 !important;
+  color: rgba(255,255,255,.68) !important;
+}
+
+
+/* =========================================================
+   PROGRESS STEPS
+========================================================= */
+
+body[data-page="youth-register"] .progress-circle {
+  font-size: 15px !important;
+}
+
+body[data-page="youth-register"] .progress-text strong {
+  font-size: 13px !important;
+}
+
+body[data-page="youth-register"] .progress-text small {
+  font-size: 10px !important;
+  line-height: 1.35 !important;
+}
+
+
+/* =========================================================
+   STEP HEADING
+========================================================= */
+
+body[data-page="youth-register"] .step-eyebrow {
+  font-size: 10px !important;
+  letter-spacing: .14em !important;
+}
+
+body[data-page="youth-register"] .step-heading h2 {
+  font-size: var(--reg-section-title) !important;
+  line-height: 1.1 !important;
+}
+
+body[data-page="youth-register"] .step-heading p {
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+  color: rgba(255,255,255,.62) !important;
+}
+
+body[data-page="youth-register"] .step-number {
+  font-size: 17px !important;
+}
+
+
+/* =========================================================
+   FORM LABELS
+========================================================= */
+
+body[data-page="youth-register"] .registration-grid .field > span {
+  font-size: var(--reg-label) !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+}
+
+
+/* =========================================================
+   INPUT / SELECT TEXT
+========================================================= */
+
+body[data-page="youth-register"] .registration-grid .field input,
+body[data-page="youth-register"] .registration-grid .field select,
+body[data-page="youth-register"] .registration-grid .field textarea {
+  font-size: 14px !important;
+  min-height: 50px !important;
+}
+
+body[data-page="youth-register"] .registration-grid .field input::placeholder,
+body[data-page="youth-register"] .registration-grid .field textarea::placeholder {
+  font-size: 13px !important;
+  color: rgba(255,255,255,.48) !important;
+}
+
+
+/* =========================================================
+   SUBSECTIONS
+========================================================= */
+
+body[data-page="youth-register"] .subsection-heading h3 {
+  font-size: 20px !important;
+  line-height: 1.2 !important;
+}
+
+body[data-page="youth-register"] .subsection-heading p {
+  font-size: 12px !important;
+  line-height: 1.55 !important;
+}
+
+
+/* =========================================================
+   REVIEW SECTION
+========================================================= */
+
+body[data-page="youth-register"] .review-heading h3 {
+  font-size: 20px !important;
+}
+
+body[data-page="youth-register"] .review-heading p {
+  font-size: 12px !important;
+}
+
+body[data-page="youth-register"] .review-item small {
+  font-size: 11px !important;
+}
+
+body[data-page="youth-register"] .review-item strong {
+  font-size: 14px !important;
+}
+
+body[data-page="youth-register"] .review-edit-btn {
+  font-size: 12px !important;
+}
+
+
+/* =========================================================
+   PASSWORD NOTE / CONSENT
+========================================================= */
+
+body[data-page="youth-register"] .civic-password-note p,
+body[data-page="youth-register"] .civic-consent p {
+  font-size: 12px !important;
+  line-height: 1.55 !important;
+}
+
+body[data-page="youth-register"] .civic-consent strong {
+  font-size: 14px !important;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+body[data-page="youth-register"] .civic-prev-btn,
+body[data-page="youth-register"] .civic-next-btn,
+body[data-page="youth-register"] .civic-submit-btn {
+  font-size: 14px !important;
+  font-weight: 750 !important;
+  min-height: 52px !important;
+}
+
+body[data-page="youth-register"] .civic-next-btn,
+body[data-page="youth-register"] .civic-submit-btn {
+  min-width: 210px !important;
+}
+
+
+/* =========================================================
+   LOGIN LINK
+========================================================= */
+
+body[data-page="youth-register"] .registration-login p {
+  font-size: 12px !important;
+}
+
+body[data-page="youth-register"] .registration-login a {
+  font-size: 12px !important;
+}
+
+
+/* =========================================================
+   SECURITY FOOTER
+========================================================= */
+
+body[data-page="youth-register"] .register-security-footer strong {
+  font-size: 11px !important;
+}
+
+body[data-page="youth-register"] .register-security-footer small {
+  font-size: 9px !important;
+  line-height: 1.4 !important;
+}
+
+body[data-page="youth-register"] .register-bottom-message {
+  font-size: 9px !important;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+  body[data-page="youth-register"] {
+    --reg-title: 34px;
+    --reg-section-title: 25px;
+    --reg-label: 12px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 620px) {
+
+  body[data-page="youth-register"] {
+    --reg-title: 30px;
+    --reg-section-title: 23px;
+    --reg-label: 12px;
+  }
+
+  body[data-page="youth-register"] .registration-grid .field input,
+  body[data-page="youth-register"] .registration-grid .field select,
+  body[data-page="youth-register"] .registration-grid .field textarea {
+    font-size: 14px !important;
+  }
+
+  body[data-page="youth-register"] .civic-prev-btn,
+  body[data-page="youth-register"] .civic-next-btn,
+  body[data-page="youth-register"] .civic-submit-btn {
+    font-size: 14px !important;
+  }
+
+}
+
+/* =========================================================
+   LOGIN PAGE — FINAL
+   LARGE TEXT + NON-SCROLLABLE DESKTOP
+========================================================= */
+
+html,
+body[data-page="login"] {
+  width:100%;
+  height:100%;
+  margin:0;
+}
+
+body[data-page="login"] {
+  min-height:100vh;
+  min-height:100dvh;
+  overflow:hidden;
+  background:#063b43;
+}
+
+
+/* REMOVE HEADER IF PRESENT */
+
+body[data-page="login"] .site-header {
+  display:none !important;
+}
+
+
+/* FULL SCREEN AREA */
+
+body[data-page="login"] .login-portal-body {
+  position:relative;
+  width:100%;
+  height:100vh;
+  height:100dvh;
+  min-height:100vh;
+  min-height:100dvh;
+
+  margin:0;
+  padding:16px 20px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  overflow:hidden;
+  box-sizing:border-box;
+}
+
+
+/* SHELL */
+
+body[data-page="login"] .civic-login-shell {
+  width:min(560px,calc(100% - 30px));
+  max-height:calc(100dvh - 24px);
+
+  margin:0 auto;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+
+/* BACK HOME */
+
+body[data-page="login"] .civic-back-link {
+  margin:0 0 8px;
+  font-size:13px;
+  font-weight:700;
+}
+
+
+/* CARD */
+
+body[data-page="login"] .civic-access-card {
+  width:100%;
+  max-height:calc(100dvh - 55px);
+  overflow:hidden;
+}
+
+
+/* =========================================================
+   TOP BRANDING
+========================================================= */
+
+body[data-page="login"] .civic-login-header {
+  padding:17px 34px 13px;
+}
+
+body[data-page="login"] .login-logo-item {
+  width:50px;
+  height:50px;
+}
+
+body[data-page="login"] .civic-login-header .login-eyebrow {
+  font-size:10px;
+  letter-spacing:.15em;
+}
+
+body[data-page="login"] .civic-login-header h1 {
+  margin:8px 0 5px;
+
+  font-size:34px;
+  line-height:1.05;
+}
+
+body[data-page="login"] .civic-login-header p {
+  margin:5px 0 0;
+
+  font-size:11px;
+  line-height:1.4;
+}
+
+
+/* =========================================================
+   WELCOME / LOGIN CONTENT
+========================================================= */
+
+body[data-page="login"] .civic-login-content {
+  padding:15px 34px 13px;
+}
+
+body[data-page="login"] .civic-login-content h2 {
+  margin:0 0 4px;
+
+  font-size:28px;
+  line-height:1.08;
+}
+
+body[data-page="login"] .civic-login-content > p {
+  margin:0 0 13px;
+
+  color:rgba(255,255,255,.64);
+
+  font-size:13px;
+  line-height:1.5;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+body[data-page="login"] .portal-field {
+  margin-bottom:10px;
+}
+
+body[data-page="login"] .portal-field > label {
+  display:block;
+
+  margin-bottom:5px;
+
+  font-size:12px;
+  font-weight:700;
+}
+
+body[data-page="login"] .portal-input-wrap input {
+  height:48px;
+
+  font-size:14px;
+}
+
+body[data-page="login"] .portal-input-wrap input::placeholder {
+  font-size:13px;
+  color:rgba(255,255,255,.46);
+}
+
+body[data-page="login"] .portal-input-icon svg,
+body[data-page="login"] .portal-password-toggle svg {
+  width:19px;
+  height:19px;
+}
+
+
+/* =========================================================
+   SECURITY ROW
+========================================================= */
+
+body[data-page="login"] .portal-security-row {
+  margin:5px 0 10px;
+
+  font-size:10px;
+}
+
+
+/* =========================================================
+   ACCESS BUTTON
+========================================================= */
+
+body[data-page="login"] .portal-access-btn {
+  min-height:48px;
+  height:48px;
+
+  font-size:14px;
+  font-weight:750;
+  letter-spacing:.10em;
+}
+
+body[data-page="login"] .portal-access-btn svg {
+  width:19px;
+  height:19px;
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+body[data-page="login"] .portal-divider {
+  margin:10px 0;
+
+  font-size:9px;
+}
+
+
+/* =========================================================
+   REGISTER LINK
+========================================================= */
+
+body[data-page="login"] .portal-register-link {
+  min-height:50px;
+  padding:8px 12px;
+}
+
+body[data-page="login"] .portal-register-link strong {
+  font-size:13px;
+}
+
+body[data-page="login"] .portal-register-link small {
+  font-size:10px;
+}
+
+
+/* =========================================================
+   FOOTER STATUS
+========================================================= */
+
+body[data-page="login"] .portal-footer-status {
+  padding:9px 20px 11px;
+}
+
+body[data-page="login"] .portal-footer-status strong {
+  font-size:11px;
+}
+
+body[data-page="login"] .portal-footer-status small {
+  font-size:9px;
+}
+
+
+/* BOTTOM MESSAGE */
+
+body[data-page="login"] .login-bottom-message,
+body[data-page="login"] .portal-bottom-message {
+  margin-top:7px;
+  font-size:9px;
+}
+
+
+/* =========================================================
+   SHORT LAPTOP HEIGHT
+========================================================= */
+
+@media (max-height:800px) and (min-width:701px) {
+
+  body[data-page="login"] .login-portal-body {
+    padding:7px 20px;
+  }
+
+  body[data-page="login"] .civic-login-shell {
+    width:min(520px,calc(100% - 28px));
+  }
+
+  body[data-page="login"] .civic-login-header {
+    padding:11px 30px 8px;
+  }
+
+  body[data-page="login"] .login-logo-item {
+    width:42px;
+    height:42px;
+  }
+
+  body[data-page="login"] .civic-login-header h1 {
+    font-size:28px;
+  }
+
+  body[data-page="login"] .civic-login-content {
+    padding:9px 30px 8px;
+  }
+
+  body[data-page="login"] .civic-login-content h2 {
+    font-size:23px;
+  }
+
+  body[data-page="login"] .civic-login-content > p {
+    margin-bottom:9px;
+    font-size:11px;
+  }
+
+  body[data-page="login"] .portal-field {
+    margin-bottom:7px;
+  }
+
+  body[data-page="login"] .portal-input-wrap input {
+    height:42px;
+  }
+
+  body[data-page="login"] .portal-access-btn {
+    min-height:42px;
+    height:42px;
+  }
+
+  body[data-page="login"] .portal-divider {
+    margin:7px 0;
+  }
+
+  body[data-page="login"] .portal-register-link {
+    min-height:43px;
+  }
+
+  body[data-page="login"] .portal-footer-status {
+    padding:6px 15px 8px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   SCROLL ONLY IF REALLY NEEDED
+========================================================= */
+
+@media (max-width:700px) {
+
+  body[data-page="login"] {
+    overflow:auto;
+  }
+
+  body[data-page="login"] .login-portal-body {
+    height:auto;
+    min-height:100vh;
+    min-height:100dvh;
+
+    overflow:visible;
+
+    padding:20px 10px 26px;
+  }
+
+  body[data-page="login"] .civic-login-shell,
+  body[data-page="login"] .civic-access-card {
+    max-height:none;
+  }
+
+}

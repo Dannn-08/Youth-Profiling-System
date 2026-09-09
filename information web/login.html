@@ -4,243 +4,1029 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Bukal Youth Data | Login</title>
+
   <link rel="icon" type="image/png" href="assets/logo.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="assets/style.css" />
+  <link rel="stylesheet" href="assets/login.css" />
 </head>
+
 
 <body data-page="login">
 
 
+  <!-- =========================================================
+       LOGIN PORTAL
+  ========================================================== -->
 
-  <!-- LOGIN PORTAL -->
   <div class="auth-body login-portal-body">
 
+
+    <!-- LEFT DECORATION -->
+
     <div class="login-decor login-decor-left">
+
       <span>DATA</span>
+
       <span>YOUTH</span>
+
       <span>PROGRESS</span>
+
       <span>BUKAL</span>
+
     </div>
 
+
+    <!-- RIGHT DECORATION -->
+
     <div class="login-decor login-decor-right">
+
       <span>BARANGAY BUKAL</span>
+
       <span class="decor-dot"></span>
+
       <span>PAGBILAO, QUEZON</span>
+
     </div>
+
+
+    <!-- =====================================================
+         LOGIN SHELL
+    ====================================================== -->
 
     <main class="auth-shell civic-login-shell">
 
-      <a class="civic-back-link" href="index.html">← Return to Home</a>
+
+      <!-- RETURN HOME -->
+
+      <a class="civic-back-link" href="index.html">
+        ← Return to Home
+      </a>
+
+
+      <!-- =================================================
+           ACCESS CARD
+      ================================================== -->
 
       <section class="civic-access-card">
 
+
+        <!-- DECORATIVE FRAME -->
+
         <span class="portal-corner corner-top-left"></span>
+
         <span class="portal-corner corner-top-right"></span>
+
         <span class="portal-corner corner-bottom-left"></span>
+
         <span class="portal-corner corner-bottom-right"></span>
 
+
         <span class="portal-side-line left-line"></span>
+
         <span class="portal-side-line right-line"></span>
+
 
         <div class="portal-scan-line"></div>
 
-        <!-- BRAND -->
+
+        <!-- =================================================
+             BRAND
+        ================================================== -->
+
         <div class="portal-brand">
 
+
           <div class="portal-logos">
+
+
             <div class="portal-logo-wrap">
-              <img src="assets/logo.png" alt="Barangay Bukal">
+
+              <img
+                src="assets/logo.png"
+                alt="Barangay Bukal"
+              >
+
             </div>
+
 
             <span class="portal-logo-divider"></span>
 
+
             <div class="portal-logo-wrap">
-              <img src="assets/logosk.png" alt="Sangguniang Kabataan">
+
+              <img
+                src="assets/logosk.png"
+                alt="Sangguniang Kabataan"
+              >
+
             </div>
+
+
           </div>
 
-          <span class="portal-eyebrow">BARANGAY BUKAL • PAGBILAO, QUEZON</span>
 
-          <h1>Bukal Youth Data</h1>
+          <span class="portal-eyebrow">
+            BARANGAY BUKAL • PAGBILAO, QUEZON
+          </span>
+
+
+          <h1>
+            Bukal Youth Data
+          </h1>
+
 
           <div class="portal-title-line">
+
             <span></span>
-            <strong>YOUTH INFORMATION PORTAL</strong>
+
+            <strong>
+              YOUTH INFORMATION PORTAL
+            </strong>
+
             <span></span>
+
           </div>
+
 
         </div>
 
 
-        <!-- ACCESS INTRO -->
+        <!-- =================================================
+             ACCESS INTRO
+        ================================================== -->
+
         <div class="portal-welcome">
 
-          <span class="portal-symbol">◆</span>
+          <span class="portal-symbol">
+            ◆
+          </span>
 
-          <h2>Welcome Back</h2>
 
-          <p>Access your community profile and youth information dashboard.</p>
+          <h2>
+            Welcome Back
+          </h2>
+
+
+          <p>
+            Access your community profile and youth information dashboard.
+          </p>
 
         </div>
 
 
-        <!-- LOGIN FORM -->
+        <!-- =================================================
+             LOGIN FORM
+        ================================================== -->
+
         <form id="loginForm" class="portal-login-form">
 
+
+          <!-- EMAIL -->
+
           <label class="portal-field">
 
-            <span class="portal-field-label">Email Address</span>
+
+            <span class="portal-field-label">
+              Email Address
+            </span>
+
 
             <div class="portal-input-wrap">
 
+
               <span class="portal-input-icon" aria-hidden="true">
+
                 <svg viewBox="0 0 24 24">
+
                   <path d="M4 6h16v12H4z"></path>
+
                   <path d="m4 7 8 6 8-6"></path>
+
                 </svg>
+
               </span>
 
-              <input type="email" id="email" placeholder="Enter your email" autocomplete="email" required />
+
+              <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                autocomplete="email"
+                required
+              />
+
 
             </div>
+
 
           </label>
 
 
+          <!-- PASSWORD -->
+
           <label class="portal-field">
 
-            <span class="portal-field-label">Password</span>
+
+            <span class="portal-field-label">
+              Password
+            </span>
+
 
             <div class="portal-input-wrap">
 
+
               <span class="portal-input-icon" aria-hidden="true">
+
                 <svg viewBox="0 0 24 24">
-                  <rect x="5" y="10" width="14" height="10" rx="2"></rect>
+
+                  <rect
+                    x="5"
+                    y="10"
+                    width="14"
+                    height="10"
+                    rx="2"
+                  ></rect>
+
                   <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+
                 </svg>
+
               </span>
 
-              <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required />
 
-              <button type="button" class="password-toggle" id="passwordToggle" aria-label="Show password">
-                <svg class="eye-open" viewBox="0 0 24 24">
+              <input
+                type="password"
+                id="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+              />
+
+
+              <button
+                type="button"
+                class="password-toggle"
+                id="passwordToggle"
+                aria-label="Show password"
+              >
+
+
+                <svg
+                  class="eye-open"
+                  viewBox="0 0 24 24"
+                >
+
                   <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
-                  <circle cx="12" cy="12" r="3"></circle>
+
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="3"
+                  ></circle>
+
                 </svg>
 
-                <svg class="eye-closed" viewBox="0 0 24 24">
+
+                <svg
+                  class="eye-closed"
+                  viewBox="0 0 24 24"
+                >
+
                   <path d="m3 3 18 18"></path>
+
                   <path d="M10.6 6.2A9.9 9.9 0 0 1 12 6c6 0 9.5 6 9.5 6a15.4 15.4 0 0 1-2.1 2.8"></path>
+
                   <path d="M6.6 6.6C4 8.4 2.5 12 2.5 12s3.5 6 9.5 6a9.3 9.3 0 0 0 3.4-.6"></path>
+
                 </svg>
+
+
               </button>
 
+
             </div>
+
 
           </label>
 
 
+          <!-- SECURITY STATUS -->
+
           <div class="portal-security-row">
+
             <span class="security-dot"></span>
-            <span>Secure account verification</span>
+
+            <span>
+              Secure account verification
+            </span>
+
           </div>
 
 
-          <button type="submit" class="portal-access-btn">
-            <span class="access-icon" aria-hidden="true">
+          <!-- =================================================
+               TERMS AND PRIVACY AGREEMENT
+          ================================================== -->
+
+          <div class="portal-terms-row">
+
+
+            <label
+              class="portal-terms-checkbox"
+              for="termsAgreement"
+            >
+
+
+              <input
+                type="checkbox"
+                id="termsAgreement"
+              />
+
+
+              <span class="portal-custom-checkbox"></span>
+
+
+            </label>
+
+
+            <div class="portal-terms-copy">
+
+
+              <span>
+                I have read and agree to the
+              </span>
+
+
+              <button
+                type="button"
+                class="portal-policy-link"
+                id="openTerms"
+              >
+                Terms and Conditions
+              </button>
+
+
+              <span>
+                and
+              </span>
+
+
+              <button
+                type="button"
+                class="portal-policy-link"
+                id="openPrivacy"
+              >
+                Privacy Notice
+              </button>
+
+
+              <span>.</span>
+
+
+            </div>
+
+
+          </div>
+
+
+          <!-- LOGIN BUTTON -->
+
+          <button
+            type="submit"
+            class="portal-access-btn"
+          >
+
+
+            <span
+              class="access-icon"
+              aria-hidden="true"
+            >
+
               <svg viewBox="0 0 24 24">
+
                 <path d="M9 18l6-6-6-6"></path>
+
                 <path d="M15 12H3"></path>
+
                 <path d="M15 4h5v16h-5"></path>
+
               </svg>
+
             </span>
 
-            <span>Access Portal</span>
+
+            <span>
+              Access Portal
+            </span>
+
+
           </button>
+
 
         </form>
 
 
-        <!-- DIVIDER -->
+        <!-- =================================================
+             DIVIDER
+        ================================================== -->
+
         <div class="portal-divider">
+
           <span></span>
-          <small>NEW TO BUKAL YOUTH DATA?</small>
+
+          <small>
+            NEW TO BUKAL YOUTH DATA?
+          </small>
+
           <span></span>
+
         </div>
 
 
-        <!-- REGISTER -->
-        <a class="portal-register-btn" href="youth-register.html">
+        <!-- =================================================
+             REGISTER
+        ================================================== -->
 
-          <span class="register-icon" aria-hidden="true">
+        <a
+          class="portal-register-btn"
+          href="youth-register.html"
+        >
+
+
+          <span
+            class="register-icon"
+            aria-hidden="true"
+          >
+
             <svg viewBox="0 0 24 24">
-              <circle cx="9" cy="7" r="4"></circle>
+
+              <circle
+                cx="9"
+                cy="7"
+                r="4"
+              ></circle>
+
               <path d="M2 21c0-4 3-7 7-7 2 0 3.7.7 5 1.8"></path>
+
               <path d="M18 14v6"></path>
+
               <path d="M15 17h6"></path>
+
             </svg>
+
           </span>
+
 
           <span>
-            <strong>Register as Youth</strong>
-            <small>Create your Bukal youth profile</small>
+
+            <strong>
+              Register as Youth
+            </strong>
+
+            <small>
+              Create your Bukal youth profile
+            </small>
+
           </span>
 
-          <span class="register-arrow">→</span>
+
+          <span class="register-arrow">
+            →
+          </span>
+
 
         </a>
 
 
-        <!-- FOOTER STATUS -->
+        <!-- =================================================
+             FOOTER STATUS
+        ================================================== -->
+
         <div class="portal-footer-status">
 
+
           <span class="portal-shield">
+
             <svg viewBox="0 0 24 24">
+
               <path d="M12 3 19 6v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"></path>
+
               <path d="m9 12 2 2 4-4"></path>
+
             </svg>
+
           </span>
 
+
           <div>
-            <strong>Protected Youth Information Access</strong>
-            <small>Authorized accounts only</small>
+
+            <strong>
+              Protected Youth Information Access
+            </strong>
+
+            <small>
+              Authorized accounts only
+            </small>
+
           </div>
+
 
         </div>
 
+
       </section>
 
+
+      <!-- BOTTOM MESSAGE -->
 
       <p class="portal-bottom-text">
         Sama-sama para sa mas maunlad na kabataang Bukal
       </p>
 
+
     </main>
+
 
   </div>
 
 
-  <!-- EXISTING LOGIN SCRIPT -->
-  <script type="module" src="assets/login.js"></script>
+  <!-- =========================================================
+       TERMS / PRIVACY MODAL
+  ========================================================== -->
+
+  <div
+    class="portal-policy-modal"
+    id="policyModal"
+    aria-hidden="true"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="policyTitle"
+  >
 
 
-  <!-- PASSWORD VISIBILITY -->
+    <div
+      class="portal-policy-backdrop"
+      data-close-policy
+    ></div>
+
+
+    <div class="portal-policy-dialog">
+
+
+      <!-- MODAL HEADER -->
+
+      <div class="portal-policy-header">
+
+
+        <div>
+
+          <span>
+            BUKAL YOUTH DATA
+          </span>
+
+          <h2 id="policyTitle">
+            Terms and Conditions
+          </h2>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="portal-policy-close"
+          data-close-policy
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+
+      </div>
+
+
+      <!-- MODAL CONTENT -->
+
+      <div
+        class="portal-policy-body"
+        id="policyBody"
+      ></div>
+
+
+      <!-- MODAL FOOTER -->
+
+      <div class="portal-policy-footer">
+
+
+        <button
+          type="button"
+          class="portal-policy-done"
+          data-close-policy
+        >
+          Close
+        </button>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+  <!-- =========================================================
+       EXISTING LOGIN SCRIPT
+  ========================================================== -->
+
+  <script
+    type="module"
+    src="assets/login.js"
+  ></script>
+
+
+  <!-- =========================================================
+       PASSWORD VISIBILITY + POLICY MODAL
+  ========================================================== -->
+
   <script>
-    const passwordInput = document.getElementById("password");
-    const passwordToggle = document.getElementById("passwordToggle");
 
-    passwordToggle.addEventListener("click", () => {
-      const isHidden = passwordInput.type === "password";
 
-      passwordInput.type = isHidden ? "text" : "password";
-      passwordToggle.classList.toggle("showing", isHidden);
-      passwordToggle.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
-    });
+    /* =====================================================
+       PASSWORD VISIBILITY
+    ====================================================== */
+
+    const passwordInput =
+      document.getElementById(
+        "password"
+      );
+
+
+    const passwordToggle =
+      document.getElementById(
+        "passwordToggle"
+      );
+
+
+    passwordToggle.addEventListener(
+      "click",
+      () => {
+
+
+        const isHidden =
+          passwordInput.type ===
+          "password";
+
+
+        passwordInput.type =
+          isHidden
+            ? "text"
+            : "password";
+
+
+        passwordToggle.classList.toggle(
+          "showing",
+          isHidden
+        );
+
+
+        passwordToggle.setAttribute(
+          "aria-label",
+          isHidden
+            ? "Hide password"
+            : "Show password"
+        );
+
+
+      }
+    );
+
+
+    /* =====================================================
+       POLICY MODAL
+    ====================================================== */
+
+    const policyModal =
+      document.getElementById(
+        "policyModal"
+      );
+
+
+    const policyTitle =
+      document.getElementById(
+        "policyTitle"
+      );
+
+
+    const policyBody =
+      document.getElementById(
+        "policyBody"
+      );
+
+
+    const openTerms =
+      document.getElementById(
+        "openTerms"
+      );
+
+
+    const openPrivacy =
+      document.getElementById(
+        "openPrivacy"
+      );
+
+
+    /* =====================================================
+       TERMS AND CONDITIONS CONTENT
+    ====================================================== */
+
+    const termsContent = `
+
+      <h3>1. Acceptance of Terms</h3>
+
+      <p>
+        By accessing and using Bukal Youth Data, the user agrees
+        to use the system responsibly and only for its intended
+        youth information and community-related purposes.
+      </p>
+
+
+      <h3>2. Authorized Use</h3>
+
+      <p>
+        Bukal Youth Data is intended for registered youth residents
+        and authorized administrators of Barangay Bukal. Users must
+        access only the information and functions permitted by their
+        assigned account role.
+      </p>
+
+
+      <h3>3. Account Responsibility</h3>
+
+      <p>
+        Users are responsible for maintaining the confidentiality of
+        their email address and password. Login credentials must not
+        be shared with unauthorized persons.
+      </p>
+
+
+      <h3>4. Accuracy of Information</h3>
+
+      <p>
+        Users are expected to provide truthful, complete, and accurate
+        information when registering and updating their youth profile.
+      </p>
+
+
+      <h3>5. Prohibited Activities</h3>
+
+      <p>
+        Users must not attempt to gain unauthorized access, manipulate
+        records without permission, disrupt system operations, misuse
+        another person's account, or use the system for unlawful
+        purposes.
+      </p>
+
+
+      <h3>6. System Availability</h3>
+
+      <p>
+        Access to the system may occasionally be interrupted because
+        of system maintenance, updates, internet connectivity, or
+        technical issues.
+      </p>
+
+
+      <h3>7. Account Security</h3>
+
+      <p>
+        Users who suspect unauthorized access to their account should
+        immediately notify the appropriate Barangay Bukal or system
+        administrator.
+      </p>
+
+    `;
+
+
+    /* =====================================================
+       PRIVACY NOTICE CONTENT
+    ====================================================== */
+
+    const privacyContent = `
+
+      <h3>1. Information Collected</h3>
+
+      <p>
+        Bukal Youth Data processes information provided during youth
+        registration and profile management, including personal,
+        demographic, educational, employment, voter-related,
+        civic-participation, special-needs, hobbies, sports, and
+        other youth profiling information required by the system.
+      </p>
+
+
+      <h3>2. Purpose of Information</h3>
+
+      <p>
+        Collected information is used for youth profiling,
+        centralized information management, statistical analysis,
+        report generation, and planning of youth-related programs
+        and community initiatives in Barangay Bukal.
+      </p>
+
+
+      <h3>3. Access to Information</h3>
+
+      <p>
+        System access is provided according to the user's assigned
+        role. Youth users may access authorized information associated
+        with their profile, while administrators may access information
+        necessary for authorized youth information management and
+        system administration.
+      </p>
+
+
+      <h3>4. Data Security</h3>
+
+      <p>
+        The system uses authenticated and role-based access mechanisms
+        to help protect stored youth information from unauthorized
+        access.
+      </p>
+
+
+      <h3>5. User Responsibility</h3>
+
+      <p>
+        Users should protect their login credentials and ensure that
+        personal information submitted to the system remains accurate
+        and up to date.
+      </p>
+
+
+      <h3>6. Questions or Concerns</h3>
+
+      <p>
+        Questions or concerns regarding account information and use
+        of the system may be directed to the appropriate Barangay
+        Bukal or Sangguniang Kabataan personnel.
+      </p>
+
+    `;
+
+
+    /* =====================================================
+       OPEN MODAL
+    ====================================================== */
+
+    function openPolicyModal(
+      title,
+      content
+    ) {
+
+
+      policyTitle.textContent =
+        title;
+
+
+      policyBody.innerHTML =
+        content;
+
+
+      policyModal.classList.add(
+        "active"
+      );
+
+
+      policyModal.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+
+      document.body.classList.add(
+        "policy-open"
+      );
+
+
+    }
+
+
+    /* =====================================================
+       CLOSE MODAL
+    ====================================================== */
+
+    function closePolicyModal() {
+
+
+      policyModal.classList.remove(
+        "active"
+      );
+
+
+      policyModal.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      document.body.classList.remove(
+        "policy-open"
+      );
+
+
+    }
+
+
+    /* TERMS */
+
+    openTerms.addEventListener(
+      "click",
+      () => {
+
+
+        openPolicyModal(
+          "Terms and Conditions",
+          termsContent
+        );
+
+
+      }
+    );
+
+
+    /* PRIVACY */
+
+    openPrivacy.addEventListener(
+      "click",
+      () => {
+
+
+        openPolicyModal(
+          "Privacy Notice",
+          privacyContent
+        );
+
+
+      }
+    );
+
+
+    /* CLOSE BUTTONS */
+
+    document
+      .querySelectorAll(
+        "[data-close-policy]"
+      )
+      .forEach(
+        element => {
+
+
+          element.addEventListener(
+            "click",
+            closePolicyModal
+          );
+
+
+        }
+      );
+
+
+    /* ESCAPE KEY */
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+
+        if (
+          event.key === "Escape" &&
+          policyModal.classList.contains(
+            "active"
+          )
+        ) {
+
+
+          closePolicyModal();
+
+
+        }
+
+
+      }
+    );
+
+
   </script>
 
+
 </body>
+
 </html>
