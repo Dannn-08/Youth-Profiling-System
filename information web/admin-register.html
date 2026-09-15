@@ -80,14 +80,13 @@
           </span>
 
 
-          <h1>
-            Admin Registration
-          </h1>
+<h1>
+  SK Administrator Registration
+</h1>
 
-
-          <p>
-            Create a new administrator account
-          </p>
+<p>
+  Create an account for an authorized SK official
+</p>
 
         </div>
 
@@ -95,19 +94,19 @@
         <!-- =========================
              INFORMATION MESSAGE
         ========================== -->
-        <div class="summary-box" style="margin-bottom:20px;">
+<div class="summary-box" style="margin-bottom:20px;">
 
-          <strong>
-            Administrator Access
-          </strong>
+  <strong>
+    Authorized SK Access
+  </strong>
 
-          <p class="muted-text" style="margin-top:6px;">
-            Only an authenticated administrator can create
-            another administrator account.
-          </p>
+  <p class="muted-text" style="margin-top:6px;">
+    Only an authenticated administrator can create
+    another SK administrator account. Each account
+    is assigned to a specific SK official and position.
+  </p>
 
-        </div>
-
+</div>
 
         <!-- =========================
              REGISTRATION FORM
@@ -115,57 +114,139 @@
         <form id="adminRegisterForm" class="form-grid single">
 
 
-          <!-- FULL NAME -->
-          <label class="field full">
+  <!-- FULL NAME -->
+  <label class="field full">
 
-            <span>
-              Full Name
-            </span>
+    <span>
+      Full Name
+    </span>
 
-            <input type="text" name="fullName" placeholder="Enter full name" autocomplete="name" required />
+    <input
+      type="text"
+      name="fullName"
+      placeholder="Enter full name"
+      autocomplete="name"
+      required
+    />
 
-          </label>
-
-
-          <!-- EMAIL -->
-          <label class="field full">
-
-            <span>
-              Email
-            </span>
-
-            <input type="email" name="email" placeholder="admin@bukal.gov.ph" autocomplete="off" required />
-
-          </label>
+  </label>
 
 
-          <!-- PASSWORD -->
-          <label class="field full">
+  <!-- SK POSITION -->
+  <label class="field full">
 
-            <span>
-              Password
-            </span>
+    <span>
+      SK Position
+    </span>
 
-            <input type="password" name="password" placeholder="Minimum 8 characters" minlength="8" autocomplete="new-password" required />
+    <select
+      name="position"
+      required
+    >
 
-          </label>
+      <option value="">
+        Select SK Position
+      </option>
+
+      <option value="SK Chairperson">
+        SK Chairperson
+      </option>
+
+      <option value="SK Kagawad">
+        SK Kagawad
+      </option>
+
+      <option value="SK Secretary">
+        SK Secretary
+      </option>
+
+      <option value="SK Treasurer">
+        SK Treasurer
+      </option>
+
+      <option value="Administrator">
+        Administrator
+      </option>
+
+    </select>
+
+  </label>
 
 
-          <!-- REGISTER BUTTON -->
-          <button class="btn btn-primary full-btn" type="submit">
-            Register as Admin
-          </button>
+  <!-- EMAIL -->
+  <label class="field full">
+
+    <span>
+      Email
+    </span>
+
+    <input
+      type="email"
+      name="email"
+      placeholder="admin@bukal.gov.ph"
+      autocomplete="off"
+      required
+    />
+
+  </label>
 
 
-          <p class="center small-text">
+  <!-- PASSWORD -->
+  <label class="field full">
 
-            This page is restricted to
-            authenticated administrators.
+    <span>
+      Password
+    </span>
 
-          </p>
+    <input
+      type="password"
+      name="password"
+      placeholder="Minimum 8 characters"
+      minlength="8"
+      autocomplete="new-password"
+      required
+    />
+
+  </label>
 
 
-        </form>
+  <!-- CONFIRM PASSWORD -->
+  <label class="field full">
+
+    <span>
+      Confirm Password
+    </span>
+
+    <input
+      type="password"
+      name="confirmPassword"
+      placeholder="Re-enter password"
+      minlength="8"
+      autocomplete="new-password"
+      required
+    />
+
+  </label>
+
+
+  <!-- REGISTER BUTTON -->
+  <button
+    class="btn btn-primary full-btn"
+    type="submit"
+  >
+    Create SK Admin Account
+  </button>
+
+
+  <p class="center small-text">
+
+    This page is restricted to
+    authenticated administrators.
+
+  </p>
+
+
+</form>
 
       </section>
 

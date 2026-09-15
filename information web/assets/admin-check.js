@@ -19,64 +19,75 @@ let isLoggingOut = false;
 
 
 // =====================================================
-// AUTHENTICATION / ADMIN ACCESS CHECK
+// SAFE SIGN OUT + REDIRECT
 // =====================================================
 
-onAuthStateChanged(auth, async (user) => {
+async function denyAdminAccess(
+  message = "",
+  showAlert = true
+) {
 
-  // If logout is currently in progress,
-  // do not run another redirect or alert.
   if (isLoggingOut) {
     return;
   }
 
+  isLoggingOut = true;
 
-  // ===================================================
-  // NO USER SESSION
-  // ===================================================
 
-  if (!user) {
+  if (
+    showAlert &&
+    message
+  ) {
 
-    console.log("No authenticated admin session.");
+    alert(message);
 
-    window.location.replace("login.html");
-
-    return;
   }
 
 
   try {
 
-    // =================================================
-    // GET USER PROFILE FROM FIRESTORE
-    // =================================================
+    await signOut(auth);
 
-    const docRef =
-      doc(
-        db,
-        "users",
-        user.uid
-      );
+  } catch (error) {
 
+    console.error(
+      "Sign out during access denial failed:",
+      error
+    );
 
-    const docSnap =
-      await getDoc(
-        docRef
-      );
+  }
 
 
-    // =================================================
-    // USER PROFILE NOT FOUND
-    // =================================================
+  window.location.replace(
+    "login.html"
+  );
 
-    if (!docSnap.exists()) {
+}
+
+
+// =====================================================
+// AUTHENTICATION / ADMIN ACCESS CHECK
+// =====================================================
+
+onAuthStateChanged(
+  auth,
+  async (user) => {
+
+    // Logout is already running.
+    if (isLoggingOut) {
+      return;
+    }
+
+
+    // ===================================================
+    // NO USER SESSION
+    // ===================================================
+
+    if (!user) {
 
       console.log(
-        "User profile not found in Firestore."
+        "No authenticated admin session."
       );
-
-
-      await signOut(auth);
 
 
       window.location.replace(
@@ -89,84 +100,150 @@ onAuthStateChanged(auth, async (user) => {
     }
 
 
-    const data =
-      docSnap.data();
+    try {
+
+      // =================================================
+      // GET USER PROFILE
+      // =================================================
+
+      const docRef =
+        doc(
+          db,
+          "users",
+          user.uid
+        );
 
 
-    // =================================================
-    // ADMIN ROLE VERIFIED
-    // =================================================
+      const docSnap =
+        await getDoc(
+          docRef
+        );
 
-    if (
-      data.role === "admin"
-    ) {
+
+      // =================================================
+      // PROFILE NOT FOUND
+      // =================================================
+
+      if (!docSnap.exists()) {
+
+        console.warn(
+          "Authenticated account has no Firestore user profile."
+        );
+
+
+        await denyAdminAccess(
+          "Your user profile could not be found. Please contact the system administrator."
+        );
+
+
+        return;
+
+      }
+
+
+      const data =
+        docSnap.data();
+
+
+      // =================================================
+      // VERIFY ROLE
+      // =================================================
+
+      if (
+        data.role !==
+        "admin"
+      ) {
+
+        console.warn(
+          "Access denied. Account role:",
+          data.role
+        );
+
+
+        await denyAdminAccess(
+          "Access denied. An administrator account is required."
+        );
+
+
+        return;
+
+      }
+
+
+      // =================================================
+      // VERIFY ADMIN STATUS
+      // =================================================
+      //
+      // Old admin records without a status field are
+      // treated as Active for backward compatibility.
+      // =================================================
+
+      const status =
+        String(
+          data.status ||
+          "Active"
+        )
+          .trim()
+          .toLowerCase();
+
+
+      if (
+        status !==
+        "active"
+      ) {
+
+        console.warn(
+          "Inactive administrator attempted to access admin page:",
+          user.email
+        );
+
+
+        await denyAdminAccess(
+          "Your administrator account is currently inactive. Please contact an authorized SK administrator."
+        );
+
+
+        return;
+
+      }
+
+
+      // =================================================
+      // ACCESS GRANTED
+      // =================================================
 
       console.log(
-        "Admin verified ✅"
+        "Active administrator verified ✅",
+        {
+          fullName:
+            data.fullName ||
+            "",
+
+          position:
+            data.position ||
+            "Administrator",
+
+          email:
+            user.email
+        }
       );
-
-
-      return;
-
-    }
-
-
-    // =================================================
-    // WRONG ROLE
-    // =================================================
-
-    console.log(
-      "Access denied. Account is not an admin."
-    );
-
-
-    alert(
-      "Access denied! Admin account required."
-    );
-
-
-    await signOut(auth);
-
-
-    window.location.replace(
-      "login.html"
-    );
-
 
   } catch (error) {
 
-    console.error(
-      "Admin authentication check failed:",
-      error
-    );
-
-
-    alert(
-      "Unable to verify your account. Please log in again."
-    );
-
-
-    try {
-
-      await signOut(auth);
-
-    } catch (signOutError) {
-
       console.error(
-        "Sign out error:",
-        signOutError
+        "Admin authentication check failed:",
+        error
+      );
+
+
+      await denyAdminAccess(
+        "Unable to verify your administrator account. Please log in again."
       );
 
     }
 
-
-    window.location.replace(
-      "login.html"
-    );
-
   }
-
-});
+);
 
 
 // =====================================================
@@ -199,8 +276,8 @@ if (logoutBtn) {
         true;
 
 
-      const originalText =
-        logoutBtn.textContent;
+      const originalContent =
+        logoutBtn.innerHTML;
 
 
       logoutBtn.textContent =
@@ -210,19 +287,19 @@ if (logoutBtn) {
       try {
 
         // =================================================
-        // CLEAR FIREBASE AUTH SESSION
+        // CLEAR AUTH SESSION
         // =================================================
 
         await signOut(auth);
 
 
         console.log(
-          "Admin logged out successfully."
+          "Administrator logged out successfully."
         );
 
 
         // =================================================
-        // REDIRECT TO LOGIN
+        // REDIRECT
         // =================================================
 
         window.location.replace(
@@ -251,8 +328,8 @@ if (logoutBtn) {
           false;
 
 
-        logoutBtn.textContent =
-          originalText;
+        logoutBtn.innerHTML =
+          originalContent;
 
       }
 

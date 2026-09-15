@@ -28,12 +28,109 @@
       </a>
     </div>
 
-    <div class="container dash-top">
-      <div><h1>Youth Dashboard</h1><p id="youthWelcome">Welcome</p></div>
-      <button class="logout-btn" data-logout type="button">↪ Logout</button>
+<div class="container dash-top">
+
+  <div>
+    <h1>Youth Dashboard</h1>
+    <p id="youthWelcome">Welcome</p>
+  </div>
+
+  <div class="youth-header-actions">
+
+    <!-- NOTIFICATION BELL -->
+    <div class="youth-notification-wrap">
+
+      <button
+        type="button"
+        class="youth-notification-btn"
+        id="youthNotificationBtn"
+        aria-label="Open notifications"
+        aria-expanded="false"
+      >
+
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          class="youth-notification-icon"
+        >
+          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+          <path d="M10 21h4"></path>
+        </svg>
+
+        <span
+          class="youth-notification-badge"
+          id="youthNotificationBadge"
+          hidden
+        >
+          0
+        </span>
+
+      </button>
+
+
+      <!-- NOTIFICATION DROPDOWN -->
+      <div
+        class="youth-notification-dropdown"
+        id="youthNotificationDropdown"
+        hidden
+      >
+
+        <div class="youth-notification-header">
+
+          <div>
+            <strong>Notifications</strong>
+            <small>Latest SK and Barangay updates</small>
+          </div>
+
+          <button
+            type="button"
+            id="markAllNotificationsRead"
+            class="notification-mark-all"
+          >
+            Mark all as read
+          </button>
+
+        </div>
+
+        <div
+          class="youth-notification-list"
+          id="youthNotificationList"
+        >
+          <p class="empty-state">
+            Loading notifications...
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="notification-view-all"
+          id="viewAllAnnouncementsBtn"
+        >
+          View All Announcements
+        </button>
+
+      </div>
+
     </div>
 
-  </header>
+
+    <!-- LOGOUT -->
+    <button
+      class="logout-btn"
+      data-logout
+      type="button"
+    >
+      ↪ Logout
+    </button>
+
+  </div>
+
+</div>
+
+
+  <div class="youth-header-actions">
+
+   
 
 
   <!-- =================================================
@@ -41,6 +138,54 @@
   ================================================== -->
 
   <main class="container dashboard-main">
+
+    <!-- =================================================
+     PERSONALIZED RECOMMENDATIONS
+================================================== -->
+
+<section
+  class="panel profile-panel"
+  id="youthRecommendationSection"
+  style="margin-bottom:24px;"
+>
+
+  <div class="panel-heading profile-heading">
+
+    <span class="profile-avatar">
+      <svg
+        class="profile-svg-icon"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path d="M9 18h6"></path>
+        <path d="M10 22h4"></path>
+        <path d="M8.2 14.5A6 6 0 1 1 15.8 14.5C14.7 15.4 14 16.2 14 17H10c0-.8-.7-1.6-1.8-2.5z"></path>
+      </svg>
+    </span>
+
+    <div>
+      <h2>Recommended Activities for You</h2>
+      <p>
+        Suggested programs, activities, and opportunities based on your profile,
+        interests, education, employment status, and civic participation.
+      </p>
+    </div>
+
+  </div>
+
+  <div
+    id="youthRecommendations"
+    class="report-summary"
+    style="margin-top:24px;"
+  >
+
+    <p class="empty-state">
+      Loading personalized recommendations...
+    </p>
+
+  </div>
+
+</section>
 
     <!-- =================================================
          QUICK OVERVIEW
@@ -170,6 +315,72 @@
     </form>
 
   </dialog>
+
+  <!-- =================================================
+     IMPORTANT ANNOUNCEMENT POPUP
+================================================== -->
+
+<dialog
+  id="importantAnnouncementDialog"
+  class="modal-card notification-alert-modal"
+>
+
+  <div class="modal-inner">
+
+    <div class="modal-heading">
+
+      <div>
+        <small id="importantAnnouncementCategory">
+          Important Announcement
+        </small>
+
+        <h2 id="importantAnnouncementTitle">
+          Announcement
+        </h2>
+      </div>
+
+      <button
+        class="icon-btn"
+        id="closeImportantAnnouncement"
+        type="button"
+        aria-label="Close announcement"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="important-announcement-content">
+
+      <img
+        id="importantAnnouncementImage"
+        alt="Announcement poster"
+        hidden
+      />
+
+
+      <p id="importantAnnouncementMessage">
+      </p>
+
+    </div>
+
+
+    <div class="modal-actions">
+
+      <button
+        class="btn btn-primary"
+        id="importantAnnouncementDone"
+        type="button"
+      >
+        Got It
+      </button>
+
+    </div>
+
+  </div>
+
+</dialog>
 
 
   <!-- =================================================

@@ -90,6 +90,11 @@ if (!form || !submitBtn) {
           '[name="fullName"]'
         );
 
+      const positionInput =
+        form.querySelector(
+          '[name="position"]'
+        );
+
       const emailInput =
         form.querySelector(
           '[name="email"]'
@@ -100,15 +105,30 @@ if (!form || !submitBtn) {
           '[name="password"]'
         );
 
+      const confirmPasswordInput =
+        form.querySelector(
+          '[name="confirmPassword"]'
+        );
+
 
       const fullName =
-        fullNameInput?.value.trim() || "";
+        fullNameInput?.value
+          .trim() || "";
+
+      const position =
+        positionInput?.value
+          .trim() || "";
 
       const email =
-        emailInput?.value.trim().toLowerCase() || "";
+        emailInput?.value
+          .trim()
+          .toLowerCase() || "";
 
       const password =
         passwordInput?.value || "";
+
+      const confirmPassword =
+        confirmPasswordInput?.value || "";
 
 
       // =================================================
@@ -117,8 +137,10 @@ if (!form || !submitBtn) {
 
       if (
         !fullName ||
+        !position ||
         !email ||
-        !password
+        !password ||
+        !confirmPassword
       ) {
 
         alert(
@@ -130,12 +152,64 @@ if (!form || !submitBtn) {
       }
 
 
+      // =================================================
+      // PASSWORD LENGTH
+      // =================================================
+
       if (
         password.length < 8
       ) {
 
         alert(
           "Password must contain at least 8 characters."
+        );
+
+        return;
+
+      }
+
+
+      // =================================================
+      // PASSWORD MATCH
+      // =================================================
+
+      if (
+        password !==
+        confirmPassword
+      ) {
+
+        alert(
+          "Password and Confirm Password do not match."
+        );
+
+        confirmPasswordInput?.focus();
+
+        return;
+
+      }
+
+
+      // =================================================
+      // VALID SK POSITION
+      // =================================================
+
+      const allowedPositions = [
+        "SK Chairperson",
+        "SK Kagawad",
+        "SK Secretary",
+        "SK Treasurer",
+        "Administrator"
+      ];
+
+
+      if (
+        !allowedPositions.includes(
+          position
+        )
+      ) {
+
+        alert(
+          "Please select a valid SK position."
         );
 
         return;
@@ -163,9 +237,8 @@ if (!form || !submitBtn) {
         // CREATE ADMIN USING SECONDARY AUTH
         // =================================================
         //
-        // IMPORTANT:
-        // We use secondaryAuth here so the currently
-        // logged-in administrator remains logged in.
+        // secondaryAuth is used so the currently signed-in
+        // administrator remains logged in.
         // =================================================
 
         const userCredential =
@@ -181,7 +254,7 @@ if (!form || !submitBtn) {
 
 
         console.log(
-          "New Firebase admin account created:",
+          "New Firebase SK admin account created:",
           newUser.uid
         );
 
@@ -210,6 +283,9 @@ if (!form || !submitBtn) {
             role:
               "admin",
 
+            position:
+              position,
+
             status:
               "Active",
 
@@ -220,6 +296,9 @@ if (!form || !submitBtn) {
               currentAdmin.email,
 
             createdAt:
+              serverTimestamp(),
+
+            updatedAt:
               serverTimestamp()
 
           }
@@ -227,7 +306,7 @@ if (!form || !submitBtn) {
 
 
         console.log(
-          "Admin Firestore profile created."
+          "SK administrator Firestore profile created."
         );
 
 
@@ -246,17 +325,17 @@ if (!form || !submitBtn) {
               "admin",
 
             activity:
-              "Created new admin account",
+              "Created new SK admin account",
 
             details:
-              `Created administrator account for ${newUser.email}`
+              `Created ${position} account for ${fullName} (${newUser.email})`
 
           });
 
         } catch (auditError) {
 
-          // Do not fail the whole registration
-          // if audit logging has a separate problem.
+          // Registration should still succeed
+          // even if audit logging fails.
 
           console.error(
             "Audit log error:",
@@ -280,7 +359,7 @@ if (!form || !submitBtn) {
         // =================================================
 
         alert(
-          "Admin account created successfully!"
+          `${fullName} has been registered successfully as ${position}.`
         );
 
 
@@ -316,7 +395,9 @@ if (!form || !submitBtn) {
 
           }
 
-        } catch (secondaryLogoutError) {
+        } catch (
+          secondaryLogoutError
+        ) {
 
           console.error(
             "Secondary auth cleanup error:",
@@ -331,7 +412,7 @@ if (!form || !submitBtn) {
         // =================================================
 
         let message =
-          "Something went wrong while creating the admin account. Please try again.";
+          "Something went wrong while creating the SK administrator account. Please try again.";
 
 
         if (
@@ -386,9 +467,9 @@ if (!form || !submitBtn) {
 
         else if (
           error.code ===
-          "permission-denied" ||
+            "permission-denied" ||
           error.code ===
-          "firestore/permission-denied"
+            "firestore/permission-denied"
         ) {
 
           message =
@@ -412,7 +493,7 @@ if (!form || !submitBtn) {
           false;
 
         submitBtn.textContent =
-          "Register as Admin";
+          "Create SK Admin Account";
 
       }
 
