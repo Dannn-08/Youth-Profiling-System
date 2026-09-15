@@ -2,17 +2,53 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bukal Youth Data | Youth Dashboard</title>
-  <link rel="icon" type="image/png" href="assets/logo.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>
+    Bukal Youth Data | Youth Dashboard
+  </title>
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="assets/logo.png"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="assets/style.css"
+  />
+
 </head>
 
-<body data-page="youth-dashboard" class="dashboard-body">
+
+<body
+  data-page="youth-dashboard"
+  class="dashboard-body"
+>
+
 
   <!-- =================================================
        YOUTH DASHBOARD HEADER
@@ -20,117 +56,200 @@
 
   <header class="dash-header">
 
+
+    <!-- =================================================
+         BRAND BAR
+    ================================================== -->
+
     <div class="container nav-wrap">
-      <a class="brand" href="index.html" aria-label="Bukal Youth Data Home">
-        <img src="assets/logo.png" alt="Bukal Youth Data logo" />
-        <img src="assets/logosk.png" alt="Sangguniang Kabataan logo" style="height:35px;" />
-        <span><strong>Bukal Youth Data</strong><small>Pagbilao, Quezon</small></span>
-      </a>
-    </div>
 
-<div class="container dash-top">
-
-  <div>
-    <h1>Youth Dashboard</h1>
-    <p id="youthWelcome">Welcome</p>
-  </div>
-
-  <div class="youth-header-actions">
-
-    <!-- NOTIFICATION BELL -->
-    <div class="youth-notification-wrap">
-
-      <button
-        type="button"
-        class="youth-notification-btn"
-        id="youthNotificationBtn"
-        aria-label="Open notifications"
-        aria-expanded="false"
+      <a
+        class="brand"
+        href="index.html"
+        aria-label="Bukal Youth Data Home"
       >
 
-        <svg
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-          class="youth-notification-icon"
-        >
-          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
-          <path d="M10 21h4"></path>
-        </svg>
+        <img
+          src="assets/logo.png"
+          alt="Bukal Youth Data logo"
+        />
 
-        <span
-          class="youth-notification-badge"
-          id="youthNotificationBadge"
-          hidden
-        >
-          0
+        <img
+          src="assets/logosk.png"
+          alt="Sangguniang Kabataan logo"
+          style="height:35px;"
+        />
+
+        <span>
+
+          <strong>
+            Bukal Youth Data
+          </strong>
+
+          <small>
+            Pagbilao, Quezon
+          </small>
+
         </span>
 
-      </button>
+      </a>
+
+    </div>
 
 
-      <!-- NOTIFICATION DROPDOWN -->
-      <div
-        class="youth-notification-dropdown"
-        id="youthNotificationDropdown"
-        hidden
-      >
+    <!-- =================================================
+         DASHBOARD TITLE / HEADER ACTIONS
+    ================================================== -->
 
-        <div class="youth-notification-header">
+    <div class="container dash-top">
 
-          <div>
-            <strong>Notifications</strong>
-            <small>Latest SK and Barangay updates</small>
-          </div>
 
-          <button
-            type="button"
-            id="markAllNotificationsRead"
-            class="notification-mark-all"
-          >
-            Mark all as read
-          </button>
+      <div>
 
-        </div>
+        <h1>
+          Youth Dashboard
+        </h1>
 
-        <div
-          class="youth-notification-list"
-          id="youthNotificationList"
-        >
-          <p class="empty-state">
-            Loading notifications...
-          </p>
-        </div>
-
-        <button
-          type="button"
-          class="notification-view-all"
-          id="viewAllAnnouncementsBtn"
-        >
-          View All Announcements
-        </button>
+        <p id="youthWelcome">
+          Welcome
+        </p>
 
       </div>
 
+
+      <div class="youth-header-actions">
+
+
+        <!-- =============================================
+             NOTIFICATION BELL
+        ============================================== -->
+
+        <div class="youth-notification-wrap">
+
+
+          <button
+            type="button"
+            class="youth-notification-btn"
+            id="youthNotificationBtn"
+            aria-label="Open notifications"
+            aria-expanded="false"
+          >
+
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              class="youth-notification-icon"
+            >
+
+              <path
+                d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
+              ></path>
+
+              <path
+                d="M10 21h4"
+              ></path>
+
+            </svg>
+
+
+            <span
+              class="youth-notification-badge"
+              id="youthNotificationBadge"
+              hidden
+            >
+              0
+            </span>
+
+          </button>
+
+
+          <!-- ===========================================
+               NOTIFICATION DROPDOWN
+          ============================================ -->
+
+          <div
+            class="youth-notification-dropdown"
+            id="youthNotificationDropdown"
+            hidden
+          >
+
+
+            <div class="youth-notification-header">
+
+
+              <div>
+
+                <strong>
+                  Notifications
+                </strong>
+
+                <small>
+                  Latest SK and Barangay updates
+                </small>
+
+              </div>
+
+
+              <button
+                type="button"
+                id="markAllNotificationsRead"
+                class="notification-mark-all"
+              >
+                Mark all as read
+              </button>
+
+
+            </div>
+
+
+            <div
+              class="youth-notification-list"
+              id="youthNotificationList"
+            >
+
+              <p class="empty-state">
+                Loading notifications...
+              </p>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="notification-view-all"
+              id="viewAllAnnouncementsBtn"
+            >
+              View All Announcements
+            </button>
+
+
+          </div>
+
+
+        </div>
+
+
+        <!-- =============================================
+             LOGOUT
+        ============================================== -->
+
+        <button
+          class="logout-btn"
+          data-logout
+          type="button"
+        >
+          ↪ Logout
+        </button>
+
+
+      </div>
+
+
     </div>
 
 
-    <!-- LOGOUT -->
-    <button
-      class="logout-btn"
-      data-logout
-      type="button"
-    >
-      ↪ Logout
-    </button>
+  </header>
 
-  </div>
-
-</div>
-
-
-  <div class="youth-header-actions">
-
-   
 
 
   <!-- =================================================
@@ -139,77 +258,308 @@
 
   <main class="container dashboard-main">
 
+
+
     <!-- =================================================
-     PERSONALIZED RECOMMENDATIONS
-================================================== -->
+         PERSONALIZED RECOMMENDATIONS
+    ================================================== -->
 
-<section
-  class="panel profile-panel"
-  id="youthRecommendationSection"
-  style="margin-bottom:24px;"
->
+    <section
+      class="panel profile-panel"
+      id="youthRecommendationSection"
+      style="margin-bottom:24px;"
+    >
 
-  <div class="panel-heading profile-heading">
 
-    <span class="profile-avatar">
-      <svg
-        class="profile-svg-icon"
-        viewBox="0 0 24 24"
-        aria-hidden="true"
+      <div class="panel-heading profile-heading">
+
+
+        <span class="profile-avatar">
+
+          <svg
+            class="profile-svg-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+
+            <path
+              d="M9 18h6"
+            ></path>
+
+            <path
+              d="M10 22h4"
+            ></path>
+
+            <path
+              d="M8.2 14.5A6 6 0 1 1 15.8 14.5C14.7 15.4 14 16.2 14 17H10c0-.8-.7-1.6-1.8-2.5z"
+            ></path>
+
+          </svg>
+
+        </span>
+
+
+        <div>
+
+          <h2>
+            Recommended Activities for You
+          </h2>
+
+          <p>
+            Suggested programs, activities, and opportunities
+            based on your profile, interests, education,
+            employment status, and civic participation.
+          </p>
+
+        </div>
+
+
+      </div>
+
+
+      <div
+        id="youthRecommendations"
+        class="report-summary"
+        style="margin-top:24px;"
       >
-        <path d="M9 18h6"></path>
-        <path d="M10 22h4"></path>
-        <path d="M8.2 14.5A6 6 0 1 1 15.8 14.5C14.7 15.4 14 16.2 14 17H10c0-.8-.7-1.6-1.8-2.5z"></path>
-      </svg>
-    </span>
 
-    <div>
-      <h2>Recommended Activities for You</h2>
-      <p>
-        Suggested programs, activities, and opportunities based on your profile,
-        interests, education, employment status, and civic participation.
-      </p>
-    </div>
+        <p class="empty-state">
+          Loading personalized recommendations...
+        </p>
 
-  </div>
+      </div>
 
-  <div
-    id="youthRecommendations"
-    class="report-summary"
-    style="margin-top:24px;"
-  >
 
-    <p class="empty-state">
-      Loading personalized recommendations...
-    </p>
+    </section>
 
-  </div>
 
-</section>
 
     <!-- =================================================
          QUICK OVERVIEW
     ================================================== -->
 
-    <section>
+    <section class="youth-quick-overview">
 
-      <div class="stat-grid" id="youthQuickStats">
 
-        <div class="panel stat-card"><small>Age</small><strong>—</strong></div>
+      <div
+        class="stat-grid"
+        id="youthQuickStats"
+      >
 
-        <div class="panel stat-card"><small>Status</small><strong>—</strong></div>
 
-        <div class="panel stat-card"><small>Eligibility</small><strong>—</strong></div>
+        <div class="panel stat-card">
 
-        <div class="panel stat-card"><small>Education</small><strong>—</strong></div>
+          <small>
+            Age
+          </small>
 
-        <div class="panel stat-card"><small>Employment</small><strong>—</strong></div>
+          <strong>
+            —
+          </strong>
 
-        <div class="panel stat-card"><small>SK Voter</small><strong>—</strong></div>
+        </div>
+
+
+        <div class="panel stat-card">
+
+          <small>
+            Status
+          </small>
+
+          <strong>
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="panel stat-card">
+
+          <small>
+            Eligibility
+          </small>
+
+          <strong>
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="panel stat-card">
+
+          <small>
+            Education
+          </small>
+
+          <strong>
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="panel stat-card">
+
+          <small>
+            Employment
+          </small>
+
+          <strong>
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="panel stat-card">
+
+          <small>
+            SK Voter
+          </small>
+
+          <strong>
+            —
+          </strong>
+
+        </div>
+
 
       </div>
 
+
     </section>
+
+
+
+    <!-- =================================================
+         STATUS & ELIGIBILITY GUIDE
+    ================================================== -->
+
+    <section class="youth-status-guide">
+
+
+      <div class="status-guide-header">
+
+
+        <span class="status-guide-eyebrow">
+          PROFILE GUIDE
+        </span>
+
+
+        <h2>
+          Understanding Your Youth Status
+        </h2>
+
+
+        <p>
+          Your status and eligibility are automatically determined
+          from the information in your youth profile.
+        </p>
+
+
+      </div>
+
+
+      <div class="status-guide-grid">
+
+
+
+        <!-- =============================================
+             ACTIVE
+        ============================================== -->
+
+        <article class="status-guide-card">
+
+
+          <div class="status-guide-icon">
+            ✓
+          </div>
+
+
+          <div>
+
+            <h3>
+              Active Youth
+            </h3>
+
+            <p>
+              You are currently within the 15–30 age range
+              covered by the youth information system.
+            </p>
+
+          </div>
+
+
+        </article>
+
+
+
+        <!-- =============================================
+             INACTIVE / ARCHIVED
+        ============================================== -->
+
+        <article class="status-guide-card">
+
+
+          <div class="status-guide-icon">
+            i
+          </div>
+
+
+          <div>
+
+            <h3>
+              Inactive / Archived
+            </h3>
+
+            <p>
+              The record is retained for reference when the
+              individual is no longer within the active youth
+              age range.
+            </p>
+
+          </div>
+
+
+        </article>
+
+
+
+        <!-- =============================================
+             ELIGIBLE
+        ============================================== -->
+
+        <article class="status-guide-card">
+
+
+          <div class="status-guide-icon">
+            ★
+          </div>
+
+
+          <div>
+
+            <h3>
+              Eligible
+            </h3>
+
+            <p>
+              Your profile meets the age requirement used by
+              the system for active youth profiling.
+            </p>
+
+          </div>
+
+
+        </article>
+
+
+      </div>
+
+
+    </section>
+
 
 
     <!-- =================================================
@@ -217,29 +567,69 @@
          Youth users can only VIEW announcements.
     ================================================== -->
 
-    <section class="panel profile-panel" id="youthAnnouncementSection" style="margin-bottom:24px;">
+    <section
+      class="panel profile-panel"
+      id="youthAnnouncementSection"
+      style="margin-bottom:24px;"
+    >
+
 
       <div class="panel-heading profile-heading">
 
+
         <span class="profile-avatar">
-          <svg class="profile-svg-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M4 11h3l8-5v12l-8-5H4z"></path>
-            <path d="M7 13l1 5h3"></path>
+
+          <svg
+            class="profile-svg-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+
+            <path
+              d="M4 11h3l8-5v12l-8-5H4z"
+            ></path>
+
+            <path
+              d="M7 13l1 5h3"
+            ></path>
+
           </svg>
+
         </span>
 
+
         <div>
-          <h2>Announcements</h2>
-          <p>Latest information and updates from Barangay Bukal and the Sangguniang Kabataan.</p>
+
+          <h2>
+            Announcements
+          </h2>
+
+          <p>
+            Latest information and updates from Barangay Bukal
+            and the Sangguniang Kabataan.
+          </p>
+
         </div>
 
+
       </div>
 
-      <div id="youthAnnouncements" class="report-summary" style="margin-top:24px;">
-        <p class="empty-state">Loading announcements...</p>
+
+      <div
+        id="youthAnnouncements"
+        class="report-summary"
+        style="margin-top:24px;"
+      >
+
+        <p class="empty-state">
+          Loading announcements...
+        </p>
+
       </div>
+
 
     </section>
+
 
 
     <!-- =================================================
@@ -248,23 +638,57 @@
 
     <section class="panel profile-panel">
 
+
       <div class="panel-heading profile-heading">
 
+
         <span class="profile-avatar">
-          <svg class="profile-svg-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="8" r="4"></circle>
-            <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"></path>
+
+          <svg
+            class="profile-svg-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+
+            <circle
+              cx="12"
+              cy="8"
+              r="4"
+            ></circle>
+
+            <path
+              d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"
+            ></path>
+
           </svg>
+
         </span>
 
+
         <div>
-          <h2>Your Profile</h2>
-          <p>View and manage your personal, SK, and KK information</p>
+
+          <h2>
+            Your Profile
+          </h2>
+
+          <p>
+            View and manage your personal, SK, and KK information
+          </p>
+
         </div>
 
-        <button class="btn btn-primary btn-sm right" id="editProfileBtn" type="button">✎ Edit Profile</button>
+
+        <button
+          class="btn btn-primary btn-sm right"
+          id="editProfileBtn"
+          type="button"
+        >
+          ✎ Edit Profile
+        </button>
+
 
       </div>
+
 
 
       <!-- =================================================
@@ -282,114 +706,209 @@
            • Sports Interests
       ================================================== -->
 
-      <div id="youthProfileView" class="profile-view">
-        <p class="empty-state">Loading your profile...</p>
+      <div
+        id="youthProfileView"
+        class="profile-view"
+      >
+
+        <p class="empty-state">
+          Loading your profile...
+        </p>
+
       </div>
+
 
     </section>
 
+
+
   </main>
+
 
 
   <!-- =================================================
        EDIT PROFILE DIALOG
   ================================================== -->
 
-  <dialog id="profileDialog" class="modal-card wide-modal">
+  <dialog
+    id="profileDialog"
+    class="modal-card wide-modal"
+  >
 
-    <form method="dialog" class="modal-inner" id="profileEditForm">
+
+    <form
+      method="dialog"
+      class="modal-inner"
+      id="profileEditForm"
+    >
+
 
       <div class="modal-heading">
-        <h2>Edit Youth Profile</h2>
-        <button class="icon-btn" value="cancel" type="submit" aria-label="Close">×</button>
+
+
+        <h2>
+          Edit Youth Profile
+        </h2>
+
+
+        <button
+          class="icon-btn"
+          value="cancel"
+          type="submit"
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+
       </div>
+
 
       <!-- Editable fields are generated by youth-dashboard.js -->
-      <div class="form-grid" id="profileEditFields"></div>
+
+      <div
+        class="form-grid"
+        id="profileEditFields"
+      ></div>
+
 
       <div class="modal-actions">
-        <button class="btn btn-muted" value="cancel" type="submit">Cancel</button>
-        <button class="btn btn-primary" id="saveProfileBtn" value="default" type="button">Save Changes</button>
+
+
+        <button
+          class="btn btn-muted"
+          value="cancel"
+          type="submit"
+        >
+          Cancel
+        </button>
+
+
+        <button
+          class="btn btn-primary"
+          id="saveProfileBtn"
+          value="default"
+          type="button"
+        >
+          Save Changes
+        </button>
+
+
       </div>
+
 
     </form>
 
+
   </dialog>
 
+
+
   <!-- =================================================
-     IMPORTANT ANNOUNCEMENT POPUP
-================================================== -->
+       IMPORTANT ANNOUNCEMENT POPUP
+  ================================================== -->
 
-<dialog
-  id="importantAnnouncementDialog"
-  class="modal-card notification-alert-modal"
->
+  <dialog
+    id="importantAnnouncementDialog"
+    class="modal-card notification-alert-modal"
+  >
 
-  <div class="modal-inner">
 
-    <div class="modal-heading">
+    <div class="modal-inner">
 
-      <div>
-        <small id="importantAnnouncementCategory">
-          Important Announcement
-        </small>
 
-        <h2 id="importantAnnouncementTitle">
-          Announcement
-        </h2>
+      <div class="modal-heading">
+
+
+        <div>
+
+
+          <small id="importantAnnouncementCategory">
+            Important Announcement
+          </small>
+
+
+          <h2 id="importantAnnouncementTitle">
+            Announcement
+          </h2>
+
+
+        </div>
+
+
+        <button
+          class="icon-btn"
+          id="closeImportantAnnouncement"
+          type="button"
+          aria-label="Close announcement"
+        >
+          ×
+        </button>
+
+
       </div>
 
-      <button
-        class="icon-btn"
-        id="closeImportantAnnouncement"
-        type="button"
-        aria-label="Close announcement"
-      >
-        ×
-      </button>
+
+
+      <div class="important-announcement-content">
+
+
+        <img
+          id="importantAnnouncementImage"
+          alt="Announcement poster"
+          hidden
+        />
+
+
+        <p id="importantAnnouncementMessage"></p>
+
+
+      </div>
+
+
+
+      <div class="modal-actions">
+
+
+        <button
+          class="btn btn-primary"
+          id="importantAnnouncementDone"
+          type="button"
+        >
+          Got It
+        </button>
+
+
+      </div>
+
 
     </div>
 
 
-    <div class="important-announcement-content">
+  </dialog>
 
-      <img
-        id="importantAnnouncementImage"
-        alt="Announcement poster"
-        hidden
-      />
-
-
-      <p id="importantAnnouncementMessage">
-      </p>
-
-    </div>
-
-
-    <div class="modal-actions">
-
-      <button
-        class="btn btn-primary"
-        id="importantAnnouncementDone"
-        type="button"
-      >
-        Got It
-      </button>
-
-    </div>
-
-  </div>
-
-</dialog>
 
 
   <!-- =================================================
        JAVASCRIPT
   ================================================== -->
 
-  <script type="module" src="assets/youth-check.js"></script>
-  <script type="module" src="assets/app.js"></script>
-  <script type="module" src="assets/youth-dashboard.js"></script>
+  <script
+    type="module"
+    src="assets/youth-check.js"
+  ></script>
+
+  <script
+    type="module"
+    src="assets/app.js"
+  ></script>
+
+  <script
+    type="module"
+    src="assets/youth-dashboard.js"
+  ></script>
+
 
 </body>
+
 </html>
