@@ -1052,23 +1052,12 @@
 
     /* CLOSE POLICY */
 
-    document
-      .querySelectorAll(
-        "[data-close-policy]"
-      )
-      .forEach(
-        element => {
-
-
-          element.addEventListener(
-            "click",
-            closePolicyModal
-          );
-
-
+    document.querySelectorAll("[data-close-policy]")
+            .forEach( element => {
+            element.addEventListener( "click",
+            closePolicyModal);
         }
       );
-
 
     /* ESCAPE KEY */
 

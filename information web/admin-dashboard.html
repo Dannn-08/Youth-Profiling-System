@@ -903,9 +903,7 @@
 
         <label class="report-filter-field">
 
-          <span>
-            Age Group
-          </span>
+          <span>Age Group</span>
 
           <select id="reportFilterAge">
 
@@ -1754,6 +1752,7 @@
             <option value="">Select</option>
             <option value="General">General</option>
             <option value="Advisory">Advisory</option>
+            <option value="Education Scholarship">Education Scholarship</option>
             <option value="Event">Event</option>
             <option value="KK Assembly">KK Assembly</option>
             <option value="Program">Program</option>
@@ -1954,6 +1953,58 @@
 
 </div>
 
+<!-- =========================================================
+     ADD / EDIT YOUTH DIALOG
+=========================================================== -->
+
+<dialog id="youthDialog" class="modal-card wide-modal">
+
+  <form method="dialog" class="modal-inner" id="adminYouthForm">
+
+    <div class="modal-heading">
+      <h2 id="youthDialogTitle">Add Youth Profile</h2>
+
+      <button
+        class="icon-btn"
+        value="cancel"
+        type="submit"
+        formnovalidate
+        aria-label="Close"
+      >
+        ×
+      </button>
+    </div>
+
+    <input type="hidden" name="id" />
+
+    <div class="form-grid" id="adminYouthFields"></div>
+
+    <div class="modal-actions">
+
+      <button
+        class="btn btn-muted"
+        value="cancel"
+        type="submit"
+        formnovalidate
+      >
+        Cancel
+      </button>
+
+      <button
+        class="btn btn-primary"
+        id="saveYouthAdminBtn"
+        value="default"
+        type="button"
+      >
+        Save Profile
+      </button>
+
+    </div>
+
+  </form>
+
+</dialog>
+
 
 
 
@@ -1961,15 +2012,11 @@
        JAVASCRIPT
   ========================================================== -->
 
-  <script
-    type="module"
-    src="assets/admin-check.js"
-  ></script>
-
-  <script
-    type="module"
-    src="assets/admin-dashboard.js"
-  ></script>
+    <script type="module" src="assets/admin-check.js"></script>
+    <script type="module" src="assets/admin-dashboard.js"></script>
+    <script type="module" src="assets/announcement-gmail.js"></script>
+    <script type="module" src="assets/overview-insights.js"></script>
+    <script type="module" src="assets/overview-insights.js"></script>
 
 
 </body>

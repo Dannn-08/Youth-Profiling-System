@@ -13285,3 +13285,603 @@ body[data-page="admin-dashboard"] #tab-reports .empty-state {
     padding: 7px 6px;
   }
 }
+
+
+/* FIX: CENTER THE YOUTH RECOMMENDATIONS UI */
+
+#youthRecommendationSection {
+  width: 100%;
+  max-width: 1100px;
+  margin: 28px auto !important;
+  box-sizing: border-box;
+}
+
+#youthRecommendationSection #youthRecommendations {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+  box-sizing: border-box;
+}
+
+#youthRecommendations .yr-wrapper {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+  box-sizing: border-box;
+}
+
+#youthRecommendations .yr-header {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+#youthRecommendations .yr-header-icon {
+  flex-shrink: 0;
+}
+
+#youthRecommendations .yr-header-text {
+  flex: 1;
+  min-width: 0;
+}
+
+#youthRecommendations .yr-interests-panel,
+#youthRecommendations .yr-ai-panel,
+#youthRecommendations .yr-ai-result,
+#youthRecommendations .yr-existing-section,
+#youthRecommendations .yr-disclaimer {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#youthRecommendations .yr-section-heading {
+  align-items: center;
+}
+
+#youthRecommendations .yr-interest-tags {
+  justify-content: flex-start;
+}
+
+#youthRecommendations .yr-ai-panel {
+  justify-content: space-between;
+}
+
+#youthRecommendations .yr-recommendation-list {
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#youthRecommendations .yr-empty-state {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#youthRecommendations .yr-ai-response,
+#youthRecommendations .yr-loading,
+#youthRecommendations .yr-error {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  #youthRecommendationSection {
+    max-width: 100%;
+    margin: 20px auto !important;
+  }
+
+  #youthRecommendations .yr-header {
+    align-items: center;
+    text-align: left;
+  }
+
+  #youthRecommendations .yr-ai-panel {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  #youthRecommendations .yr-recommendation-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 420px) {
+  #youthRecommendations .yr-header {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  #youthRecommendations .yr-header-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  #youthRecommendations .yr-header-text h2 {
+    font-size: 20px;
+  }
+}
+
+
+/* ==========================================
+   YOUTH RECOMMENDATIONS — MODERN UI
+========================================== */
+
+#youthRecommendations {
+  width: 100%;
+  min-width: 0;
+}
+
+#youthRecommendations .yr-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: #203331;
+}
+
+#youthRecommendations .yr-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+#youthRecommendations .yr-header-icon,
+#youthRecommendations .yr-ai-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+  background: #e0f3ee;
+  color: #087c69;
+  font-size: 24px;
+}
+
+#youthRecommendations .yr-eyebrow {
+  display: block;
+  margin-bottom: 6px;
+  color: #16816d;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+#youthRecommendations .yr-header-text h2 {
+  margin: 0 0 8px;
+  font-size: clamp(21px, 3vw, 27px);
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+#youthRecommendations .yr-header-text p,
+#youthRecommendations .yr-ai-info p,
+#youthRecommendations .yr-section-heading p {
+  margin: 0;
+  color: #6a7c78;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+#youthRecommendations .yr-interests-panel,
+#youthRecommendations .yr-ai-panel {
+  padding: 22px;
+  border: 1px solid #e1ebe7;
+  border-radius: 18px;
+  background: #fff;
+}
+
+#youthRecommendations .yr-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 17px;
+}
+
+#youthRecommendations .yr-section-heading h3,
+#youthRecommendations .yr-ai-info h3 {
+  margin: 0 0 5px;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+#youthRecommendations .yr-interest-count {
+  padding: 6px 11px;
+  border-radius: 20px;
+  background: #edf7f3;
+  color: #087c69;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+#youthRecommendations .yr-interest-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+#youthRecommendations .yr-interest-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 13px;
+  border: 1px solid #d5eae3;
+  border-radius: 30px;
+  background: #f2faf7;
+  color: #226e5e;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+#youthRecommendations .yr-muted {
+  color: #899792;
+  font-size: 13px;
+}
+
+#youthRecommendations .yr-ai-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background: linear-gradient(135deg, #f0faf6, #f7fbff);
+}
+
+#youthRecommendations .yr-ai-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+#youthRecommendations .yr-ai-icon {
+  width: 43px;
+  height: 43px;
+  border-radius: 13px;
+  font-size: 21px;
+}
+
+#youthRecommendations .yr-generate-button,
+#youthRecommendations .yr-retry-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 11px;
+  background: #087c69;
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+#youthRecommendations .yr-generate-button:hover,
+#youthRecommendations .yr-retry-button:hover {
+  background: #066655;
+  transform: translateY(-1px);
+}
+
+#youthRecommendations .yr-generate-button:disabled {
+  cursor: wait;
+  opacity: 0.75;
+  transform: none;
+}
+
+#youthRecommendations button:focus-visible {
+  outline: 3px solid #75cbbb;
+  outline-offset: 3px;
+}
+
+#youthRecommendations .yr-existing-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+#youthRecommendations .yr-recommendation-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+
+#youthRecommendations .yr-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid #e4ece8;
+  border-radius: 16px;
+  background: #fff;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+#youthRecommendations .yr-card:hover {
+  border-color: #acd9cb;
+  transform: translateY(-2px);
+}
+
+#youthRecommendations .yr-card-number {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: #eaf6f1;
+  color: #087c69;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+#youthRecommendations .yr-card-content {
+  min-width: 0;
+}
+
+#youthRecommendations .yr-category {
+  display: inline-block;
+  margin-bottom: 9px;
+  color: #16816d;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+}
+
+#youthRecommendations .yr-card h3 {
+  margin: 0 0 9px;
+  color: #243d37;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+#youthRecommendations .yr-card p {
+  margin: 0;
+  color: #687a74;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+#youthRecommendations .yr-reason {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #edf1ef;
+  color: #687a74;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+#youthRecommendations .yr-empty-state {
+  padding: 30px 20px;
+  border: 1px dashed #cbded6;
+  border-radius: 15px;
+  text-align: center;
+}
+
+#youthRecommendations .yr-empty-icon {
+  margin-bottom: 10px;
+  font-size: 30px;
+}
+
+#youthRecommendations .yr-empty-state h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+
+#youthRecommendations .yr-empty-state p {
+  max-width: 420px;
+  margin: auto;
+  color: #6a7c78;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+#youthRecommendations .yr-ai-result:empty {
+  display: none;
+}
+
+#youthRecommendations .yr-ai-response {
+  padding: 23px;
+  border: 1px solid #cce6dc;
+  border-radius: 17px;
+  background: #f8fcfa;
+}
+
+#youthRecommendations .yr-response-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding-bottom: 17px;
+  border-bottom: 1px solid #e0eee8;
+}
+
+#youthRecommendations .yr-response-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #dff3e9;
+  color: #087c69;
+  font-size: 21px;
+}
+
+#youthRecommendations .yr-response-heading h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+#youthRecommendations .yr-response-content {
+  padding-top: 17px;
+  color: #405a51;
+  font-size: 13px;
+  line-height: 1.9;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+#youthRecommendations .yr-loading {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 22px;
+  border: 1px solid #d9eae3;
+  border-radius: 15px;
+  background: #f7fbf9;
+}
+
+#youthRecommendations .yr-loading strong {
+  font-size: 13px;
+}
+
+#youthRecommendations .yr-loading p {
+  margin: 5px 0 0;
+  color: #6a7c78;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+#youthRecommendations .yr-spinner {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  border: 2px solid #b7dcd0;
+  border-top-color: #087c69;
+  border-radius: 50%;
+  animation: yr-spin 0.7s linear infinite;
+}
+
+#youthRecommendations .yr-spinner-large {
+  width: 27px;
+  height: 27px;
+  border-width: 3px;
+}
+
+#youthRecommendations .yr-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 20px;
+  border: 1px solid #f0d4d0;
+  border-radius: 15px;
+  background: #fff8f7;
+}
+
+#youthRecommendations .yr-error-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #fbe5e1;
+  color: #a6382b;
+  font-weight: 800;
+}
+
+#youthRecommendations .yr-error-content h3 {
+  margin: 3px 0 7px;
+  color: #91392e;
+  font-size: 14px;
+}
+
+#youthRecommendations .yr-error-message {
+  margin: 0 0 13px;
+  color: #795650;
+  font-size: 12px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+#youthRecommendations .yr-retry-button {
+  min-height: 36px;
+  padding: 9px 14px;
+  font-size: 11px;
+}
+
+#youthRecommendations .yr-disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  color: #82908a;
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+@keyframes yr-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 700px) {
+  #youthRecommendations .yr-ai-panel {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  #youthRecommendations .yr-generate-button {
+    width: 100%;
+  }
+
+  #youthRecommendations .yr-recommendation-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #youthRecommendations .yr-interests-panel,
+  #youthRecommendations .yr-ai-panel,
+  #youthRecommendations .yr-ai-response {
+    padding: 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #youthRecommendations *,
+  #youthRecommendations *::before,
+  #youthRecommendations *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* CENTER YOUTH RECOMMENDATIONS IN THE MAIN CONTENT */
+
+#youthRecommendationSection {
+  width: 100% !important;
+  max-width: 1100px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
+}
+
+#youthRecommendationSection #youthRecommendations {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
+}
+
+#youthRecommendations .yr-wrapper {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  box-sizing: border-box !important;
+}
+
+body[data-page="youth-dashboard"] #youthRecommendations {
+  display: block;
+  grid-template-columns: none;
+  margin-top: 24px;
+  width: 100%;
+}

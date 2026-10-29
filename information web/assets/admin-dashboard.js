@@ -10119,3 +10119,26 @@ document.addEventListener(
 
   }
 );
+
+// =====================================================
+// ALWAYS-CLOSE FIX FOR DIALOG X / CANCEL BUTTONS
+// Isinasara ang dialog nang hindi dumadaan sa form validation
+// =====================================================
+
+[youthDialog, announcementDialog].forEach(dialog => {
+  if (!dialog) return;
+
+  dialog
+    .querySelectorAll('button[value="cancel"]')
+    .forEach(button => {
+      button.addEventListener("click", event => {
+        event.preventDefault();
+        dialog.close();
+      });
+    });
+
+  // Linisin ang form kapag nagsara ang dialog
+  dialog.addEventListener("close", () => {
+    dialog.querySelector("form")?.reset();
+  });
+});

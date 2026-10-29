@@ -13,6 +13,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 import { logActivity } from "./audit-log.js";
+import {generateYouthRecommendations} from "./ai-recommendations.js";
 
 
 // =====================================================
@@ -1571,118 +1572,247 @@ function buildYouthRecommendations(
 // DISPLAY RECOMMENDATIONS
 // =====================================================
 
-function renderYouthRecommendations(
-  data
-) {
-
-  const container =
-    ensureRecommendationsSection();
 
 
-  if (!container) {
-    return;
+function renderYouthRecommendations(data) {
+  const container = ensureRecommendationsSection();
+  if (!container) return;
+
+  const recommendations = buildYouthRecommendations(data);
+
+  // Convert interests into readable tags.
+  function getInterestTags(value) {
+    if (Array.isArray(value)) {
+      return value
+        .map(item => String(item).trim())
+        .filter(Boolean);
+    }
+
+    if (typeof value === "string") {
+      return value
+        .split(/[,;\n]+/)
+        .map(item => item.trim())
+        .filter(Boolean);
+    }
+
+    return [];
   }
 
+  const interests = [
+    ...getInterestTags(data?.hobbies),
+    ...getInterestTags(data?.sports),
+    ...getInterestTags(data?.interests)
+  ];
 
-  const recommendations =
-    buildYouthRecommendations(
-      data
-    );
+  const uniqueInterests = [...new Set(interests)];
 
+  const interestTags = uniqueInterests.length
+    ? uniqueInterests.map(interest => `
+        <span class="yr-interest-tag">
+          ${escapeHtml(interest)}
+        </span>
+      `).join("")
+    : `<span class="yr-muted">No interests added yet</span>`;
 
-  if (
-    recommendations.length ===
-    0
-  ) {
+  const existingCards = recommendations.length
+    ? recommendations.map((recommendation, index) => `
+        <article class="yr-card">
+          <div class="yr-card-number">
+            ${String(index + 1).padStart(2, "0")}
+          </div>
 
-    container.innerHTML = `
+          <div class="yr-card-content">
+            <span class="yr-category">
+              ${escapeHtml(recommendation.category)}
+            </span>
 
-      <p class="empty-state">
+            <h3>${escapeHtml(recommendation.title)}</h3>
 
-        No recommendations are available yet.
-        Complete your profile to receive more
-        personalized suggestions.
+            <p>${escapeHtml(recommendation.description)}</p>
 
+            <div class="yr-reason">
+              <span aria-hidden="true">💡</span>
+              <span>${escapeHtml(recommendation.reason)}</span>
+            </div>
+          </div>
+        </article>
+      `).join("")
+    : `
+        <div class="yr-empty-state">
+          <div class="yr-empty-icon">🌱</div>
+          <h3>Let's discover your opportunities!</h3>
+          <p>
+            Complete your youth profile to receive recommendations
+            suited to your interests and goals.
+          </p>
+        </div>
+      `;
+
+  container.innerHTML = `
+    <div class="yr-wrapper">
+
+      <div class="yr-header">
+        <div class="yr-header-icon" aria-hidden="true">✦</div>
+
+        <div class="yr-header-text">
+          <span class="yr-eyebrow">PERSONALIZED FOR YOU</span>
+          <h2>Youth Recommendations</h2>
+          <p>
+            Discover activities, programs, and opportunities
+            that match your interests and goals.
+          </p>
+        </div>
+      </div>
+
+      <div class="yr-interests-panel">
+        <div class="yr-section-heading">
+          <div>
+            <h3>Your Interests</h3>
+            <p>Used to personalize your activity suggestions.</p>
+          </div>
+          <span class="yr-interest-count">
+            ${uniqueInterests.length} ${uniqueInterests.length === 1 ? "interest" : "interests"}
+          </span>
+        </div>
+
+        <div class="yr-interest-tags">
+          ${interestTags}
+        </div>
+      </div>
+
+      <div class="yr-ai-panel">
+        <div class="yr-ai-info">
+          <div class="yr-ai-icon" aria-hidden="true">✦</div>
+
+          <div>
+            <h3>AI Activity Suggestions</h3>
+            <p>
+              Get personalized suggestions based on your profile.
+            </p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          id="generateYouthAIButton"
+          class="yr-generate-button"
+        >
+          <span aria-hidden="true">✦</span>
+          Generate Recommendations
+        </button>
+      </div>
+
+      <div
+        id="youthAIRecommendationsResult"
+        class="yr-ai-result"
+        aria-live="polite"
+        aria-atomic="true"
+      ></div>
+
+      <div class="yr-existing-section">
+        <div class="yr-section-heading">
+          <div>
+            <span class="yr-eyebrow">BASED ON YOUR PROFILE</span>
+            <h3>Suggested Opportunities</h3>
+          </div>
+        </div>
+
+        <div class="yr-recommendation-list">
+          ${existingCards}
+        </div>
+      </div>
+
+      <p class="yr-disclaimer">
+        <span aria-hidden="true">ⓘ</span>
+        These suggestions are for guidance only. Check with your
+        SK or barangay officials for available programs and activities.
       </p>
 
+    </div>
+  `;
+
+  const button = container.querySelector("#generateYouthAIButton");
+  const result = container.querySelector("#youthAIRecommendationsResult");
+
+  if (!button || !result) return;
+
+  button.addEventListener("click", async () => {
+    if (button.disabled) return;
+
+    button.disabled = true;
+    button.innerHTML = `
+      <span class="yr-spinner" aria-hidden="true"></span>
+      Generating suggestions...
     `;
 
+    result.innerHTML = `
+      <div class="yr-loading" role="status">
+        <span class="yr-spinner yr-spinner-large" aria-hidden="true"></span>
+        <div>
+          <strong>Preparing your recommendations</strong>
+          <p>AI is finding suggestions based on your interests. Please wait.</p>
+        </div>
+      </div>
+    `;
 
-    return;
+    try {
+      const aiText = await generateYouthRecommendations({
+        hobbies: data?.hobbies,
+        sports: data?.sports,
+        interests: data?.interests || data?.hobbies
+      });
 
-  }
+      result.innerHTML = `
+        <article class="yr-ai-response">
+          <div class="yr-response-heading">
+            <span class="yr-response-icon" aria-hidden="true">✦</span>
+            <div>
+              <span class="yr-eyebrow">YOUR PERSONALIZED GUIDE</span>
+              <h3>Recommended Activities for You</h3>
+            </div>
+          </div>
 
+          <div class="yr-response-content"></div>
+        </article>
+      `;
 
-  container.innerHTML =
-    recommendations
-      .map(
-        recommendation => `
+      // Render AI output as text to prevent HTML injection.
+      const responseContent = result.querySelector(".yr-response-content");
+      responseContent.textContent = String(aiText ?? "");
+    } catch (error) {
+      result.innerHTML = `
+        <div class="yr-error" role="alert">
+          <div class="yr-error-icon" aria-hidden="true">!</div>
 
-          <article
-            class="summary-box youth-recommendation-card"
-          >
+          <div class="yr-error-content">
+            <h3>Unable to generate recommendations</h3>
+            <p class="yr-error-message"></p>
 
-            <small
-              style="
-                display:inline-block;
-                margin-bottom:7px;
-                color:#0a5255;
-                font-weight:800;
-                text-transform:uppercase;
-                font-size:10px;
-                letter-spacing:.05em;
-              "
+            <button
+              type="button"
+              class="yr-retry-button"
+              id="retryYouthAIButton"
             >
+              Try Again
+            </button>
+          </div>
+        </div>
+      `;
 
-              ${escapeHtml(
-                recommendation.category
-              )}
+      result.querySelector(".yr-error-message").textContent =
+        error?.message ||
+        "Something went wrong. Please check your connection and try again.";
 
-            </small>
-
-
-            <h3>
-
-              ${escapeHtml(
-                recommendation.title
-              )}
-
-            </h3>
-
-
-            <p
-              style="
-                margin:8px 0 10px;
-              "
-            >
-
-              ${escapeHtml(
-                recommendation.description
-              )}
-
-            </p>
-
-
-            <small
-              style="
-                display:block;
-                color:#71838a;
-                line-height:1.5;
-              "
-            >
-
-              ${escapeHtml(
-                recommendation.reason
-              )}
-
-            </small>
-
-          </article>
-
-        `
-      )
-      .join("");
-
+      result.querySelector("#retryYouthAIButton")
+        ?.addEventListener("click", () => button.click());
+    } finally {
+      button.disabled = false;
+      button.innerHTML = `
+        <span aria-hidden="true">✦</span>
+        Generate Recommendations
+      `;
+    }
+  });
 }
 
 
