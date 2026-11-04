@@ -876,3 +876,42 @@ body[data-page="login"].forgot-password-open {
   }
 
 }
+
+/* =========================================================
+   RETURN TO HOME LINK
+========================================================= */
+
+body[data-page="login"] a[href="index.html"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  margin: 0 0 12px;
+  padding: 8px 18px;
+  border: 1px solid rgba(216, 173, 118, 0.45);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+body[data-page="login"] a[href="index.html"]:hover {
+  background: rgba(216, 173, 118, 0.22);
+  border-color: rgba(216, 173, 118, 0.9);
+  color: #ffffff;
+  text-decoration: none;
+  transform: translateX(-3px);
+}
+
+body[data-page="login"] a[href="index.html"]:focus-visible {
+  outline: 2px solid #e3b978;
+  outline-offset: 3px;
+}
+

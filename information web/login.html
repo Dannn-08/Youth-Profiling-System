@@ -16,6 +16,64 @@
 
   <link rel="stylesheet" href="assets/style.css" />
   <link rel="stylesheet" href="assets/login.css" />
+
+  <!-- RETURN TO HOME (inside the card) -->
+  <style>
+    body[data-page="login"] .civic-access-card {
+      position: relative;
+    }
+
+    body[data-page="login"] .civic-access-card .civic-back-link {
+      position: absolute;
+      top: 22px;
+      left: 26px;
+      right: auto;
+      bottom: auto;
+      z-index: 6;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: auto;
+      margin: 0;
+      padding: 7px 14px;
+      border: 1px solid rgba(216, 173, 118, 0.45);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+      color: #ffffff;
+      font-family: "Inter", Arial, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transform: none;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    body[data-page="login"] .civic-access-card .civic-back-link:hover {
+      background: rgba(216, 173, 118, 0.22);
+      border-color: rgba(216, 173, 118, 0.9);
+      color: #ffffff;
+      text-decoration: none;
+      transform: translateX(-2px);
+    }
+
+    body[data-page="login"] .civic-access-card .civic-back-link:focus-visible {
+      outline: 2px solid #e3b978;
+      outline-offset: 3px;
+    }
+
+    /* Mobile: keep it from overlapping the logos */
+    @media (max-width: 700px) {
+      body[data-page="login"] .civic-access-card .civic-back-link {
+        position: relative;
+        top: auto;
+        left: auto;
+        align-self: flex-start;
+        margin: 14px 0 0 14px;
+      }
+    }
+  </style>
 </head>
 
 <body data-page="login">
@@ -54,13 +112,6 @@
     <main class="auth-shell civic-login-shell">
 
 
-      <!-- RETURN HOME -->
-
-      <a class="civic-back-link" href="index.html">
-        ← Return to Home
-      </a>
-
-
       <!-- =================================================
            ACCESS CARD
       ================================================== -->
@@ -79,6 +130,13 @@
         <span class="portal-side-line right-line"></span>
 
         <div class="portal-scan-line"></div>
+
+
+        <!-- RETURN HOME (moved inside the card) -->
+
+        <a class="civic-back-link" href="index.html">
+          ← Return to Home
+        </a>
 
 
         <!-- =================================================

@@ -10,11 +10,67 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/style.css" />
+
+  <!-- BACK TO HOME (inside the card) -->
+  <style>
+    body[data-page="youth-register"] .civic-register-card {
+      position: relative;
+    }
+
+    body[data-page="youth-register"] .civic-register-card .civic-back-link {
+      position: absolute;
+      top: 22px;
+      left: 26px;
+      right: auto;
+      bottom: auto;
+      z-index: 6;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: auto;
+      margin: 0;
+      padding: 7px 14px;
+      border: 1px solid rgba(216, 173, 118, 0.45);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+      color: #ffffff;
+      font-family: "Inter", Arial, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transform: none;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    body[data-page="youth-register"] .civic-register-card .civic-back-link:hover {
+      background: rgba(216, 173, 118, 0.22);
+      border-color: rgba(216, 173, 118, 0.9);
+      color: #ffffff;
+      text-decoration: none;
+      transform: translateX(-2px);
+    }
+
+    body[data-page="youth-register"] .civic-register-card .civic-back-link:focus-visible {
+      outline: 2px solid #e3b978;
+      outline-offset: 3px;
+    }
+
+    /* Mobile: keep it from overlapping the logos */
+    @media (max-width: 700px) {
+      body[data-page="youth-register"] .civic-register-card .civic-back-link {
+        position: relative;
+        top: auto;
+        left: auto;
+        align-self: flex-start;
+        margin: 14px 0 0 14px;
+      }
+    }
+  </style>
 </head>
 
 <body data-page="youth-register">
-
-
 
   <div class="auth-body register-portal-body">
 
@@ -35,8 +91,6 @@
 
     <main class="auth-shell registration-shell">
 
-      <a class="registration-back civic-back-link" href="index.html">← Back to Home</a>
-
       <section class="modern-registration-card civic-register-card">
 
         <!-- FRAME DETAILS -->
@@ -49,6 +103,10 @@
         <span class="register-side-line register-line-right"></span>
 
         <div class="register-scan-line"></div>
+
+
+        <!-- BACK TO HOME (moved inside the card) -->
+        <a class="registration-back civic-back-link" href="index.html">← Back to Home</a>
 
 
         <!-- HEADER -->
@@ -608,6 +666,8 @@
   <!-- EXISTING SYSTEM SCRIPTS -->
   <script type="module" src="assets/app.js"></script>
   <script type="module" src="assets/youth-register.js"></script>
+
+  <!-- MULTI-SELECT FOR HOBBIES / SKILLS AND SPORTS -->
   <script type="module" src="assets/multi-select.js"></script>
 
 
