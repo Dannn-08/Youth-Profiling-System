@@ -418,8 +418,10 @@
   </div>
 
 
-  <!-- FEATURED CHAIRPERSON -->
-  <div class="container">
+  <!-- FEATURED CHAIRPERSON
+       (id="skFeatured": filled automatically from Firestore;
+        the static card below is the fallback) -->
+  <div class="container" id="skFeatured">
 
     <article class="sk-leadership-feature">
 
@@ -483,8 +485,10 @@
   </div>
 
 
-  <!-- OTHER OFFICIALS -->
-  <div class="container sk-council-grid">
+  <!-- OTHER OFFICIALS
+       (id="skCouncilGrid": filled automatically from Firestore;
+        the static cards below are the fallback) -->
+  <div class="container sk-council-grid" id="skCouncilGrid">
 
 
     <!-- 02 -->
@@ -686,7 +690,9 @@
       </div>
 
 
-      <div class="container sk-events-grid">
+      <!-- id="eventsGrid": filled automatically from Firestore
+           (latest 6); the static cards below are the fallback -->
+      <div class="container sk-events-grid" id="eventsGrid">
 
 
         <!-- =================================================
@@ -1195,6 +1201,7 @@
   ================================================== -->
 
   <script type="module" src="assets/app.js"></script>
+  <script type="module" src="assets/public-content.js"></script>
 
 </body>
 </html>

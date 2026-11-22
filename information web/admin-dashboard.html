@@ -245,6 +245,44 @@
         </button>
 
 
+        <!-- ADDED: EVENTS TAB BUTTON -->
+
+        <button
+          data-tab="events"
+          type="button"
+          aria-selected="false"
+        >
+
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+            <path d="M3 10h18"></path>
+            <path d="M8 3v4"></path>
+            <path d="M16 3v4"></path>
+          </svg>
+
+          <span>Events</span>
+
+        </button>
+
+
+        <!-- ADDED: SK OFFICIALS TAB BUTTON -->
+
+        <button
+          data-tab="officials"
+          type="button"
+          aria-selected="false"
+        >
+
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="8" r="4"></circle>
+            <path d="M4 21v-2a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v2"></path>
+          </svg>
+
+          <span>SK Officials</span>
+
+        </button>
+
+
         <button
           data-tab="reports"
           type="button"
@@ -1408,6 +1446,132 @@
 
 
     <!-- =====================================================
+         ADDED: EVENTS & ACCOMPLISHMENTS
+    ====================================================== -->
+
+    <section
+      class="tab-panel"
+      id="tab-events"
+    >
+
+      <article class="panel table-panel">
+
+        <div class="table-heading">
+
+          <div>
+            <h2>Events &amp; Accomplishments</h2>
+            <p>
+              Add, edit, or remove the programs, projects, and achievements
+              shown on the public home page.
+            </p>
+          </div>
+
+          <button
+            class="btn btn-primary btn-sm"
+            id="openAddEvent"
+            type="button"
+          >
+            + New Event
+          </button>
+
+        </div>
+
+        <div class="table-scroll">
+
+          <table class="data-table">
+
+            <thead>
+              <tr>
+                <th>Cover</th>
+                <th>Date</th>
+                <th>Category</th>
+                <th>Title</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody id="eventTableBody">
+              <tr>
+                <td colspan="5" class="empty-state">Loading events...</td>
+              </tr>
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <p class="table-count" id="eventCountText"></p>
+
+      </article>
+
+    </section>
+
+
+    <!-- =====================================================
+         ADDED: SK OFFICIALS
+    ====================================================== -->
+
+    <section
+      class="tab-panel"
+      id="tab-officials"
+    >
+
+      <article class="panel table-panel">
+
+        <div class="table-heading">
+
+          <div>
+            <h2>SK Officials</h2>
+            <p>
+              Manage the officials shown in the "Meet Your SK Officials"
+              section. When a term ends, set the old official to Inactive
+              and add the new one.
+            </p>
+          </div>
+
+          <button
+            class="btn btn-primary btn-sm"
+            id="openAddOfficial"
+            type="button"
+          >
+            + New Official
+          </button>
+
+        </div>
+
+        <div class="table-scroll">
+
+          <table class="data-table">
+
+            <thead>
+              <tr>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Term</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody id="officialTableBody">
+              <tr>
+                <td colspan="6" class="empty-state">Loading officials...</td>
+              </tr>
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <p class="table-count" id="officialCountText"></p>
+
+      </article>
+
+    </section>
+
+
+    <!-- =====================================================
          AUDIT TRAIL
     ====================================================== -->
 
@@ -1876,6 +2040,212 @@
 
   </dialog>
 
+
+  <!-- =========================================================
+       ADDED: EVENT DIALOG
+  ========================================================== -->
+
+  <dialog
+    id="eventDialog"
+    class="modal-card"
+  >
+
+    <form
+      method="dialog"
+      class="modal-inner"
+      onsubmit="return false;"
+    >
+
+      <div class="modal-heading">
+
+        <h2 id="eventDialogTitle">New Event / Accomplishment</h2>
+
+        <button
+          class="icon-btn"
+          id="eventCloseBtn"
+          type="button"
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <input type="hidden" id="eventId" />
+
+      <div class="form-grid single">
+
+        <label class="field full">
+          <span>Title</span>
+          <input type="text" id="eventTitle" placeholder="e.g. Little Miss Bukal 2026" />
+        </label>
+
+        <label class="field full">
+          <span>Category</span>
+          <input type="text" id="eventCategory" list="eventCategoryList" placeholder="Choose from the list or type your own" />
+          <datalist id="eventCategoryList">
+            <option value="Event"></option>
+            <option value="Community Project"></option>
+            <option value="Community Service"></option>
+            <option value="Community Activity"></option>
+            <option value="Community Participation"></option>
+            <option value="Achievement"></option>
+            <option value="Sports"></option>
+            <option value="Education"></option>
+            <option value="Training"></option>
+            <option value="Youth Event"></option>
+            <option value="Youth Participation"></option>
+            <option value="Youth Program"></option>
+            <option value="Infrastructure Project"></option>
+          </datalist>
+        </label>
+
+        <label class="field full">
+          <span>Date of Event</span>
+          <input type="date" id="eventDate" />
+        </label>
+
+        <label class="field full">
+          <span>Short Description (shown on the card)</span>
+          <input type="text" id="eventSummary" maxlength="140" placeholder="One short sentence" />
+        </label>
+
+        <label class="field full">
+          <span>Full Details (shown in "View Details")</span>
+          <textarea
+            id="eventDetails"
+            rows="6"
+            placeholder="Complete description, highlights, results..."
+            style="min-height:130px; padding:12px; resize:vertical;"
+          ></textarea>
+        </label>
+
+        <label class="field full">
+          <span>Cover Photo</span>
+          <input type="file" id="eventCover" accept="image/*" />
+          <div id="eventCoverPreview"></div>
+        </label>
+
+        <label class="field full">
+          <span>Gallery Photos (optional, can select many)</span>
+          <input type="file" id="eventPhotos" accept="image/*" multiple />
+          <div id="eventPhotoList"></div>
+        </label>
+
+      </div>
+
+      <div class="modal-actions">
+
+        <button class="btn btn-muted" id="eventCancelBtn" type="button">
+          Cancel
+        </button>
+
+        <button class="btn btn-primary" id="saveEventBtn" type="button">
+          Save Event
+        </button>
+
+      </div>
+
+    </form>
+
+  </dialog>
+
+
+  <!-- =========================================================
+       ADDED: SK OFFICIAL DIALOG
+  ========================================================== -->
+
+  <dialog
+    id="officialDialog"
+    class="modal-card"
+  >
+
+    <form
+      method="dialog"
+      class="modal-inner"
+      onsubmit="return false;"
+    >
+
+      <div class="modal-heading">
+
+        <h2 id="officialDialogTitle">New SK Official</h2>
+
+        <button
+          class="icon-btn"
+          id="officialCloseBtn"
+          type="button"
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <input type="hidden" id="officialId" />
+
+      <div class="form-grid single">
+
+        <label class="field full">
+          <span>Full Name</span>
+          <input type="text" id="officialName" placeholder="e.g. Kimberly Ann S. Obciana" />
+        </label>
+
+        <label class="field full">
+          <span>Position</span>
+          <input type="text" id="officialPosition" placeholder="e.g. SK Chairperson, SK Kagawad, SK Secretary" />
+        </label>
+
+        <label class="field full">
+          <span>Term</span>
+          <input type="text" id="officialTerm" placeholder="e.g. 2023–2026" />
+        </label>
+
+        <label class="field full">
+          <span>Featured as Chairperson (big card)?</span>
+          <select id="officialChair">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
+        </label>
+
+        <label class="field full">
+          <span>Display Order (1 = first)</span>
+          <input type="number" id="officialOrder" min="1" placeholder="e.g. 1" />
+        </label>
+
+        <label class="field full">
+          <span>Status</span>
+          <select id="officialStatus">
+            <option value="Active">Active (shown on the site)</option>
+            <option value="Inactive">Inactive (hidden from the site)</option>
+          </select>
+        </label>
+
+        <label class="field full">
+          <span>Photo</span>
+          <input type="file" id="officialPhoto" accept="image/*" />
+          <div id="officialPhotoPreview"></div>
+        </label>
+
+      </div>
+
+      <div class="modal-actions">
+
+        <button class="btn btn-muted" id="officialCancelBtn" type="button">
+          Cancel
+        </button>
+
+        <button class="btn btn-primary" id="saveOfficialBtn" type="button">
+          Save Official
+        </button>
+
+      </div>
+
+    </form>
+
+  </dialog>
+
+
   <!-- =========================================================
      ENLARGED CHART VIEW
 ========================================================= -->
@@ -2018,6 +2388,7 @@
     <script type="module" src="assets/overview-insights.js"></script>
     <script type="module" src="assets/overview-insights.js"></script>
     <script type="module" src="assets/new-registrations.js"></script>
+     <script type="module" src="assets/content-manager.js"></script>
 
 
 </body>
